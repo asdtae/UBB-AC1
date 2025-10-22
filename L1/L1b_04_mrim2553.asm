@@ -8,10 +8,6 @@
 ;	ha d mod 4 = 2 : 8 - (5 * b)
 ;	ha d mod 4 = 3 : (c - b) * (b + c)
 
-; References:
-; 	(1)	https://www.tutorialspoint.com/assembly_programming/assembly_conditions.htm
-;	(2) https://www.tutorialspoint.com/assembly_programming/assembly_strings.htm
-
 %include 'io.inc'
 
 global main
@@ -56,10 +52,6 @@ main:
 	;	ha d mod 4 = 0		2 * a * c
 	;	___excel: 6-7
 	L0:
-	mov edi, eax
-	mov eax, [msg0]
-	;call ???
-	mov eax, edi
 	
 	mov edi, 2
 	imul eax, edi
@@ -71,10 +63,6 @@ main:
 	;	ha d mod 4 = 1		(a * c) + (b mod 11)
 	;	___excel: 8-10
 	L1:
-	mov edi, eax
-	mov eax, [msg1]
-	;call ???
-	mov eax, edi
 	
 	mov edi, 11
 	imul eax, ebx	;		a * c
@@ -92,10 +80,6 @@ main:
 	;	ha d mod 4 = 2		8 - (5 * b)
 	;	___excel: 11-13
 	L2:
-	mov edi, eax
-	mov eax, [msg2]
-	;call ???
-	mov eax, edi
 	
 	mov edi, 5
 	mov eax, 8
@@ -111,10 +95,6 @@ main:
 	;	ha d mod 4 = 3		(c - b) * (b + c)
 	;	___excel: 14-16
 	L3:
-	mov edi, eax
-	mov eax, [msg3]
-	;call ???
-	mov eax, edi
 	
 	mov edi, 0
 	mov eax, 0
@@ -129,8 +109,3 @@ main:
 	call io_writeint
 	ret
 	
-section .data
-	msg0 db "ha d mod 4 = 0 : 2 * a * c", 0
-	msg1 db "ha d mod 4 = 1 : (a * c) + (b mod 11)", 0
-	msg2 db "ha d mod 4 = 2 : 8 - (5 * b)", 0
-	msg3 db "ha d mod 4 = 3 : (c - b) * (b + c)", 0
