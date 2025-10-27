@@ -121,8 +121,14 @@ main:
 	sub edi, edx
 	mov edx, 0
 	
-	;call io_writeint
+	mov eax, txt 
+	call io_writestr
+	
 	mov eax, edi 
 	call io_writeint
 	
 	ret
+	
+section .data
+
+txt dw "((b - e - f) div (d + c)) + ((4 * (a - f)) div d + g) - ((b - e + c - a) mod (d + g)) = ", 0

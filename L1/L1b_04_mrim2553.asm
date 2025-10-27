@@ -56,6 +56,10 @@ main:
 	mov edi, 2
 	imul eax, edi
 	imul eax, ebx
+	mov edi, eax
+	mov eax, txt0
+	call io_writestr
+	mov eax, edi
 	mov edi, 0
 	call io_writeint
 	ret
@@ -74,6 +78,10 @@ main:
 	mov edi, 0
 	add eax, edx
 	mov edx, 0
+	mov ebx, eax
+	mov eax, txt1
+	call io_writestr
+	mov eax, ebx
 	call io_writeint
 	ret
 	
@@ -89,6 +97,10 @@ main:
 	mov edi, 0
 	sub eax, ecx
 	mov ecx, 0
+	mov ebx, eax
+	mov eax, txt2
+	call io_writestr
+	mov eax, ebx
 	call io_writeint
 	ret
 	
@@ -105,7 +117,15 @@ main:
 	add eax, ecx 
 	mov ecx, 0
 	imul eax, ebx
-	mov ebx, 0
+	mov ebx, eax
+	mov eax, txt3
+	call io_writestr
+	mov eax, ebx
 	call io_writeint
 	ret
 	
+section .text
+txt0 dw "2 * a * c = ", 0
+txt1 dw "(a * c) + (b mod 11) = ", 0
+txt2 dw "8 - (5 * b) = ", 0
+txt3 dw "(c - b) * (b + c) = ", 0
