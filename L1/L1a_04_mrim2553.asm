@@ -12,22 +12,49 @@ global main
 section .text
 
 main:
+	; WRITE txtIN
+	mov eax, txtIN 
+	call io_writestr
+
+	mov eax, nl
+	call io_writestr
+
+	mov eax, cr
+	call io_writestr
 
 	; READ a-f
+	mov eax, txtA
+	call io_writestr
+
 	call io_readint 	; read a
 	mov edi, eax    	; move a: eax -> edi
+
+	mov eax, txtB
+	call io_writestr
 	
 	call io_readint 	; read b
 	mov esi, eax    	; move b: eax -> esi
+
+	mov eax, txtC
+	call io_writestr
 	
 	call io_readint 	; read c
 	mov edx, eax    	; move c: eax -> edx
+
+	mov eax, txtD
+	call io_writestr
 	
 	call io_readint 	; read d
 	mov ecx, eax    	; move d: eax -> ecx
+
+	mov eax, txtE
+	call io_writestr
 	
 	call io_readint 	; read e
 	mov ebx, eax    	; move e: eax -> ebx
+
+	mov eax, txtF
+	call io_writestr
 	
 	call io_readint 	; read f
 	
@@ -76,6 +103,10 @@ main:
 		cdq
 		idiv ecx
 		mov ebx, eax
+
+		mov eax, txtG
+		call io_writestr
+
 		call io_readint ; read g
 		push eax
 		push ecx
@@ -121,7 +152,7 @@ main:
 	sub edi, edx
 	mov edx, 0
 	
-	mov eax, txt 
+	mov eax, txtOUT 
 	call io_writestr
 	
 	mov eax, edi 
@@ -131,4 +162,16 @@ main:
 	
 section .data
 
-txt dw "((b - e - f) div (d + c)) + ((4 * (a - f)) div d + g) - ((b - e + c - a) mod (d + g)) = ", 0
+txtIN dw "E(a,b,c,d,e,f,g) = ((b - e - f) div (d + c)) + ((4 * (a - f)) div d + g) - ((b - e + c - a) mod (d + g))", 0
+
+txtA dw "a=", 0
+txtB dw "b=", 0
+txtC dw "c=", 0
+txtD dw "d=", 0
+txtE dw "e=", 0
+txtF dw "f=", 0
+txtG dw "g=", 0
+
+txtOUT dw "E(a,b,c,d,e,f,g) = ((b - e - f) div (d + c)) + ((4 * (a - f)) div d + g) - ((b - e + c - a) mod (d + g)) = ", 0
+cr dw 13, 0
+nl dw 10, 0

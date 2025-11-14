@@ -16,14 +16,27 @@ section .text
 
 main:
 	; READ a-d	___excel: 1-4
+
+	mov eax, txtA
+	call io_writestr
+
 	call io_readint 	; read a
 	mov esi, eax    	; move a: eax -> esi
 	
+	mov eax, txtB
+	call io_writestr
+
 	call io_readint 	; read b
 	mov ecx, eax    	; move b: eax -> ecx
 	
+	mov eax, txtC
+	call io_writestr
+
 	call io_readint 	; read c
 	mov ebx, eax    	; move c: eax -> ebx
+	
+	mov eax, txtD
+	call io_writestr
 	
 	call io_readint 	; read d
 	
@@ -129,3 +142,10 @@ txt0 dw "2 * a * c = ", 0
 txt1 dw "(a * c) + (b mod 11) = ", 0
 txt2 dw "8 - (5 * b) = ", 0
 txt3 dw "(c - b) * (b + c) = ", 0
+
+txtA dw "a=", 0
+txtB dw "b=", 0
+txtC dw "c=", 0
+txtD dw "d=", 0
+cr dw 13, 0
+nl dw 10, 0

@@ -30,9 +30,27 @@ readInt10:
 		; TRANSFORM CHAR -> INT
 		mov cl, '0'
 		sub al, cl
-		call io_writeint
+
+			; TEMP DEBUG CODE:
+			push eax
+
+			; new line
+			mov eax, nl
+			call io_writestr
+
+			; carrige return
+			mov eax, cr
+			call io_writestr
+
+			; write debug info
+			mov eax, tmp_str1
+			call io_writestr			
+
+			; write current constr numb
+			pop eax
+			call io_writeint
 		
-		; TEST: ADD TO ebx
+		; ADD TO ebx
 		imul ebx, 10
 		add ebx, eax
 		mov eax, ebx 
@@ -48,7 +66,6 @@ readInt10:
 		call    mio_writechar
 		mov     al, 10              ; line feed
 		call    mio_writechar
-		pop eax
 		
 		;TEST
 		;stc <-- set carry
@@ -68,6 +85,8 @@ readInt10:
 		mov     al, 10              ; line feed
 		call    mio_writechar
 		
+		mov eax, 0
+		pop eax
 		call io_writeint
 		
 		ret
@@ -146,6 +165,7 @@ main:
 	
 	JC readInt10Error
 	
+	;call readInt10Error
 	; test
 	;call testt
 	
@@ -159,4 +179,9 @@ main:
 	ret
 	
 section .data:
-	hiba db "Hibaaa", 0
+
+hiba db "Hibaaa", 0
+tmp_str1 dw "Per pill oszetett szam: ", 0
+
+cr dw 13, 0
+nl dw 10, 0
