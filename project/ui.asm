@@ -58,19 +58,19 @@
 
     %define DELETE_X1 50
     %define DELETE_Y1 10
-    %define DELETE_X2 100
+    %define DELETE_X2 135
     %define DELETE_Y2 30
 
-    %define RUN_X1 120
+    %define RUN_X1 150
     %define RUN_Y1 10
-    %define RUN_X2 150
+    %define RUN_X2 200
     %define RUN_Y2 30
 
     ; CANVAS
-    %define CANVAS_X1 120
-    %define CANVAS_Y1 10
-    %define CANVAS_X2 150
-    %define CANVAS_Y2 30
+    %define CANVAS_X1 108
+    %define CANVAS_Y1 193
+    %define CANVAS_X2 555
+    %define CANVAS_Y2 641
 
 global main
 
@@ -773,34 +773,34 @@ draw_letter_L:
     ret
 
 draw_letter_T:
-; frame loop - letter_T
+    ; frame loop - letter_T1
     xor ecx, ecx
     mov eax, [esp+20]     ; get (0,0)
 
-    .yloop_letter_T:
+    .yloop_letter_T1:
         cmp ecx, HEIGHT
-        jge .yend_letter_T
+        jge .yend_letter_T1
 
         xor edx, edx
-        .xloop_letter_T:
+        .xloop_letter_T1:
             cmp edx, WIDTH
-            jge .xend_letter_T
+            jge .xend_letter_T1
 
-            mov ebx, 0   ; y1
+            mov ebx, 12   ; y1
             cmp ecx, ebx
-            jnge .skip_letter_T
-            mov ebx, 50   ; x1
+            jnge .skip_letter_T1
+            mov ebx, 56   ; x1
             add ebx, [esp+16]
             cmp edx, ebx
-            jnge .skip_letter_T
+            jnge .skip_letter_T1
 
             mov ebx, 30   ; y2
             cmp ecx, ebx
-            jge .skip_letter_T
-            mov ebx, 52   ; x2
+            jge .skip_letter_T1
+            mov ebx, 58   ; x2
             add ebx, [esp+16]
             cmp edx, ebx
-            jge .skip_letter_T
+            jge .skip_letter_T1
 
             ; Pixel color in RGBA
             ; blue
@@ -816,47 +816,101 @@ draw_letter_T:
             xor	ebx, ebx
             mov	[eax+3], bl
 
-            .skip_letter_T:
+            .skip_letter_T1:
             add	eax, 4  ; next pixel
             inc edx
-            jmp .xloop_letter_T
+            jmp .xloop_letter_T1
 
-        .xend_letter_T:
+        .xend_letter_T1:
             inc ecx
-            jmp .yloop_letter_T
+            jmp .yloop_letter_T1
 
-    .yend_letter_T:
+    .yend_letter_T1:
+
+    ; frame loop - letter_T2
+    xor ecx, ecx
+    mov eax, [esp+20]     ; get (0,0)
+
+    .yloop_letter_T2:
+        cmp ecx, HEIGHT
+        jge .yend_letter_T2
+
+        xor edx, edx
+        .xloop_letter_T2:
+            cmp edx, WIDTH
+            jge .xend_letter_T2
+
+            mov ebx, 10   ; y1
+            cmp ecx, ebx
+            jnge .skip_letter_T2
+            mov ebx, 50   ; x1
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jnge .skip_letter_T2
+
+            mov ebx, 12   ; y2
+            cmp ecx, ebx
+            jge .skip_letter_T2
+            mov ebx, 64   ; x2
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jge .skip_letter_T2
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, [esp+12]
+            mov	[eax], bl
+            ; green
+            mov ebx, [esp+8]
+            mov	[eax+1], bl
+            ; red
+            mov ebx, [esp+4]
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_letter_T2:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_letter_T2
+
+        .xend_letter_T2:
+            inc ecx
+            jmp .yloop_letter_T2
+
+    .yend_letter_T2:
     ret
 
 draw_letter_R:
-; frame loop - letter_R
+    ; frame loop - letter_R1
     xor ecx, ecx
     mov eax, [esp+20]     ; get (0,0)
 
-    .yloop_letter_R:
+    .yloop_letter_R1:
         cmp ecx, HEIGHT
-        jge .yend_letter_R
+        jge .yend_letter_R1
 
         xor edx, edx
-        .xloop_letter_R:
+        .xloop_letter_R1:
             cmp edx, WIDTH
-            jge .xend_letter_R
+            jge .xend_letter_R1
 
-            mov ebx, 0   ; y1
+            mov ebx, 10   ; y1
             cmp ecx, ebx
-            jnge .skip_letter_R
-            mov ebx, 50   ; x1
+            jnge .skip_letter_R1
+            mov ebx, 150   ; x1
             add ebx, [esp+16]
             cmp edx, ebx
-            jnge .skip_letter_R
+            jnge .skip_letter_R1
 
             mov ebx, 30   ; y2
             cmp ecx, ebx
-            jge .skip_letter_R
-            mov ebx, 52   ; x2
+            jge .skip_letter_R1
+            mov ebx, 152   ; x2
             add ebx, [esp+16]
             cmp edx, ebx
-            jge .skip_letter_R
+            jge .skip_letter_R1
 
             ; Pixel color in RGBA
             ; blue
@@ -872,47 +926,425 @@ draw_letter_R:
             xor	ebx, ebx
             mov	[eax+3], bl
 
-            .skip_letter_R:
+            .skip_letter_R1:
             add	eax, 4  ; next pixel
             inc edx
-            jmp .xloop_letter_R
+            jmp .xloop_letter_R1
 
-        .xend_letter_R:
+        .xend_letter_R1:
             inc ecx
-            jmp .yloop_letter_R
+            jmp .yloop_letter_R1
 
-    .yend_letter_R:
+    .yend_letter_R1:
+
+    ; frame loop - letter_R2
+    xor ecx, ecx
+    mov eax, [esp+20]     ; get (0,0)
+
+    .yloop_letter_R2:
+        cmp ecx, HEIGHT
+        jge .yend_letter_R2
+
+        xor edx, edx
+        .xloop_letter_R2:
+            cmp edx, WIDTH
+            jge .xend_letter_R2
+
+            mov ebx, 10   ; y1
+            cmp ecx, ebx
+            jnge .skip_letter_R2
+            mov ebx, 152   ; x1
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jnge .skip_letter_R2
+
+            mov ebx, 12   ; y2
+            cmp ecx, ebx
+            jge .skip_letter_R2
+            mov ebx, 156   ; x2
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jge .skip_letter_R2
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, [esp+12]
+            mov	[eax], bl
+            ; green
+            mov ebx, [esp+8]
+            mov	[eax+1], bl
+            ; red
+            mov ebx, [esp+4]
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_letter_R2:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_letter_R2
+
+        .xend_letter_R2:
+            inc ecx
+            jmp .yloop_letter_R2
+
+    .yend_letter_R2:
+
+    ; frame loop - letter_R3
+    xor ecx, ecx
+    mov eax, [esp+20]     ; get (0,0)
+
+    .yloop_letter_R3:
+        cmp ecx, HEIGHT
+        jge .yend_letter_R3
+
+        xor edx, edx
+        .xloop_letter_R3:
+            cmp edx, WIDTH
+            jge .xend_letter_R3
+
+            mov ebx, 20   ; y1
+            cmp ecx, ebx
+            jnge .skip_letter_R3
+            mov ebx, 152   ; x1
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jnge .skip_letter_R3
+
+            mov ebx, 22   ; y2
+            cmp ecx, ebx
+            jge .skip_letter_R3
+            mov ebx, 156   ; x2
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jge .skip_letter_R3
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, [esp+12]
+            mov	[eax], bl
+            ; green
+            mov ebx, [esp+8]
+            mov	[eax+1], bl
+            ; red
+            mov ebx, [esp+4]
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_letter_R3:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_letter_R3
+
+        .xend_letter_R3:
+            inc ecx
+            jmp .yloop_letter_R3
+
+    .yend_letter_R3:
+
+    ; frame loop - letter_R4
+    xor ecx, ecx
+    mov eax, [esp+20]     ; get (0,0)
+
+    .yloop_letter_R4:
+        cmp ecx, HEIGHT
+        jge .yend_letter_R4
+
+        xor edx, edx
+        .xloop_letter_R4:
+            cmp edx, WIDTH
+            jge .xend_letter_R4
+
+            mov ebx, 12   ; y1
+            cmp ecx, ebx
+            jnge .skip_letter_R4
+            mov ebx, 156   ; x1
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jnge .skip_letter_R4
+
+            mov ebx, 14   ; y2
+            cmp ecx, ebx
+            jge .skip_letter_R4
+            mov ebx, 158   ; x2
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jge .skip_letter_R4
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, [esp+12]
+            mov	[eax], bl
+            ; green
+            mov ebx, [esp+8]
+            mov	[eax+1], bl
+            ; red
+            mov ebx, [esp+4]
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_letter_R4:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_letter_R4
+
+        .xend_letter_R4:
+            inc ecx
+            jmp .yloop_letter_R4
+
+    .yend_letter_R4:
+
+    ; frame loop - letter_R5
+    xor ecx, ecx
+    mov eax, [esp+20]     ; get (0,0)
+
+    .yloop_letter_R5:
+        cmp ecx, HEIGHT
+        jge .yend_letter_R5
+
+        xor edx, edx
+        .xloop_letter_R5:
+            cmp edx, WIDTH
+            jge .xend_letter_R5
+
+            mov ebx, 18   ; y1
+            cmp ecx, ebx
+            jnge .skip_letter_R5
+            mov ebx, 156   ; x1
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jnge .skip_letter_R5
+
+            mov ebx, 20   ; y2
+            cmp ecx, ebx
+            jge .skip_letter_R5
+            mov ebx, 158   ; x2
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jge .skip_letter_R5
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, [esp+12]
+            mov	[eax], bl
+            ; green
+            mov ebx, [esp+8]
+            mov	[eax+1], bl
+            ; red
+            mov ebx, [esp+4]
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_letter_R5:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_letter_R5
+
+        .xend_letter_R5:
+            inc ecx
+            jmp .yloop_letter_R5
+
+    .yend_letter_R5:
+
+    ; frame loop - letter_R6
+    xor ecx, ecx
+    mov eax, [esp+20]     ; get (0,0)
+
+    .yloop_letter_R6:
+        cmp ecx, HEIGHT
+        jge .yend_letter_R6
+
+        xor edx, edx
+        .xloop_letter_R6:
+            cmp edx, WIDTH
+            jge .xend_letter_R6
+
+            mov ebx, 22   ; y1
+            cmp ecx, ebx
+            jnge .skip_letter_R6
+            mov ebx, 156   ; x1
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jnge .skip_letter_R6
+
+            mov ebx, 24   ; y2
+            cmp ecx, ebx
+            jge .skip_letter_R6
+            mov ebx, 158   ; x2
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jge .skip_letter_R6
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, [esp+12]
+            mov	[eax], bl
+            ; green
+            mov ebx, [esp+8]
+            mov	[eax+1], bl
+            ; red
+            mov ebx, [esp+4]
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_letter_R6:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_letter_R6
+
+        .xend_letter_R6:
+            inc ecx
+            jmp .yloop_letter_R6
+
+    .yend_letter_R6:
+
+    ; frame loop - letter_R7
+    xor ecx, ecx
+    mov eax, [esp+20]     ; get (0,0)
+
+    .yloop_letter_R7:
+        cmp ecx, HEIGHT
+        jge .yend_letter_R7
+
+        xor edx, edx
+        .xloop_letter_R7:
+            cmp edx, WIDTH
+            jge .xend_letter_R7
+
+            mov ebx, 14   ; y1
+            cmp ecx, ebx
+            jnge .skip_letter_R7
+            mov ebx, 158   ; x1
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jnge .skip_letter_R7
+
+            mov ebx, 18   ; y2
+            cmp ecx, ebx
+            jge .skip_letter_R7
+            mov ebx, 160   ; x2
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jge .skip_letter_R7
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, [esp+12]
+            mov	[eax], bl
+            ; green
+            mov ebx, [esp+8]
+            mov	[eax+1], bl
+            ; red
+            mov ebx, [esp+4]
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_letter_R7:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_letter_R7
+
+        .xend_letter_R7:
+            inc ecx
+            jmp .yloop_letter_R7
+
+    .yend_letter_R7:
+
+    ; frame loop - letter_R8
+    xor ecx, ecx
+    mov eax, [esp+20]     ; get (0,0)
+
+    .yloop_letter_R8:
+        cmp ecx, HEIGHT
+        jge .yend_letter_R8
+
+        xor edx, edx
+        .xloop_letter_R8:
+            cmp edx, WIDTH
+            jge .xend_letter_R8
+
+            mov ebx, 24   ; y1
+            cmp ecx, ebx
+            jnge .skip_letter_R8
+            mov ebx, 158   ; x1
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jnge .skip_letter_R8
+
+            mov ebx, 30   ; y2
+            cmp ecx, ebx
+            jge .skip_letter_R8
+            mov ebx, 160   ; x2
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jge .skip_letter_R8
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, [esp+12]
+            mov	[eax], bl
+            ; green
+            mov ebx, [esp+8]
+            mov	[eax+1], bl
+            ; red
+            mov ebx, [esp+4]
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_letter_R8:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_letter_R8
+
+        .xend_letter_R8:
+            inc ecx
+            jmp .yloop_letter_R8
+
+    .yend_letter_R8:
     ret
 
 draw_letter_U:
-; frame loop - letter_U
+    ; frame loop - letter_U1
     xor ecx, ecx
     mov eax, [esp+20]     ; get (0,0)
 
-    .yloop_letter_U:
+    .yloop_letter_U1:
         cmp ecx, HEIGHT
-        jge .yend_letter_U
+        jge .yend_letter_U1
 
         xor edx, edx
-        .xloop_letter_U:
+        .xloop_letter_U1:
             cmp edx, WIDTH
-            jge .xend_letter_U
+            jge .xend_letter_U1
 
-            mov ebx, 0   ; y1
+            mov ebx, 10   ; y1
             cmp ecx, ebx
-            jnge .skip_letter_U
-            mov ebx, 50   ; x1
+            jnge .skip_letter_U1
+            mov ebx, 150   ; x1
             add ebx, [esp+16]
             cmp edx, ebx
-            jnge .skip_letter_U
+            jnge .skip_letter_U1
 
-            mov ebx, 30   ; y2
+            mov ebx, 26   ; y2
             cmp ecx, ebx
-            jge .skip_letter_U
-            mov ebx, 52   ; x2
+            jge .skip_letter_U1
+            mov ebx, 152   ; x2
             add ebx, [esp+16]
             cmp edx, ebx
-            jge .skip_letter_U
+            jge .skip_letter_U1
 
             ; Pixel color in RGBA
             ; blue
@@ -928,46 +1360,262 @@ draw_letter_U:
             xor	ebx, ebx
             mov	[eax+3], bl
 
-            .skip_letter_U:
+            .skip_letter_U1:
             add	eax, 4  ; next pixel
             inc edx
-            jmp .xloop_letter_U
+            jmp .xloop_letter_U1
 
-        .xend_letter_U:
+        .xend_letter_U1:
             inc ecx
-            jmp .yloop_letter_U
+            jmp .yloop_letter_U1
 
-    .yend_letter_U:
+    .yend_letter_U1:
+
+    ; frame loop - letter_U2
+    xor ecx, ecx
+    mov eax, [esp+20]     ; get (0,0)
+
+    .yloop_letter_U2:
+        cmp ecx, HEIGHT
+        jge .yend_letter_U2
+
+        xor edx, edx
+        .xloop_letter_U2:
+            cmp edx, WIDTH
+            jge .xend_letter_U2
+
+            mov ebx, 10   ; y1
+            cmp ecx, ebx
+            jnge .skip_letter_U2
+            mov ebx, 162   ; x1
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jnge .skip_letter_U2
+
+            mov ebx, 26   ; y2
+            cmp ecx, ebx
+            jge .skip_letter_U2
+            mov ebx, 164   ; x2
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jge .skip_letter_U2
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, [esp+12]
+            mov	[eax], bl
+            ; green
+            mov ebx, [esp+8]
+            mov	[eax+1], bl
+            ; red
+            mov ebx, [esp+4]
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_letter_U2:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_letter_U2
+
+        .xend_letter_U2:
+            inc ecx
+            jmp .yloop_letter_U2
+
+    .yend_letter_U2:
+
+    ; frame loop - letter_U3
+    xor ecx, ecx
+    mov eax, [esp+20]     ; get (0,0)
+
+    .yloop_letter_U3:
+        cmp ecx, HEIGHT
+        jge .yend_letter_U3
+
+        xor edx, edx
+        .xloop_letter_U3:
+            cmp edx, WIDTH
+            jge .xend_letter_U3
+
+            mov ebx, 26   ; y1
+            cmp ecx, ebx
+            jnge .skip_letter_U3
+            mov ebx, 152   ; x1
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jnge .skip_letter_U3
+
+            mov ebx, 28   ; y2
+            cmp ecx, ebx
+            jge .skip_letter_U3
+            mov ebx, 154   ; x2
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jge .skip_letter_U3
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, [esp+12]
+            mov	[eax], bl
+            ; green
+            mov ebx, [esp+8]
+            mov	[eax+1], bl
+            ; red
+            mov ebx, [esp+4]
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_letter_U3:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_letter_U3
+
+        .xend_letter_U3:
+            inc ecx
+            jmp .yloop_letter_U3
+
+    .yend_letter_U3:
+
+    ; frame loop - letter_U4
+    xor ecx, ecx
+    mov eax, [esp+20]     ; get (0,0)
+
+    .yloop_letter_U4:
+        cmp ecx, HEIGHT
+        jge .yend_letter_U4
+
+        xor edx, edx
+        .xloop_letter_U4:
+            cmp edx, WIDTH
+            jge .xend_letter_U4
+
+            mov ebx, 26   ; y1
+            cmp ecx, ebx
+            jnge .skip_letter_U4
+            mov ebx, 160   ; x1
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jnge .skip_letter_U4
+
+            mov ebx, 28   ; y2
+            cmp ecx, ebx
+            jge .skip_letter_U4
+            mov ebx, 162   ; x2
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jge .skip_letter_U4
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, [esp+12]
+            mov	[eax], bl
+            ; green
+            mov ebx, [esp+8]
+            mov	[eax+1], bl
+            ; red
+            mov ebx, [esp+4]
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_letter_U4:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_letter_U4
+
+        .xend_letter_U4:
+            inc ecx
+            jmp .yloop_letter_U4
+
+    .yend_letter_U4:
+
+    ; frame loop - letter_U5
+    xor ecx, ecx
+    mov eax, [esp+20]     ; get (0,0)
+
+    .yloop_letter_U5:
+        cmp ecx, HEIGHT
+        jge .yend_letter_U5
+
+        xor edx, edx
+        .xloop_letter_U5:
+            cmp edx, WIDTH
+            jge .xend_letter_U5
+
+            mov ebx, 28   ; y1
+            cmp ecx, ebx
+            jnge .skip_letter_U5
+            mov ebx, 154   ; x1
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jnge .skip_letter_U5
+
+            mov ebx, 30   ; y2
+            cmp ecx, ebx
+            jge .skip_letter_U5
+            mov ebx, 160   ; x2
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jge .skip_letter_U5
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, [esp+12]
+            mov	[eax], bl
+            ; green
+            mov ebx, [esp+8]
+            mov	[eax+1], bl
+            ; red
+            mov ebx, [esp+4]
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_letter_U5:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_letter_U5
+
+        .xend_letter_U5:
+            inc ecx
+            jmp .yloop_letter_U5
+
+    .yend_letter_U5:
     ret
 draw_letter_N:
-; frame loop - letter_N
+    ; frame loop - letter_N1
     xor ecx, ecx
     mov eax, [esp+20]     ; get (0,0)
 
-    .yloop_letter_N:
+    .yloop_letter_N1:
         cmp ecx, HEIGHT
-        jge .yend_letter_N
+        jge .yend_letter_N1
 
         xor edx, edx
-        .xloop_letter_N:
+        .xloop_letter_N1:
             cmp edx, WIDTH
-            jge .xend_letter_N
+            jge .xend_letter_N1
 
-            mov ebx, 0   ; y1
+            mov ebx, 10   ; y1
             cmp ecx, ebx
-            jnge .skip_letter_N
-            mov ebx, 50   ; x1
+            jnge .skip_letter_N1
+            mov ebx, 150   ; x1
             add ebx, [esp+16]
             cmp edx, ebx
-            jnge .skip_letter_N
+            jnge .skip_letter_N1
 
             mov ebx, 30   ; y2
             cmp ecx, ebx
-            jge .skip_letter_N
-            mov ebx, 52   ; x2
+            jge .skip_letter_N1
+            mov ebx, 152   ; x2
             add ebx, [esp+16]
             cmp edx, ebx
-            jge .skip_letter_N
+            jge .skip_letter_N1
 
             ; Pixel color in RGBA
             ; blue
@@ -983,16 +1631,340 @@ draw_letter_N:
             xor	ebx, ebx
             mov	[eax+3], bl
 
-            .skip_letter_N:
+            .skip_letter_N1:
             add	eax, 4  ; next pixel
             inc edx
-            jmp .xloop_letter_N
+            jmp .xloop_letter_N1
 
-        .xend_letter_N:
+        .xend_letter_N1:
             inc ecx
-            jmp .yloop_letter_N
+            jmp .yloop_letter_N1
 
-    .yend_letter_N:
+    .yend_letter_N1:
+
+    ; frame loop - letter_N2
+    xor ecx, ecx
+    mov eax, [esp+20]     ; get (0,0)
+
+    .yloop_letter_N2:
+        cmp ecx, HEIGHT
+        jge .yend_letter_N2
+
+        xor edx, edx
+        .xloop_letter_N2:
+            cmp edx, WIDTH
+            jge .xend_letter_N2
+
+            mov ebx, 10   ; y1
+            cmp ecx, ebx
+            jnge .skip_letter_N2
+            mov ebx, 162   ; x1
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jnge .skip_letter_N2
+
+            mov ebx, 30   ; y2
+            cmp ecx, ebx
+            jge .skip_letter_N2
+            mov ebx, 164   ; x2
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jge .skip_letter_N2
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, [esp+12]
+            mov	[eax], bl
+            ; green
+            mov ebx, [esp+8]
+            mov	[eax+1], bl
+            ; red
+            mov ebx, [esp+4]
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_letter_N2:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_letter_N2
+
+        .xend_letter_N2:
+            inc ecx
+            jmp .yloop_letter_N2
+
+    .yend_letter_N2:
+
+    ; frame loop - letter_N3
+    xor ecx, ecx
+    mov eax, [esp+20]     ; get (0,0)
+
+    .yloop_letter_N3:
+        cmp ecx, HEIGHT
+        jge .yend_letter_N3
+
+        xor edx, edx
+        .xloop_letter_N3:
+            cmp edx, WIDTH
+            jge .xend_letter_N3
+
+            mov ebx, 12   ; y1
+            cmp ecx, ebx
+            jnge .skip_letter_N3
+            mov ebx, 152   ; x1
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jnge .skip_letter_N3
+
+            mov ebx, 16   ; y2
+            cmp ecx, ebx
+            jge .skip_letter_N3
+            mov ebx, 154   ; x2
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jge .skip_letter_N3
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, [esp+12]
+            mov	[eax], bl
+            ; green
+            mov ebx, [esp+8]
+            mov	[eax+1], bl
+            ; red
+            mov ebx, [esp+4]
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_letter_N3:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_letter_N3
+
+        .xend_letter_N3:
+            inc ecx
+            jmp .yloop_letter_N3
+
+    .yend_letter_N3:
+
+    ; frame loop - letter_N4
+    xor ecx, ecx
+    mov eax, [esp+20]     ; get (0,0)
+
+    .yloop_letter_N4:
+        cmp ecx, HEIGHT
+        jge .yend_letter_N4
+
+        xor edx, edx
+        .xloop_letter_N4:
+            cmp edx, WIDTH
+            jge .xend_letter_N4
+
+            mov ebx, 24   ; y1
+            cmp ecx, ebx
+            jnge .skip_letter_N4
+            mov ebx, 160   ; x1
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jnge .skip_letter_N4
+
+            mov ebx, 28   ; y2
+            cmp ecx, ebx
+            jge .skip_letter_N4
+            mov ebx, 162   ; x2
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jge .skip_letter_N4
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, [esp+12]
+            mov	[eax], bl
+            ; green
+            mov ebx, [esp+8]
+            mov	[eax+1], bl
+            ; red
+            mov ebx, [esp+4]
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_letter_N4:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_letter_N4
+
+        .xend_letter_N4:
+            inc ecx
+            jmp .yloop_letter_N4
+
+    .yend_letter_N4:
+
+    ; frame loop - letter_N5
+    xor ecx, ecx
+    mov eax, [esp+20]     ; get (0,0)
+
+    .yloop_letter_N5:
+        cmp ecx, HEIGHT
+        jge .yend_letter_N5
+
+        xor edx, edx
+        .xloop_letter_N5:
+            cmp edx, WIDTH
+            jge .xend_letter_N5
+
+            mov ebx, 16   ; y1
+            cmp ecx, ebx
+            jnge .skip_letter_N5
+            mov ebx, 154   ; x1
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jnge .skip_letter_N5
+
+            mov ebx, 18   ; y2
+            cmp ecx, ebx
+            jge .skip_letter_N5
+            mov ebx, 156   ; x2
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jge .skip_letter_N5
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, [esp+12]
+            mov	[eax], bl
+            ; green
+            mov ebx, [esp+8]
+            mov	[eax+1], bl
+            ; red
+            mov ebx, [esp+4]
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_letter_N5:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_letter_N5
+
+        .xend_letter_N5:
+            inc ecx
+            jmp .yloop_letter_N5
+
+    .yend_letter_N5:
+
+    ; frame loop - letter_N6
+    xor ecx, ecx
+    mov eax, [esp+20]     ; get (0,0)
+
+    .yloop_letter_N6:
+        cmp ecx, HEIGHT
+        jge .yend_letter_N6
+
+        xor edx, edx
+        .xloop_letter_N6:
+            cmp edx, WIDTH
+            jge .xend_letter_N6
+
+            mov ebx, 22   ; y1
+            cmp ecx, ebx
+            jnge .skip_letter_N6
+            mov ebx, 158   ; x1
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jnge .skip_letter_N6
+
+            mov ebx, 24   ; y2
+            cmp ecx, ebx
+            jge .skip_letter_N6
+            mov ebx, 160   ; x2
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jge .skip_letter_N6
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, [esp+12]
+            mov	[eax], bl
+            ; green
+            mov ebx, [esp+8]
+            mov	[eax+1], bl
+            ; red
+            mov ebx, [esp+4]
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_letter_N6:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_letter_N6
+
+        .xend_letter_N6:
+            inc ecx
+            jmp .yloop_letter_N6
+
+    .yend_letter_N6:
+
+    ; frame loop - letter_N7
+    xor ecx, ecx
+    mov eax, [esp+20]     ; get (0,0)
+
+    .yloop_letter_N7:
+        cmp ecx, HEIGHT
+        jge .yend_letter_N7
+
+        xor edx, edx
+        .xloop_letter_N7:
+            cmp edx, WIDTH
+            jge .xend_letter_N7
+
+            mov ebx, 18   ; y1
+            cmp ecx, ebx
+            jnge .skip_letter_N7
+            mov ebx, 156   ; x1
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jnge .skip_letter_N7
+
+            mov ebx, 22   ; y2
+            cmp ecx, ebx
+            jge .skip_letter_N7
+            mov ebx, 158   ; x2
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jge .skip_letter_N7
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, [esp+12]
+            mov	[eax], bl
+            ; green
+            mov ebx, [esp+8]
+            mov	[eax+1], bl
+            ; red
+            mov ebx, [esp+4]
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_letter_N7:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_letter_N7
+
+        .xend_letter_N7:
+            inc ecx
+            jmp .yloop_letter_N7
+
+    .yend_letter_N7:
     ret
 
 
@@ -1001,6 +1973,125 @@ draw_DELETE:
     xor ecx, ecx
     mov eax, [esp+4]     ; get (0,0)
 
+    ; Pixel color in RGBA
+    ; handle eventloop return
+    cmp esi, 10
+    je .DELETE_press_color
+        ; draw D
+            push eax    ; save (0,0)
+            mov ebx, 0
+            push ebx    ; start poz
+            mov ebx, 255  
+            push ebx    ; push BLUE
+            mov ebx, 255  
+            push ebx    ; push GREEN
+            mov ebx, 255
+            push ebx    ; push RED
+
+            call draw_letter_D
+            
+            pop ebx    ; pop RED
+            pop ebx    ; pop GREEN
+            pop ebx    ; pop BLUE
+            pop ebx    ; pop start poz 
+            pop eax    ; get (0,0)
+
+        ; draw E
+            push eax    ; save (0,0)
+            mov ebx, 16
+            push ebx    ; start poz
+            mov ebx, 255  
+            push ebx    ; push BLUE
+            mov ebx, 255  
+            push ebx    ; push GREEN
+            mov ebx, 255
+            push ebx    ; push RED
+
+            call draw_letter_E
+            
+            pop ebx    ; pop RED
+            pop ebx    ; pop GREEN
+            pop ebx    ; pop BLUE
+            pop ebx    ; pop start poz 
+            pop eax    ; get (0,0)
+
+        ; draw L
+            push eax    ; save (0,0)
+            mov ebx, 28
+            push ebx    ; start poz
+            mov ebx, 255  
+            push ebx    ; push BLUE
+            mov ebx, 255  
+            push ebx    ; push GREEN
+            mov ebx, 255
+            push ebx    ; push RED
+
+            call draw_letter_L
+            
+            pop ebx    ; pop RED
+            pop ebx    ; pop GREEN
+            pop ebx    ; pop BLUE
+            pop ebx    ; pop start poz 
+            pop eax    ; get (0,0)
+
+        ; draw E
+            push eax    ; save (0,0)
+            mov ebx, 40
+            push ebx    ; start poz
+            mov ebx, 255  
+            push ebx    ; push BLUE
+            mov ebx, 255  
+            push ebx    ; push GREEN
+            mov ebx, 255
+            push ebx    ; push RED
+
+            call draw_letter_E
+            
+            pop ebx    ; pop RED
+            pop ebx    ; pop GREEN
+            pop ebx    ; pop BLUE
+            pop ebx    ; pop start poz 
+            pop eax    ; get (0,0)
+
+            ; draw T
+            push eax    ; save (0,0)
+            mov ebx, 52
+            push ebx    ; start poz
+            mov ebx, 255  
+            push ebx    ; push BLUE
+            mov ebx, 255  
+            push ebx    ; push GREEN
+            mov ebx, 255
+            push ebx    ; push RED
+
+            call draw_letter_T
+            
+            pop ebx    ; pop RED
+            pop ebx    ; pop GREEN
+            pop ebx    ; pop BLUE
+            pop ebx    ; pop start poz 
+            pop eax    ; get (0,0)
+
+            ; draw E
+            push eax    ; save (0,0)
+            mov ebx, 70
+            push ebx    ; start poz
+            mov ebx, 255  
+            push ebx    ; push BLUE
+            mov ebx, 255  
+            push ebx    ; push GREEN
+            mov ebx, 255
+            push ebx    ; push RED
+
+            call draw_letter_E
+            
+            pop ebx    ; pop RED
+            pop ebx    ; pop GREEN
+            pop ebx    ; pop BLUE
+            pop ebx    ; pop start poz 
+            pop eax    ; get (0,0)
+    jmp .DELETE_default_color
+    .DELETE_press_color:
         ; draw D
             push eax    ; save (0,0)
             mov ebx, 0
@@ -1077,7 +2168,44 @@ draw_DELETE:
             pop ebx    ; pop start poz 
             pop eax    ; get (0,0)
 
+            ; draw T
+            push eax    ; save (0,0)
+            mov ebx, 52
+            push ebx    ; start poz
+            mov ebx, 0  
+            push ebx    ; push BLUE
+            mov ebx, 98  
+            push ebx    ; push GREEN
+            mov ebx, 255
+            push ebx    ; push RED
 
+            call draw_letter_T
+            
+            pop ebx    ; pop RED
+            pop ebx    ; pop GREEN
+            pop ebx    ; pop BLUE
+            pop ebx    ; pop start poz 
+            pop eax    ; get (0,0)
+
+            ; draw E
+            push eax    ; save (0,0)
+            mov ebx, 70
+            push ebx    ; start poz
+            mov ebx, 0  
+            push ebx    ; push BLUE
+            mov ebx, 98  
+            push ebx    ; push GREEN
+            mov ebx, 255
+            push ebx    ; push RED
+
+            call draw_letter_E
+            
+            pop ebx    ; pop RED
+            pop ebx    ; pop GREEN
+            pop ebx    ; pop BLUE
+            pop ebx    ; pop start poz 
+            pop eax    ; get (0,0)
+    .DELETE_default_color:
     ret
 
 draw_RUN:
@@ -1085,71 +2213,62 @@ draw_RUN:
     xor ecx, ecx
     mov eax, [esp+4]     ; get (0,0)
 
-    .yloop_RUN:
-        cmp ecx, HEIGHT
-        jge .yend_RUN
+        ; draw R
+            push eax    ; save (0,0)
+            mov ebx, 0
+            push ebx    ; start poz
+            mov ebx, 134
+            push ebx    ; push BLUE
+            mov ebx, 246
+            push ebx    ; push GREEN
+            mov ebx, 21
+            push ebx    ; push RED
 
-        xor edx, edx
-        .xloop_RUN:
-            cmp edx, WIDTH
-            jge .xend_RUN
+            call draw_letter_R
+            
+            pop ebx    ; pop RED
+            pop ebx    ; pop GREEN
+            pop ebx    ; pop BLUE
+            pop ebx    ; pop start poz 
+            pop eax    ; get (0,0)
 
-            cmp ecx, RUN_Y1    ; y1
-            jnge .skip_RUN
-            cmp edx, RUN_X1    ; x1
-            jnge .skip_RUN
+            ; draw U
+            push eax    ; save (0,0)
+            mov ebx, 14
+            push ebx    ; start poz
+            mov ebx, 134
+            push ebx    ; push BLUE
+            mov ebx, 246
+            push ebx    ; push GREEN
+            mov ebx, 21
+            push ebx    ; push RED
 
-            cmp ecx, RUN_Y2    ;y2
-            jge .skip_RUN
-            cmp edx, RUN_X2    ;x2
-            jge .skip_RUN
+            call draw_letter_U
+            
+            pop ebx    ; pop RED
+            pop ebx    ; pop GREEN
+            pop ebx    ; pop BLUE
+            pop ebx    ; pop start poz 
+            pop eax    ; get (0,0)
 
-            ; Pixel color in RGBA
-            ; handle eventloop return
-                cmp esi, 20
-                je .RUN_press_color
+            ; draw N
+            push eax    ; save (0,0)
+            mov ebx, 32
+            push ebx    ; start poz
+            mov ebx, 134
+            push ebx    ; push BLUE
+            mov ebx, 246
+            push ebx    ; push GREEN
+            mov ebx, 21
+            push ebx    ; push RED
 
-                    ; blue
-                    mov ebx, 255
-                    mov	[eax], bl
-                    ; green
-                    mov ebx, 255
-                    mov	[eax+1], bl
-                    ; red
-                    mov ebx, 255
-                    mov	[eax+2], bl
-                    ; zero
-                    xor	ebx, ebx
-                    mov	[eax+3], bl
-
-                jmp .RUN_default_color
-
-                    .RUN_press_color:
-                    ; blue
-                    mov ebx, 134
-                    mov	[eax], bl
-                    ; green
-                    mov ebx, 246
-                    mov	[eax+1], bl
-                    ; red
-                    mov ebx, 21
-                    mov	[eax+2], bl
-                    ; zero
-                    xor	ebx, ebx
-                    mov	[eax+3], bl
-
-                .RUN_default_color:
-
-            .skip_RUN:
-            add	eax, 4  ; next pixel
-            inc edx
-            jmp .xloop_RUN
-
-        .xend_RUN:
-            inc ecx
-            jmp .yloop_RUN
-
-    .yend_RUN:
+            call draw_letter_N
+            
+            pop ebx    ; pop RED
+            pop ebx    ; pop GREEN
+            pop ebx    ; pop BLUE
+            pop ebx    ; pop start poz 
+            pop eax    ; get (0,0)
     ret
 
 main:
@@ -1603,50 +2722,56 @@ main:
 
                 ; button 1 / button 2 / canvas
                 call gfx_getmouse
-                cmp ebx, 40
+                cmp ebx, BUTTONS_WRAPPER_Y2
                 jg .canvas_event
                     
                     ; button 1 / button 2
-                    cmp ebx, 30
+                    ; (y1,y2)
+                    cmp ebx, DELETE_Y1
+                    jnge .miss_event
+                    cmp ebx, DELETE_Y2
                     jg .miss_event
                         
-                        cmp eax, 110
-                        jg .button2_event
-                        ; button 1
-                        cmp eax, 50
-                        jnge .miss_event
-                        cmp eax, 100
-                        jg .miss_event
+                    cmp eax, RUN_X1
+                    jge .button2_event
 
-                            ; press logic
-                            mov esi, 10
-                            mov edi, 6
-                            jmp .eventloop
+                        ; button 1
+                        ; (x1,x2)
+                            cmp eax, DELETE_X1
+                            jnge .miss_event
+                            cmp eax, DELETE_X2
+                            jg .miss_event
+
+                                ; press logic
+                                mov esi, 10
+                                mov edi, 6
+                                jmp .eventloop
 
                         ; button 2
+                        ; (x1,x2)
                         .button2_event:
-                        cmp eax, 120
-                        jnge .miss_event
-                        cmp eax, 150
-                        jg .miss_event
+                            cmp eax, RUN_X1
+                            jnge .miss_event
+                            cmp eax, RUN_X2
+                            jg .miss_event
 
-                            ; press logic
-                            mov esi, 20
-                            mov edi, 6
-                            jmp .eventloop
+                                ; press logic
+                                mov esi, 20
+                                mov edi, 6
+                                jmp .eventloop
 
                     ; canvas
                     .canvas_event:
                         ; (x1,x2)
-                        cmp eax, 108
+                        cmp eax, CANVAS_X1
                         jnge .miss_event
-                        cmp eax, 555
+                        cmp eax, CANVAS_X2
                         jg .miss_event
 
                         ; (y1,y2)
-                        cmp eax, 193
+                        cmp eax, CANVAS_Y1
                         jnge .miss_event
-                        cmp eax, 641
+                        cmp eax, CANVAS_Y2
                         jg .miss_event
 
                             ; press logic
