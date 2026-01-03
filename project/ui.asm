@@ -20,19 +20,19 @@
     %define SIDEBAR_X2 47
     %define SIDEBAR_Y2 768
 
-    %define DESC_X1 616
+    %define DESC_X1 617
     %define DESC_Y1 67
     %define DESC_X2 768
     %define DESC_Y2 768
 
     %define BG1_X1 47   ; top
     %define BG1_Y1 67
-    %define BG1_X2 616
+    %define BG1_X2 617
     %define BG1_Y2 193
 
     %define BG2_X1 47   ; bottom
     %define BG2_Y1 641
-    %define BG2_X2 616
+    %define BG2_X2 617
     %define BG2_Y2 768
 
     %define BG3_X1 47    ; left
@@ -40,9 +40,9 @@
     %define BG3_X2 108
     %define BG3_Y2 641
 
-    %define BG4_X1 555    ; right
+    %define BG4_X1 556    ; right
     %define BG4_Y1 193
-    %define BG4_X2 616
+    %define BG4_X2 617
     %define BG4_Y2 641
 
     %define HORI_SEP_X1 0
@@ -69,7 +69,7 @@
     ; CANVAS
     %define CANVAS_X1 108
     %define CANVAS_Y1 193
-    %define CANVAS_X2 555
+    %define CANVAS_X2 556
     %define CANVAS_Y2 641
 
 global main
@@ -128,6 +128,37 @@ draw_rectangle:
             jmp .yloop_rectangle
 
     .yend_rectangle:
+    ret
+
+canvas_init:
+    ; frame loop - canvas_init
+    xor ecx, ecx
+    mov eax, canvas_data
+
+    .loop_canvas_init:
+        cmp ecx, 200704 ; canvas area
+        jge .end_canvas_init
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 0
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 204
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            add eax, 4
+            inc ecx
+
+        jmp .loop_canvas_init
+
+    .end_canvas_init:
     ret
 
 draw_letter_D:
@@ -2053,7 +2084,7 @@ draw_DELETE:
             pop ebx    ; pop start poz 
             pop eax    ; get (0,0)
 
-            ; draw T
+        ; draw T
             push eax    ; save (0,0)
             mov ebx, 52
             push ebx    ; start poz
@@ -2072,7 +2103,7 @@ draw_DELETE:
             pop ebx    ; pop start poz 
             pop eax    ; get (0,0)
 
-            ; draw E
+        ; draw E
             push eax    ; save (0,0)
             mov ebx, 70
             push ebx    ; start poz
@@ -2168,7 +2199,7 @@ draw_DELETE:
             pop ebx    ; pop start poz 
             pop eax    ; get (0,0)
 
-            ; draw T
+        ; draw T
             push eax    ; save (0,0)
             mov ebx, 52
             push ebx    ; start poz
@@ -2187,7 +2218,7 @@ draw_DELETE:
             pop ebx    ; pop start poz 
             pop eax    ; get (0,0)
 
-            ; draw E
+        ; draw E
             push eax    ; save (0,0)
             mov ebx, 70
             push ebx    ; start poz
@@ -2213,6 +2244,68 @@ draw_RUN:
     xor ecx, ecx
     mov eax, [esp+4]     ; get (0,0)
 
+    ; Pixel color in RGBA
+    ; handle eventloop return
+    cmp esi, 20
+    je .RUN_press_color
+        ; draw R
+            push eax    ; save (0,0)
+            mov ebx, 0
+            push ebx    ; start poz
+            mov ebx, 255
+            push ebx    ; push BLUE
+            mov ebx, 255
+            push ebx    ; push GREEN
+            mov ebx, 255
+            push ebx    ; push RED
+
+            call draw_letter_R
+            
+            pop ebx    ; pop RED
+            pop ebx    ; pop GREEN
+            pop ebx    ; pop BLUE
+            pop ebx    ; pop start poz 
+            pop eax    ; get (0,0)
+
+        ; draw U
+            push eax    ; save (0,0)
+            mov ebx, 14
+            push ebx    ; start poz
+            mov ebx, 255
+            push ebx    ; push BLUE
+            mov ebx, 255
+            push ebx    ; push GREEN
+            mov ebx, 255
+            push ebx    ; push RED
+
+            call draw_letter_U
+            
+            pop ebx    ; pop RED
+            pop ebx    ; pop GREEN
+            pop ebx    ; pop BLUE
+            pop ebx    ; pop start poz 
+            pop eax    ; get (0,0)
+
+        ; draw N
+            push eax    ; save (0,0)
+            mov ebx, 32
+            push ebx    ; start poz
+            mov ebx, 255
+            push ebx    ; push BLUE
+            mov ebx, 255
+            push ebx    ; push GREEN
+            mov ebx, 255
+            push ebx    ; push RED
+
+            call draw_letter_N
+            
+            pop ebx    ; pop RED
+            pop ebx    ; pop GREEN
+            pop ebx    ; pop BLUE
+            pop ebx    ; pop start poz 
+            pop eax    ; get (0,0)
+    jmp .RUN_default_color
+    .RUN_press_color:
         ; draw R
             push eax    ; save (0,0)
             mov ebx, 0
@@ -2232,7 +2325,7 @@ draw_RUN:
             pop ebx    ; pop start poz 
             pop eax    ; get (0,0)
 
-            ; draw U
+        ; draw U
             push eax    ; save (0,0)
             mov ebx, 14
             push ebx    ; start poz
@@ -2251,7 +2344,7 @@ draw_RUN:
             pop ebx    ; pop start poz 
             pop eax    ; get (0,0)
 
-            ; draw N
+        ; draw N
             push eax    ; save (0,0)
             mov ebx, 32
             push ebx    ; start poz
@@ -2269,6 +2362,47 @@ draw_RUN:
             pop ebx    ; pop BLUE
             pop ebx    ; pop start poz 
             pop eax    ; get (0,0)
+        .RUN_default_color:
+    ret
+
+handle_delete:
+    call canvas_init
+    ret
+
+handle_run:
+;TODO
+    ret
+
+handle_canvas:
+    ; get local (x,y) from global (eax,ebx)
+    mov ecx, 108    ; x
+    sub eax, ecx
+
+    mov ecx, 193    ; y
+    sub ebx, ecx
+
+    mov ecx, 448    ; CANVAS_WIDTH
+    imul ecx, ebx
+    add ecx, eax
+    imul ecx, 4     ; get start poz in canvas_data
+
+    mov eax, canvas_data
+    add eax, ecx    ; set start poz
+
+    ; Pixel color in RGBA
+    ; blue
+    mov ebx, 255
+    mov	[eax], bl
+    ; green
+    mov ebx, 255
+    mov	[eax+1], bl
+    ; red
+    mov ebx, 255
+    mov	[eax+2], bl
+    ; zero
+    xor	ebx, ebx
+    mov	[eax+3], bl
+
     ret
 
 main:
@@ -2291,6 +2425,7 @@ main:
     .init:
         xor esi, esi    ; return eventloop info
         xor edi, edi    ; eventloop timeout
+        call canvas_init
         jmp .mainloop
 
     ; Main loop
@@ -2689,7 +2824,53 @@ main:
                 call draw_RUN
 
             ; draw canvas
-                ; TODO
+                ; go to canvast start poz
+                pop eax     ; get (0,0)
+                mov ebx, CANVAS_Y1
+                mov ecx, WIDTH
+                imul ebx, ecx
+                
+                mov ecx, CANVAS_X1
+                add ebx, ecx
+                
+                mov ecx, 4
+                imul ebx, ecx
+
+                add eax, ebx 
+
+                ; copy canvas_data to framebuffer
+                xor ecx, ecx
+                mov ebx, canvas_data
+
+                .yloop_canvas_draw:
+                    cmp ecx, 448    ; y
+                    jge .yend_canvas_draw
+
+                    xor edx, edx
+                    .xloop_canvas_draw:
+                        cmp edx, 448    ; x
+                        jge .xend_canvas_draw
+
+                        ; copy
+                        push ecx
+                        xor ecx, ecx
+
+                        mov ecx, [ebx]
+                        mov [eax], ecx
+                        add eax, 4
+                        add ebx, 4
+
+                        pop ecx
+                        inc edx
+                        jmp .xloop_canvas_draw
+
+                    .xend_canvas_draw:
+                        inc ecx
+
+                        add eax, 1280   ; jump to next valid poz
+                        jmp .yloop_canvas_draw
+                
+                .yend_canvas_draw:
 
         ; draw frame    
         call gfx_unmap  ; unmap eax from framebuffer
@@ -2709,6 +2890,10 @@ main:
 
         .eventloop:
             call gfx_getevent
+                xor ebx, ebx
+                mov byte bl, [mouse_pressed]
+                cmp ebx, 1
+                je .mouse_pressed
             cmp eax, 0
             jz .skip_eventloop
 
@@ -2717,8 +2902,22 @@ main:
             je .end
 
             ; handle left click
+            .mouse_pressed:
             cmp eax, 1
-            jne .eventloop
+            jg .eventloop
+            cmp eax, -1
+            jnge .eventloop
+
+                ; press / release logic
+                    cmp eax, 1
+                    jne .mouse_released
+                    mov byte [mouse_pressed], 0x0001
+                    jmp .skip_mouse_released
+
+                    .mouse_released:
+                    mov byte [mouse_pressed], 0x0000
+
+                    .skip_mouse_released:
 
                 ; button 1 / button 2 / canvas
                 call gfx_getmouse
@@ -2745,6 +2944,7 @@ main:
                                 ; press logic
                                 mov esi, 10
                                 mov edi, 6
+                                call handle_delete
                                 jmp .eventloop
 
                         ; button 2
@@ -2758,6 +2958,7 @@ main:
                                 ; press logic
                                 mov esi, 20
                                 mov edi, 6
+                                call handle_run
                                 jmp .eventloop
 
                     ; canvas
@@ -2769,13 +2970,13 @@ main:
                         jg .miss_event
 
                         ; (y1,y2)
-                        cmp eax, CANVAS_Y1
+                        cmp ebx, CANVAS_Y1
                         jnge .miss_event
-                        cmp eax, CANVAS_Y2
+                        cmp ebx, CANVAS_Y2
                         jg .miss_event
 
                             ; press logic
-                            mov esi, 30
+                            call handle_canvas
                             jmp .eventloop
                 
                 ; left click on empty space
@@ -2793,6 +2994,10 @@ main:
     .end:
         call gfx_destroy
         ret
+
+section .bss
+    canvas_data resb 448 * 448 * 4
+    mouse_pressed resb 1
 
 section .data
     caption db "Get da numbs w/ CNN", 0
