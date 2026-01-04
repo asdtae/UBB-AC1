@@ -50,6 +50,12 @@
     %define HORI_SEP_X2 768
     %define HORI_SEP_Y2 67
 
+    ; 8-bit display
+    %define DISPLAY_8_BIT_X1 647
+    %define DISPLAY_8_BIT_Y1 90
+    %define DISPLAY_8_BIT_X2 737
+    %define DISPLAY_8_BIT_Y2 230
+
     ; BUTTONS
     %define BUTTONS_WRAPPER_X1 40
     %define BUTTONS_WRAPPER_Y1 0
@@ -128,6 +134,90 @@ draw_rectangle:
             jmp .yloop_rectangle
 
     .yend_rectangle:
+    ret
+
+draw_8_bit_BG:
+    ; frame loop - draw_8_bit_BG
+    xor ecx, ecx
+    mov eax, [esp+4]     ; get (0,0)
+
+    .yloop_draw_8_bit_BG:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_BG
+
+        xor edx, edx
+        .xloop_draw_8_bit_BG:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_BG
+
+            mov ebx, DISPLAY_8_BIT_Y1   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_BG
+            mov ebx, DISPLAY_8_BIT_X1   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_BG
+
+            mov ebx, DISPLAY_8_BIT_Y2   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_BG
+            mov ebx, DISPLAY_8_BIT_X2   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_BG
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 59
+            mov	[eax], bl
+            ; green
+            mov ebx, 54
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 53
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_BG:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_BG
+
+        .xend_draw_8_bit_BG:
+            inc ecx
+            jmp .yloop_draw_8_bit_BG
+
+    .yend_draw_8_bit_BG:
+    ret
+
+draw_8_bit_0:
+    ret
+
+draw_8_bit_1:
+    ret
+
+draw_8_bit_2:
+    ret
+
+draw_8_bit_3:
+    ret
+
+draw_8_bit_4:
+    ret
+
+draw_8_bit_5:
+    ret
+
+draw_8_bit_6:
+    ret
+
+draw_8_bit_7:
+    ret
+
+draw_8_bit_8:
+    ret
+
+draw_8_bit_9:
     ret
 
 canvas_init:
@@ -2365,6 +2455,218 @@ draw_RUN:
         .RUN_default_color:
     ret
 
+draw_8_bit:
+    call draw_8_bit_BG
+
+    ; switch
+    ;cmp esi, 30
+    ;je .draw_8_bit_case_0
+    ;cmp esi, 31
+    ;je .draw_8_bit_case_1
+    ;cmp esi, 32
+    ;je .draw_8_bit_case_2
+    ;cmp esi, 33
+    ;je .draw_8_bit_case_3
+    ;cmp esi, 34
+    ;je .draw_8_bit_case_4
+    ;cmp esi, 35
+    ;je .draw_8_bit_case_5
+    ;cmp esi, 36
+    ;je .draw_8_bit_case_6
+    ;cmp esi, 37
+    ;je .draw_8_bit_case_7
+    ;cmp esi, 38
+    ;je .draw_8_bit_case_8
+    ;cmp esi, 39
+    ;je .draw_8_bit_case_9
+    jmp .draw_8_bit_skip
+
+    ; switch cases 0-9
+        ; case 0
+            .draw_8_bit_case_0:
+                push eax    ; save (0,0)
+                mov ebx, 255
+                push ebx    ; push BLUE
+                mov ebx, 255
+                push ebx    ; push GREEN
+                mov ebx, 255
+                push ebx    ; push RED
+
+                call draw_8_bit_0
+
+                pop ebx    ; pop RED
+                pop ebx    ; pop GREEN
+                pop ebx    ; pop BLUE
+                pop eax    ; get (0,0)
+            jmp .draw_8_bit_skip
+
+        ; case 1
+            .draw_8_bit_case_1:
+                push eax    ; save (0,0)
+                mov ebx, 255
+                push ebx    ; push BLUE
+                mov ebx, 255
+                push ebx    ; push GREEN
+                mov ebx, 255
+                push ebx    ; push RED
+
+                call draw_8_bit_1
+
+                pop ebx    ; pop RED
+                pop ebx    ; pop GREEN
+                pop ebx    ; pop BLUE
+                pop eax    ; get (0,0)
+            jmp .draw_8_bit_skip
+
+        ; case 2
+            .draw_8_bit_case_2:
+                push eax    ; save (0,0)
+                mov ebx, 255
+                push ebx    ; push BLUE
+                mov ebx, 255
+                push ebx    ; push GREEN
+                mov ebx, 255
+                push ebx    ; push RED
+
+                call draw_8_bit_2
+
+                pop ebx    ; pop RED
+                pop ebx    ; pop GREEN
+                pop ebx    ; pop BLUE
+                pop eax    ; get (0,0)
+            jmp .draw_8_bit_skip
+
+        ; case 3
+            .draw_8_bit_case_3:
+                push eax    ; save (0,0)
+                mov ebx, 255
+                push ebx    ; push BLUE
+                mov ebx, 255
+                push ebx    ; push GREEN
+                mov ebx, 255
+                push ebx    ; push RED
+
+                call draw_8_bit_3
+
+                pop ebx    ; pop RED
+                pop ebx    ; pop GREEN
+                pop ebx    ; pop BLUE
+                pop eax    ; get (0,0)
+            jmp .draw_8_bit_skip
+
+        ; case 4
+            .draw_8_bit_case_4:
+                push eax    ; save (0,0)
+                mov ebx, 255
+                push ebx    ; push BLUE
+                mov ebx, 255
+                push ebx    ; push GREEN
+                mov ebx, 255
+                push ebx    ; push RED
+
+                call draw_8_bit_4
+
+                pop ebx    ; pop RED
+                pop ebx    ; pop GREEN
+                pop ebx    ; pop BLUE
+                pop eax    ; get (0,0)
+            jmp .draw_8_bit_skip
+
+        ; case 5
+            .draw_8_bit_case_5:
+                push eax    ; save (0,0)
+                mov ebx, 255
+                push ebx    ; push BLUE
+                mov ebx, 255
+                push ebx    ; push GREEN
+                mov ebx, 255
+                push ebx    ; push RED
+
+                call draw_8_bit_5
+
+                pop ebx    ; pop RED
+                pop ebx    ; pop GREEN
+                pop ebx    ; pop BLUE
+                pop eax    ; get (0,0)
+            jmp .draw_8_bit_skip
+
+        ; case 6
+            .draw_8_bit_case_6:
+                push eax    ; save (0,0)
+                mov ebx, 255
+                push ebx    ; push BLUE
+                mov ebx, 255
+                push ebx    ; push GREEN
+                mov ebx, 255
+                push ebx    ; push RED
+
+                call draw_8_bit_6
+
+                pop ebx    ; pop RED
+                pop ebx    ; pop GREEN
+                pop ebx    ; pop BLUE
+                pop eax    ; get (0,0)
+            jmp .draw_8_bit_skip
+
+        ; case 7
+            .draw_8_bit_case_7:
+                push eax    ; save (0,0)
+                mov ebx, 255
+                push ebx    ; push BLUE
+                mov ebx, 255
+                push ebx    ; push GREEN
+                mov ebx, 255
+                push ebx    ; push RED
+
+                call draw_8_bit_7
+
+                pop ebx    ; pop RED
+                pop ebx    ; pop GREEN
+                pop ebx    ; pop BLUE
+                pop eax    ; get (0,0)
+            jmp .draw_8_bit_skip
+
+        ; case 8
+            .draw_8_bit_case_8:
+                push eax    ; save (0,0)
+                mov ebx, 255
+                push ebx    ; push BLUE
+                mov ebx, 255
+                push ebx    ; push GREEN
+                mov ebx, 255
+                push ebx    ; push RED
+
+                call draw_8_bit_8
+
+                pop ebx    ; pop RED
+                pop ebx    ; pop GREEN
+                pop ebx    ; pop BLUE
+                pop eax    ; get (0,0)
+            jmp .draw_8_bit_skip
+
+        ; case 9
+            .draw_8_bit_case_9:
+                push eax    ; save (0,0)
+                mov ebx, 255
+                push ebx    ; push BLUE
+                mov ebx, 255
+                push ebx    ; push GREEN
+                mov ebx, 255
+                push ebx    ; push RED
+
+                call draw_8_bit_9
+
+                pop ebx    ; pop RED
+                pop ebx    ; pop GREEN
+                pop ebx    ; pop BLUE
+                pop eax    ; get (0,0)
+    .draw_8_bit_skip:
+    ret
+
+draw_debug:
+;TODO
+    ret
+
 handle_delete:
     call canvas_init
     ret
@@ -2823,6 +3125,14 @@ main:
                 call draw_DELETE
                 call draw_RUN
 
+            ; draw 8-bit display
+                pop eax     ; get (0,0)
+                push eax    ; save (0,0)
+                call draw_8_bit
+
+            ; draw debug buttons
+                call draw_debug
+
             ; draw canvas
                 ; go to canvast start poz
                 pop eax     ; get (0,0)
@@ -2872,6 +3182,33 @@ main:
                 
                 .yend_canvas_draw:
 
+                ; canvas conituous draw
+                    xor ebx, ebx
+                    mov byte bl, [mouse_pressed]
+                    cmp ebx, 0
+                    je .skip_mouse_pressed
+
+                        push eax
+
+                        call gfx_getmouse
+                        ; (x1,x2)
+                        cmp eax, CANVAS_X1
+                        jnge .skip_mouse_pressed
+                        cmp eax, CANVAS_X2
+                        jg .skip_mouse_pressed
+
+                        ; (y1,y2)
+                        cmp ebx, CANVAS_Y1
+                        jnge .skip_mouse_pressed
+                        cmp ebx, CANVAS_Y2
+                        jg .skip_mouse_pressed
+
+                            ; press logic
+                            call handle_canvas
+
+                        pop eax
+                    .skip_mouse_pressed:
+
         ; draw frame    
         call gfx_unmap  ; unmap eax from framebuffer
         call gfx_draw   ; draw new frame
@@ -2890,10 +3227,6 @@ main:
 
         .eventloop:
             call gfx_getevent
-                xor ebx, ebx
-                mov byte bl, [mouse_pressed]
-                cmp ebx, 1
-                je .mouse_pressed
             cmp eax, 0
             jz .skip_eventloop
 
@@ -2922,7 +3255,7 @@ main:
                 ; button 1 / button 2 / canvas
                 call gfx_getmouse
                 cmp ebx, BUTTONS_WRAPPER_Y2
-                jg .canvas_event
+                jg .miss_event
                     
                     ; button 1 / button 2
                     ; (y1,y2)
@@ -2960,24 +3293,6 @@ main:
                                 mov edi, 6
                                 call handle_run
                                 jmp .eventloop
-
-                    ; canvas
-                    .canvas_event:
-                        ; (x1,x2)
-                        cmp eax, CANVAS_X1
-                        jnge .miss_event
-                        cmp eax, CANVAS_X2
-                        jg .miss_event
-
-                        ; (y1,y2)
-                        cmp ebx, CANVAS_Y1
-                        jnge .miss_event
-                        cmp ebx, CANVAS_Y2
-                        jg .miss_event
-
-                            ; press logic
-                            call handle_canvas
-                            jmp .eventloop
                 
                 ; left click on empty space
                 .miss_event:
@@ -3002,3 +3317,4 @@ section .bss
 section .data
     caption db "Get da numbs w/ CNN", 0
 	errormsg db "ERROR: could not initialize graphics!", 0
+    dbg db "ERROR: could not initialize graphics!", 0
