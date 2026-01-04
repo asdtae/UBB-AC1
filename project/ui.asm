@@ -5945,22 +5945,240 @@ handle_canvas:
     add ecx, eax
     imul ecx, 4     ; get start poz in canvas_data
 
-    mov eax, canvas_data
-    add eax, ecx    ; set start poz
+    ; middle
+        mov eax, canvas_data
+        add eax, ecx    ; set start poz
 
-    ; Pixel color in RGBA
-    ; blue
-    mov ebx, 255
-    mov	[eax], bl
-    ; green
-    mov ebx, 255
-    mov	[eax+1], bl
-    ; red
-    mov ebx, 255
-    mov	[eax+2], bl
-    ; zero
-    xor	ebx, ebx
-    mov	[eax+3], bl
+        ; Pixel color in RGBA
+        ; blue
+        mov ebx, 255
+        mov	[eax], bl
+        ; green
+        mov ebx, 255
+        mov	[eax+1], bl
+        ; red
+        mov ebx, 255
+        mov	[eax+2], bl
+        ; zero
+        xor	ebx, ebx
+        mov	[eax+3], bl
+
+    ; inner circle
+        ; right
+            mov ecx, 4
+            add eax, ecx    ; set start poz
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            mov ecx, 4
+            add eax, ecx    ; set start poz
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+        ; left
+            mov ecx, 12
+            sub eax, ecx    ; set start poz
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            mov ecx, 4
+            sub eax, ecx    ; set start poz
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+        ; top
+            mov ecx, 4
+            add eax, ecx    ; set start poz
+            mov ecx, 1792
+            sub eax, ecx    ; set start poz
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            mov ecx, 4
+            add eax, ecx    ; set start poz
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            mov ecx, 4
+            add eax, ecx    ; set start poz
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+        ; bottom
+            mov ecx, 3584
+            add eax, ecx    ; set start poz
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            mov ecx, 4
+            sub eax, ecx    ; set start poz
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            mov ecx, 4
+            sub eax, ecx    ; set start poz
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+    ; spikes
+        ; bottom
+            mov ecx, 4
+            add eax, ecx    ; set start poz
+            mov ecx, 1792
+            add eax, ecx    ; set start poz
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+        ; top
+            mov ecx, 7168
+            sub eax, ecx    ; set start poz
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
 
     ret
 
