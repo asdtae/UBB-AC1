@@ -3080,13 +3080,13 @@ canvas_init:
 
             ; Pixel color in RGBA
             ; blue
-            mov ebx, 255
+            mov ebx, 0
             mov	[eax], bl
             ; green
             mov ebx, 0
             mov	[eax+1], bl
             ; red
-            mov ebx, 204
+            mov ebx, 0
             mov	[eax+2], bl
             ; zero
             xor	ebx, ebx
