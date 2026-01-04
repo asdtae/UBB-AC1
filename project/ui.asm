@@ -78,6 +78,57 @@
     %define CANVAS_X2 556
     %define CANVAS_Y2 641
 
+    ; DEBUG
+    %define DEBUG_0_X1 684
+    %define DEBUG_0_Y1 332
+    %define DEBUG_0_X2 699
+    %define DEBUG_0_Y2 347
+
+    %define DEBUG_1_X1 664
+    %define DEBUG_1_Y1 272
+    %define DEBUG_1_X2 679
+    %define DEBUG_1_Y2 287
+
+    %define DEBUG_2_X1 684
+    %define DEBUG_2_Y1 272
+    %define DEBUG_2_X2 699
+    %define DEBUG_2_Y2 287
+
+    %define DEBUG_3_X1 704
+    %define DEBUG_3_Y1 272
+    %define DEBUG_3_X2 719
+    %define DEBUG_3_Y2 287
+
+    %define DEBUG_4_X1 664
+    %define DEBUG_4_Y1 292
+    %define DEBUG_4_X2 679
+    %define DEBUG_4_Y2 307
+
+    %define DEBUG_5_X1 684
+    %define DEBUG_5_Y1 292
+    %define DEBUG_5_X2 699
+    %define DEBUG_5_Y2 307
+
+    %define DEBUG_6_X1 704
+    %define DEBUG_6_Y1 292
+    %define DEBUG_6_X2 719
+    %define DEBUG_6_Y2 307
+
+    %define DEBUG_7_X1 664
+    %define DEBUG_7_Y1 312
+    %define DEBUG_7_X2 679
+    %define DEBUG_7_Y2 327
+
+    %define DEBUG_8_X1 684
+    %define DEBUG_8_Y1 312
+    %define DEBUG_8_X2 699
+    %define DEBUG_8_Y2 327
+
+    %define DEBUG_9_X1 704
+    %define DEBUG_9_Y1 312
+    %define DEBUG_9_X2 719
+    %define DEBUG_9_Y2 327
+
 global main
 
 section .text
@@ -555,33 +606,3663 @@ draw_8_bit_BG:
     ret
 
 draw_8_bit_0:
+    ; frame loop - draw_8_bit_0_1
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_0_1:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_0_1
+
+        xor edx, edx
+        .xloop_draw_8_bit_0_1:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_0_1
+
+            mov ebx, 117   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_0_1
+            mov ebx, 672   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_0_1
+
+            mov ebx, 157   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_0_1
+            mov ebx, 677   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_0_1
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_0_1:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_0_1
+
+        .xend_draw_8_bit_0_1:
+            inc ecx
+            jmp .yloop_draw_8_bit_0_1
+
+    .yend_draw_8_bit_0_1:
+
+    ; frame loop - draw_8_bit_0_2
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_0_2:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_0_2
+
+        xor edx, edx
+        .xloop_draw_8_bit_0_2:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_0_2
+
+            mov ebx, 162   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_0_2
+            mov ebx, 672   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_0_2
+
+            mov ebx, 202   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_0_2
+            mov ebx, 677   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_0_2
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_0_2:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_0_2
+
+        .xend_draw_8_bit_0_2:
+            inc ecx
+            jmp .yloop_draw_8_bit_0_2
+
+    .yend_draw_8_bit_0_2:
+
+    ; frame loop - draw_8_bit_0_3
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_0_3:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_0_3
+
+        xor edx, edx
+        .xloop_draw_8_bit_0_3:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_0_3
+
+            mov ebx, 117   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_0_3
+            mov ebx, 707   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_0_3
+
+            mov ebx, 157   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_0_3
+            mov ebx, 712   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_0_3
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_0_3:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_0_3
+
+        .xend_draw_8_bit_0_3:
+            inc ecx
+            jmp .yloop_draw_8_bit_0_3
+
+    .yend_draw_8_bit_0_3:
+
+    ; frame loop - draw_8_bit_0_4
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_0_4:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_0_4
+
+        xor edx, edx
+        .xloop_draw_8_bit_0_4:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_0_4
+
+            mov ebx, 162   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_0_4
+            mov ebx, 707   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_0_4
+
+            mov ebx, 202   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_0_4
+            mov ebx, 712   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_0_4
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_0_4:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_0_4
+
+        .xend_draw_8_bit_0_4:
+            inc ecx
+            jmp .yloop_draw_8_bit_0_4
+
+    .yend_draw_8_bit_0_4:
+
+    ; frame loop - draw_8_bit_0_5
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_0_5:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_0_5
+
+        xor edx, edx
+        .xloop_draw_8_bit_0_5:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_0_5
+
+            mov ebx, 112   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_0_5
+            mov ebx, 677   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_0_5
+
+            mov ebx, 117   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_0_5
+            mov ebx, 707   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_0_5
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_0_5:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_0_5
+
+        .xend_draw_8_bit_0_5:
+            inc ecx
+            jmp .yloop_draw_8_bit_0_5
+
+    .yend_draw_8_bit_0_5:
+
+    ; frame loop - draw_8_bit_0_6
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_0_6:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_0_6
+
+        xor edx, edx
+        .xloop_draw_8_bit_0_6:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_0_6
+
+            mov ebx, 157   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_0_6
+            mov ebx, 677   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_0_6
+
+            mov ebx, 162   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_0_6
+            mov ebx, 707   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_0_6
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_0_6:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_0_6
+
+        .xend_draw_8_bit_0_6:
+            inc ecx
+            jmp .yloop_draw_8_bit_0_6
+
+    .yend_draw_8_bit_0_6:
+
+    ; frame loop - draw_8_bit_0_7
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_0_7:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_0_7
+
+        xor edx, edx
+        .xloop_draw_8_bit_0_7:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_0_7
+
+            mov ebx, 202   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_0_7
+            mov ebx, 677   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_0_7
+
+            mov ebx, 207   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_0_7
+            mov ebx, 707   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_0_7
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_0_7:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_0_7
+
+        .xend_draw_8_bit_0_7:
+            inc ecx
+            jmp .yloop_draw_8_bit_0_7
+
+    .yend_draw_8_bit_0_7:
     ret
 
 draw_8_bit_1:
+    ; frame loop - draw_8_bit_1_1
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_1_1:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_1_1
+
+        xor edx, edx
+        .xloop_draw_8_bit_1_1:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_1_1
+
+            mov ebx, 117   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_1_1
+            mov ebx, 672   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_1_1
+
+            mov ebx, 157   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_1_1
+            mov ebx, 677   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_1_1
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_1_1:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_1_1
+
+        .xend_draw_8_bit_1_1:
+            inc ecx
+            jmp .yloop_draw_8_bit_1_1
+
+    .yend_draw_8_bit_1_1:
+
+    ; frame loop - draw_8_bit_1_2
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_1_2:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_1_2
+
+        xor edx, edx
+        .xloop_draw_8_bit_1_2:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_1_2
+
+            mov ebx, 162   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_1_2
+            mov ebx, 672   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_1_2
+
+            mov ebx, 202   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_1_2
+            mov ebx, 677   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_1_2
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_1_2:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_1_2
+
+        .xend_draw_8_bit_1_2:
+            inc ecx
+            jmp .yloop_draw_8_bit_1_2
+
+    .yend_draw_8_bit_1_2:
+
+    ; frame loop - draw_8_bit_1_3
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_1_3:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_1_3
+
+        xor edx, edx
+        .xloop_draw_8_bit_1_3:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_1_3
+
+            mov ebx, 117   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_1_3
+            mov ebx, 707   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_1_3
+
+            mov ebx, 157   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_1_3
+            mov ebx, 712   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_1_3
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_1_3:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_1_3
+
+        .xend_draw_8_bit_1_3:
+            inc ecx
+            jmp .yloop_draw_8_bit_1_3
+
+    .yend_draw_8_bit_1_3:
+
+    ; frame loop - draw_8_bit_1_4
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_1_4:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_1_4
+
+        xor edx, edx
+        .xloop_draw_8_bit_1_4:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_1_4
+
+            mov ebx, 162   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_1_4
+            mov ebx, 707   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_1_4
+
+            mov ebx, 202   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_1_4
+            mov ebx, 712   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_1_4
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_1_4:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_1_4
+
+        .xend_draw_8_bit_1_4:
+            inc ecx
+            jmp .yloop_draw_8_bit_1_4
+
+    .yend_draw_8_bit_1_4:
+
+    ; frame loop - draw_8_bit_1_5
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_1_5:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_1_5
+
+        xor edx, edx
+        .xloop_draw_8_bit_1_5:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_1_5
+
+            mov ebx, 112   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_1_5
+            mov ebx, 677   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_1_5
+
+            mov ebx, 117   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_1_5
+            mov ebx, 707   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_1_5
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_1_5:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_1_5
+
+        .xend_draw_8_bit_1_5:
+            inc ecx
+            jmp .yloop_draw_8_bit_1_5
+
+    .yend_draw_8_bit_1_5:
+
+    ; frame loop - draw_8_bit_1_6
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_1_6:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_1_6
+
+        xor edx, edx
+        .xloop_draw_8_bit_1_6:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_1_6
+
+            mov ebx, 157   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_1_6
+            mov ebx, 677   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_1_6
+
+            mov ebx, 162   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_1_6
+            mov ebx, 707   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_1_6
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_1_6:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_1_6
+
+        .xend_draw_8_bit_1_6:
+            inc ecx
+            jmp .yloop_draw_8_bit_1_6
+
+    .yend_draw_8_bit_1_6:
+
+    ; frame loop - draw_8_bit_1_7
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_1_7:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_1_7
+
+        xor edx, edx
+        .xloop_draw_8_bit_1_7:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_1_7
+
+            mov ebx, 202   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_1_7
+            mov ebx, 677   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_1_7
+
+            mov ebx, 207   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_1_7
+            mov ebx, 707   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_1_7
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_1_7:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_1_7
+
+        .xend_draw_8_bit_1_7:
+            inc ecx
+            jmp .yloop_draw_8_bit_1_7
+
+    .yend_draw_8_bit_1_7:
     ret
 
 draw_8_bit_2:
+    ; frame loop - draw_8_bit_2_1
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_2_1:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_2_1
+
+        xor edx, edx
+        .xloop_draw_8_bit_2_1:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_2_1
+
+            mov ebx, 117   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_2_1
+            mov ebx, 672   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_2_1
+
+            mov ebx, 157   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_2_1
+            mov ebx, 677   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_2_1
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_2_1:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_2_1
+
+        .xend_draw_8_bit_2_1:
+            inc ecx
+            jmp .yloop_draw_8_bit_2_1
+
+    .yend_draw_8_bit_2_1:
+
+    ; frame loop - draw_8_bit_2_2
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_2_2:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_2_2
+
+        xor edx, edx
+        .xloop_draw_8_bit_2_2:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_2_2
+
+            mov ebx, 162   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_2_2
+            mov ebx, 672   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_2_2
+
+            mov ebx, 202   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_2_2
+            mov ebx, 677   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_2_2
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_2_2:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_2_2
+
+        .xend_draw_8_bit_2_2:
+            inc ecx
+            jmp .yloop_draw_8_bit_2_2
+
+    .yend_draw_8_bit_2_2:
+
+    ; frame loop - draw_8_bit_2_3
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_2_3:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_2_3
+
+        xor edx, edx
+        .xloop_draw_8_bit_2_3:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_2_3
+
+            mov ebx, 117   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_2_3
+            mov ebx, 707   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_2_3
+
+            mov ebx, 157   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_2_3
+            mov ebx, 712   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_2_3
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_2_3:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_2_3
+
+        .xend_draw_8_bit_2_3:
+            inc ecx
+            jmp .yloop_draw_8_bit_2_3
+
+    .yend_draw_8_bit_2_3:
+
+    ; frame loop - draw_8_bit_2_4
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_2_4:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_2_4
+
+        xor edx, edx
+        .xloop_draw_8_bit_2_4:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_2_4
+
+            mov ebx, 162   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_2_4
+            mov ebx, 707   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_2_4
+
+            mov ebx, 202   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_2_4
+            mov ebx, 712   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_2_4
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_2_4:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_2_4
+
+        .xend_draw_8_bit_2_4:
+            inc ecx
+            jmp .yloop_draw_8_bit_2_4
+
+    .yend_draw_8_bit_2_4:
+
+    ; frame loop - draw_8_bit_2_5
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_2_5:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_2_5
+
+        xor edx, edx
+        .xloop_draw_8_bit_2_5:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_2_5
+
+            mov ebx, 112   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_2_5
+            mov ebx, 677   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_2_5
+
+            mov ebx, 117   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_2_5
+            mov ebx, 707   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_2_5
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_2_5:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_2_5
+
+        .xend_draw_8_bit_2_5:
+            inc ecx
+            jmp .yloop_draw_8_bit_2_5
+
+    .yend_draw_8_bit_2_5:
+
+    ; frame loop - draw_8_bit_2_6
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_2_6:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_2_6
+
+        xor edx, edx
+        .xloop_draw_8_bit_2_6:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_2_6
+
+            mov ebx, 157   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_2_6
+            mov ebx, 677   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_2_6
+
+            mov ebx, 162   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_2_6
+            mov ebx, 707   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_2_6
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_2_6:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_2_6
+
+        .xend_draw_8_bit_2_6:
+            inc ecx
+            jmp .yloop_draw_8_bit_2_6
+
+    .yend_draw_8_bit_2_6:
+
+    ; frame loop - draw_8_bit_2_7
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_2_7:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_2_7
+
+        xor edx, edx
+        .xloop_draw_8_bit_2_7:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_2_7
+
+            mov ebx, 202   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_2_7
+            mov ebx, 677   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_2_7
+
+            mov ebx, 207   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_2_7
+            mov ebx, 707   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_2_7
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_2_7:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_2_7
+
+        .xend_draw_8_bit_2_7:
+            inc ecx
+            jmp .yloop_draw_8_bit_2_7
+
+    .yend_draw_8_bit_2_7:
     ret
 
 draw_8_bit_3:
+    ; frame loop - draw_8_bit_3_1
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_3_1:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_3_1
+
+        xor edx, edx
+        .xloop_draw_8_bit_3_1:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_3_1
+
+            mov ebx, 117   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_3_1
+            mov ebx, 672   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_3_1
+
+            mov ebx, 157   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_3_1
+            mov ebx, 677   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_3_1
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_3_1:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_3_1
+
+        .xend_draw_8_bit_3_1:
+            inc ecx
+            jmp .yloop_draw_8_bit_3_1
+
+    .yend_draw_8_bit_3_1:
+
+    ; frame loop - draw_8_bit_3_2
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_3_2:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_3_2
+
+        xor edx, edx
+        .xloop_draw_8_bit_3_2:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_3_2
+
+            mov ebx, 162   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_3_2
+            mov ebx, 672   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_3_2
+
+            mov ebx, 202   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_3_2
+            mov ebx, 677   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_3_2
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_3_2:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_3_2
+
+        .xend_draw_8_bit_3_2:
+            inc ecx
+            jmp .yloop_draw_8_bit_3_2
+
+    .yend_draw_8_bit_3_2:
+
+    ; frame loop - draw_8_bit_3_3
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_3_3:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_3_3
+
+        xor edx, edx
+        .xloop_draw_8_bit_3_3:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_3_3
+
+            mov ebx, 117   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_3_3
+            mov ebx, 707   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_3_3
+
+            mov ebx, 157   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_3_3
+            mov ebx, 712   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_3_3
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_3_3:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_3_3
+
+        .xend_draw_8_bit_3_3:
+            inc ecx
+            jmp .yloop_draw_8_bit_3_3
+
+    .yend_draw_8_bit_3_3:
+
+    ; frame loop - draw_8_bit_3_4
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_3_4:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_3_4
+
+        xor edx, edx
+        .xloop_draw_8_bit_3_4:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_3_4
+
+            mov ebx, 162   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_3_4
+            mov ebx, 707   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_3_4
+
+            mov ebx, 202   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_3_4
+            mov ebx, 712   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_3_4
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_3_4:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_3_4
+
+        .xend_draw_8_bit_3_4:
+            inc ecx
+            jmp .yloop_draw_8_bit_3_4
+
+    .yend_draw_8_bit_3_4:
+
+    ; frame loop - draw_8_bit_3_5
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_3_5:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_3_5
+
+        xor edx, edx
+        .xloop_draw_8_bit_3_5:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_3_5
+
+            mov ebx, 112   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_3_5
+            mov ebx, 677   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_3_5
+
+            mov ebx, 117   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_3_5
+            mov ebx, 707   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_3_5
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_3_5:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_3_5
+
+        .xend_draw_8_bit_3_5:
+            inc ecx
+            jmp .yloop_draw_8_bit_3_5
+
+    .yend_draw_8_bit_3_5:
+
+    ; frame loop - draw_8_bit_3_6
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_3_6:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_3_6
+
+        xor edx, edx
+        .xloop_draw_8_bit_3_6:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_3_6
+
+            mov ebx, 157   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_3_6
+            mov ebx, 677   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_3_6
+
+            mov ebx, 162   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_3_6
+            mov ebx, 707   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_3_6
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_3_6:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_3_6
+
+        .xend_draw_8_bit_3_6:
+            inc ecx
+            jmp .yloop_draw_8_bit_3_6
+
+    .yend_draw_8_bit_3_6:
+
+    ; frame loop - draw_8_bit_3_7
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_3_7:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_3_7
+
+        xor edx, edx
+        .xloop_draw_8_bit_3_7:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_3_7
+
+            mov ebx, 202   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_3_7
+            mov ebx, 677   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_3_7
+
+            mov ebx, 207   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_3_7
+            mov ebx, 707   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_3_7
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_3_7:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_3_7
+
+        .xend_draw_8_bit_3_7:
+            inc ecx
+            jmp .yloop_draw_8_bit_3_7
+
+    .yend_draw_8_bit_3_7:
     ret
 
 draw_8_bit_4:
+    ; frame loop - draw_8_bit_4_1
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_4_1:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_4_1
+
+        xor edx, edx
+        .xloop_draw_8_bit_4_1:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_4_1
+
+            mov ebx, 117   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_4_1
+            mov ebx, 672   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_4_1
+
+            mov ebx, 157   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_4_1
+            mov ebx, 677   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_4_1
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_4_1:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_4_1
+
+        .xend_draw_8_bit_4_1:
+            inc ecx
+            jmp .yloop_draw_8_bit_4_1
+
+    .yend_draw_8_bit_4_1:
+
+    ; frame loop - draw_8_bit_4_2
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_4_2:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_4_2
+
+        xor edx, edx
+        .xloop_draw_8_bit_4_2:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_4_2
+
+            mov ebx, 162   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_4_2
+            mov ebx, 672   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_4_2
+
+            mov ebx, 202   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_4_2
+            mov ebx, 677   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_4_2
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_4_2:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_4_2
+
+        .xend_draw_8_bit_4_2:
+            inc ecx
+            jmp .yloop_draw_8_bit_4_2
+
+    .yend_draw_8_bit_4_2:
+
+    ; frame loop - draw_8_bit_4_3
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_4_3:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_4_3
+
+        xor edx, edx
+        .xloop_draw_8_bit_4_3:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_4_3
+
+            mov ebx, 117   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_4_3
+            mov ebx, 707   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_4_3
+
+            mov ebx, 157   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_4_3
+            mov ebx, 712   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_4_3
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_4_3:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_4_3
+
+        .xend_draw_8_bit_4_3:
+            inc ecx
+            jmp .yloop_draw_8_bit_4_3
+
+    .yend_draw_8_bit_4_3:
+
+    ; frame loop - draw_8_bit_4_4
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_4_4:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_4_4
+
+        xor edx, edx
+        .xloop_draw_8_bit_4_4:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_4_4
+
+            mov ebx, 162   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_4_4
+            mov ebx, 707   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_4_4
+
+            mov ebx, 202   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_4_4
+            mov ebx, 712   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_4_4
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_4_4:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_4_4
+
+        .xend_draw_8_bit_4_4:
+            inc ecx
+            jmp .yloop_draw_8_bit_4_4
+
+    .yend_draw_8_bit_4_4:
+
+    ; frame loop - draw_8_bit_4_5
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_4_5:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_4_5
+
+        xor edx, edx
+        .xloop_draw_8_bit_4_5:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_4_5
+
+            mov ebx, 112   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_4_5
+            mov ebx, 677   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_4_5
+
+            mov ebx, 117   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_4_5
+            mov ebx, 707   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_4_5
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_4_5:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_4_5
+
+        .xend_draw_8_bit_4_5:
+            inc ecx
+            jmp .yloop_draw_8_bit_4_5
+
+    .yend_draw_8_bit_4_5:
+
+    ; frame loop - draw_8_bit_4_6
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_4_6:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_4_6
+
+        xor edx, edx
+        .xloop_draw_8_bit_4_6:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_4_6
+
+            mov ebx, 157   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_4_6
+            mov ebx, 677   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_4_6
+
+            mov ebx, 162   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_4_6
+            mov ebx, 707   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_4_6
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_4_6:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_4_6
+
+        .xend_draw_8_bit_4_6:
+            inc ecx
+            jmp .yloop_draw_8_bit_4_6
+
+    .yend_draw_8_bit_4_6:
+
+    ; frame loop - draw_8_bit_4_7
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_4_7:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_4_7
+
+        xor edx, edx
+        .xloop_draw_8_bit_4_7:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_4_7
+
+            mov ebx, 202   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_4_7
+            mov ebx, 677   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_4_7
+
+            mov ebx, 207   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_4_7
+            mov ebx, 707   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_4_7
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_4_7:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_4_7
+
+        .xend_draw_8_bit_4_7:
+            inc ecx
+            jmp .yloop_draw_8_bit_4_7
+
+    .yend_draw_8_bit_4_7:
     ret
 
 draw_8_bit_5:
+    ; frame loop - draw_8_bit_5_1
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_5_1:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_5_1
+
+        xor edx, edx
+        .xloop_draw_8_bit_5_1:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_5_1
+
+            mov ebx, 117   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_5_1
+            mov ebx, 672   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_5_1
+
+            mov ebx, 157   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_5_1
+            mov ebx, 677   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_5_1
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_5_1:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_5_1
+
+        .xend_draw_8_bit_5_1:
+            inc ecx
+            jmp .yloop_draw_8_bit_5_1
+
+    .yend_draw_8_bit_5_1:
+
+    ; frame loop - draw_8_bit_5_2
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_5_2:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_5_2
+
+        xor edx, edx
+        .xloop_draw_8_bit_5_2:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_5_2
+
+            mov ebx, 162   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_5_2
+            mov ebx, 672   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_5_2
+
+            mov ebx, 202   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_5_2
+            mov ebx, 677   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_5_2
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_5_2:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_5_2
+
+        .xend_draw_8_bit_5_2:
+            inc ecx
+            jmp .yloop_draw_8_bit_5_2
+
+    .yend_draw_8_bit_5_2:
+
+    ; frame loop - draw_8_bit_5_3
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_5_3:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_5_3
+
+        xor edx, edx
+        .xloop_draw_8_bit_5_3:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_5_3
+
+            mov ebx, 117   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_5_3
+            mov ebx, 707   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_5_3
+
+            mov ebx, 157   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_5_3
+            mov ebx, 712   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_5_3
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_5_3:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_5_3
+
+        .xend_draw_8_bit_5_3:
+            inc ecx
+            jmp .yloop_draw_8_bit_5_3
+
+    .yend_draw_8_bit_5_3:
+
+    ; frame loop - draw_8_bit_5_4
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_5_4:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_5_4
+
+        xor edx, edx
+        .xloop_draw_8_bit_5_4:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_5_4
+
+            mov ebx, 162   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_5_4
+            mov ebx, 707   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_5_4
+
+            mov ebx, 202   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_5_4
+            mov ebx, 712   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_5_4
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_5_4:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_5_4
+
+        .xend_draw_8_bit_5_4:
+            inc ecx
+            jmp .yloop_draw_8_bit_5_4
+
+    .yend_draw_8_bit_5_4:
+
+    ; frame loop - draw_8_bit_5_5
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_5_5:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_5_5
+
+        xor edx, edx
+        .xloop_draw_8_bit_5_5:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_5_5
+
+            mov ebx, 112   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_5_5
+            mov ebx, 677   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_5_5
+
+            mov ebx, 117   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_5_5
+            mov ebx, 707   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_5_5
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_5_5:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_5_5
+
+        .xend_draw_8_bit_5_5:
+            inc ecx
+            jmp .yloop_draw_8_bit_5_5
+
+    .yend_draw_8_bit_5_5:
+
+    ; frame loop - draw_8_bit_5_6
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_5_6:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_5_6
+
+        xor edx, edx
+        .xloop_draw_8_bit_5_6:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_5_6
+
+            mov ebx, 157   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_5_6
+            mov ebx, 677   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_5_6
+
+            mov ebx, 162   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_5_6
+            mov ebx, 707   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_5_6
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_5_6:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_5_6
+
+        .xend_draw_8_bit_5_6:
+            inc ecx
+            jmp .yloop_draw_8_bit_5_6
+
+    .yend_draw_8_bit_5_6:
+
+    ; frame loop - draw_8_bit_5_7
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_5_7:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_5_7
+
+        xor edx, edx
+        .xloop_draw_8_bit_5_7:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_5_7
+
+            mov ebx, 202   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_5_7
+            mov ebx, 677   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_5_7
+
+            mov ebx, 207   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_5_7
+            mov ebx, 707   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_5_7
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_5_7:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_5_7
+
+        .xend_draw_8_bit_5_7:
+            inc ecx
+            jmp .yloop_draw_8_bit_5_7
+
+    .yend_draw_8_bit_5_7:
     ret
 
 draw_8_bit_6:
+    ; frame loop - draw_8_bit_6_1
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_6_1:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_6_1
+
+        xor edx, edx
+        .xloop_draw_8_bit_6_1:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_6_1
+
+            mov ebx, 117   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_6_1
+            mov ebx, 672   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_6_1
+
+            mov ebx, 157   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_6_1
+            mov ebx, 677   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_6_1
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_6_1:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_6_1
+
+        .xend_draw_8_bit_6_1:
+            inc ecx
+            jmp .yloop_draw_8_bit_6_1
+
+    .yend_draw_8_bit_6_1:
+
+    ; frame loop - draw_8_bit_6_2
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_6_2:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_6_2
+
+        xor edx, edx
+        .xloop_draw_8_bit_6_2:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_6_2
+
+            mov ebx, 162   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_6_2
+            mov ebx, 672   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_6_2
+
+            mov ebx, 202   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_6_2
+            mov ebx, 677   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_6_2
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_6_2:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_6_2
+
+        .xend_draw_8_bit_6_2:
+            inc ecx
+            jmp .yloop_draw_8_bit_6_2
+
+    .yend_draw_8_bit_6_2:
+
+    ; frame loop - draw_8_bit_6_3
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_6_3:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_6_3
+
+        xor edx, edx
+        .xloop_draw_8_bit_6_3:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_6_3
+
+            mov ebx, 117   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_6_3
+            mov ebx, 707   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_6_3
+
+            mov ebx, 157   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_6_3
+            mov ebx, 712   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_6_3
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_6_3:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_6_3
+
+        .xend_draw_8_bit_6_3:
+            inc ecx
+            jmp .yloop_draw_8_bit_6_3
+
+    .yend_draw_8_bit_6_3:
+
+    ; frame loop - draw_8_bit_6_4
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_6_4:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_6_4
+
+        xor edx, edx
+        .xloop_draw_8_bit_6_4:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_6_4
+
+            mov ebx, 162   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_6_4
+            mov ebx, 707   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_6_4
+
+            mov ebx, 202   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_6_4
+            mov ebx, 712   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_6_4
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_6_4:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_6_4
+
+        .xend_draw_8_bit_6_4:
+            inc ecx
+            jmp .yloop_draw_8_bit_6_4
+
+    .yend_draw_8_bit_6_4:
+
+    ; frame loop - draw_8_bit_6_5
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_6_5:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_6_5
+
+        xor edx, edx
+        .xloop_draw_8_bit_6_5:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_6_5
+
+            mov ebx, 112   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_6_5
+            mov ebx, 677   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_6_5
+
+            mov ebx, 117   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_6_5
+            mov ebx, 707   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_6_5
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_6_5:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_6_5
+
+        .xend_draw_8_bit_6_5:
+            inc ecx
+            jmp .yloop_draw_8_bit_6_5
+
+    .yend_draw_8_bit_6_5:
+
+    ; frame loop - draw_8_bit_6_6
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_6_6:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_6_6
+
+        xor edx, edx
+        .xloop_draw_8_bit_6_6:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_6_6
+
+            mov ebx, 157   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_6_6
+            mov ebx, 677   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_6_6
+
+            mov ebx, 162   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_6_6
+            mov ebx, 707   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_6_6
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_6_6:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_6_6
+
+        .xend_draw_8_bit_6_6:
+            inc ecx
+            jmp .yloop_draw_8_bit_6_6
+
+    .yend_draw_8_bit_6_6:
+
+    ; frame loop - draw_8_bit_6_7
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_6_7:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_6_7
+
+        xor edx, edx
+        .xloop_draw_8_bit_6_7:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_6_7
+
+            mov ebx, 202   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_6_7
+            mov ebx, 677   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_6_7
+
+            mov ebx, 207   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_6_7
+            mov ebx, 707   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_6_7
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_6_7:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_6_7
+
+        .xend_draw_8_bit_6_7:
+            inc ecx
+            jmp .yloop_draw_8_bit_6_7
+
+    .yend_draw_8_bit_6_7:
     ret
 
 draw_8_bit_7:
+    ; frame loop - draw_8_bit_7_1
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_7_1:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_7_1
+
+        xor edx, edx
+        .xloop_draw_8_bit_7_1:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_7_1
+
+            mov ebx, 117   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_7_1
+            mov ebx, 672   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_7_1
+
+            mov ebx, 157   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_7_1
+            mov ebx, 677   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_7_1
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_7_1:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_7_1
+
+        .xend_draw_8_bit_7_1:
+            inc ecx
+            jmp .yloop_draw_8_bit_7_1
+
+    .yend_draw_8_bit_7_1:
+
+    ; frame loop - draw_8_bit_7_2
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_7_2:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_7_2
+
+        xor edx, edx
+        .xloop_draw_8_bit_7_2:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_7_2
+
+            mov ebx, 162   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_7_2
+            mov ebx, 672   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_7_2
+
+            mov ebx, 202   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_7_2
+            mov ebx, 677   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_7_2
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_7_2:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_7_2
+
+        .xend_draw_8_bit_7_2:
+            inc ecx
+            jmp .yloop_draw_8_bit_7_2
+
+    .yend_draw_8_bit_7_2:
+
+    ; frame loop - draw_8_bit_7_3
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_7_3:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_7_3
+
+        xor edx, edx
+        .xloop_draw_8_bit_7_3:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_7_3
+
+            mov ebx, 117   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_7_3
+            mov ebx, 707   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_7_3
+
+            mov ebx, 157   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_7_3
+            mov ebx, 712   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_7_3
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_7_3:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_7_3
+
+        .xend_draw_8_bit_7_3:
+            inc ecx
+            jmp .yloop_draw_8_bit_7_3
+
+    .yend_draw_8_bit_7_3:
+
+    ; frame loop - draw_8_bit_7_4
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_7_4:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_7_4
+
+        xor edx, edx
+        .xloop_draw_8_bit_7_4:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_7_4
+
+            mov ebx, 162   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_7_4
+            mov ebx, 707   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_7_4
+
+            mov ebx, 202   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_7_4
+            mov ebx, 712   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_7_4
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_7_4:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_7_4
+
+        .xend_draw_8_bit_7_4:
+            inc ecx
+            jmp .yloop_draw_8_bit_7_4
+
+    .yend_draw_8_bit_7_4:
+
+    ; frame loop - draw_8_bit_7_5
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_7_5:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_7_5
+
+        xor edx, edx
+        .xloop_draw_8_bit_7_5:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_7_5
+
+            mov ebx, 112   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_7_5
+            mov ebx, 677   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_7_5
+
+            mov ebx, 117   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_7_5
+            mov ebx, 707   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_7_5
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_7_5:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_7_5
+
+        .xend_draw_8_bit_7_5:
+            inc ecx
+            jmp .yloop_draw_8_bit_7_5
+
+    .yend_draw_8_bit_7_5:
+
+    ; frame loop - draw_8_bit_7_6
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_7_6:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_7_6
+
+        xor edx, edx
+        .xloop_draw_8_bit_7_6:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_7_6
+
+            mov ebx, 157   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_7_6
+            mov ebx, 677   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_7_6
+
+            mov ebx, 162   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_7_6
+            mov ebx, 707   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_7_6
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_7_6:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_7_6
+
+        .xend_draw_8_bit_7_6:
+            inc ecx
+            jmp .yloop_draw_8_bit_7_6
+
+    .yend_draw_8_bit_7_6:
+
+    ; frame loop - draw_8_bit_7_7
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_7_7:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_7_7
+
+        xor edx, edx
+        .xloop_draw_8_bit_7_7:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_7_7
+
+            mov ebx, 202   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_7_7
+            mov ebx, 677   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_7_7
+
+            mov ebx, 207   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_7_7
+            mov ebx, 707   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_7_7
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_7_7:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_7_7
+
+        .xend_draw_8_bit_7_7:
+            inc ecx
+            jmp .yloop_draw_8_bit_7_7
+
+    .yend_draw_8_bit_7_7:
     ret
 
 draw_8_bit_8:
+    ; frame loop - draw_8_bit_8_1
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_8_1:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_8_1
+
+        xor edx, edx
+        .xloop_draw_8_bit__1:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_8_1
+
+            mov ebx, 117   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_8_1
+            mov ebx, 672   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_8_1
+
+            mov ebx, 157   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_8_1
+            mov ebx, 677   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_8_1
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_8_1:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_8_1
+
+        .xend_draw_8_bit_8_1:
+            inc ecx
+            jmp .yloop_draw_8_bit_8_1
+
+    .yend_draw_8_bit_8_1:
+
+    ; frame loop - draw_8_bit_8_2
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_8_2:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_8_2
+
+        xor edx, edx
+        .xloop_draw_8_bit_8_2:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_8_2
+
+            mov ebx, 162   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_8_2
+            mov ebx, 672   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_8_2
+
+            mov ebx, 202   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_8_2
+            mov ebx, 677   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_8_2
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_8_2:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_8_2
+
+        .xend_draw_8_bit_8_2:
+            inc ecx
+            jmp .yloop_draw_8_bit_8_2
+
+    .yend_draw_8_bit_8_2:
+
+    ; frame loop - draw_8_bit_8_3
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_8_3:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_8_3
+
+        xor edx, edx
+        .xloop_draw_8_bit_8_3:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_8_3
+
+            mov ebx, 117   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_8_3
+            mov ebx, 707   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_8_3
+
+            mov ebx, 157   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_8_3
+            mov ebx, 712   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_8_3
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_8_3:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_8_3
+
+        .xend_draw_8_bit_8_3:
+            inc ecx
+            jmp .yloop_draw_8_bit_8_3
+
+    .yend_draw_8_bit_8_3:
+
+    ; frame loop - draw_8_bit_8_4
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_8_4:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_8_4
+
+        xor edx, edx
+        .xloop_draw_8_bit_8_4:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_8_4
+
+            mov ebx, 162   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_8_4
+            mov ebx, 707   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_8_4
+
+            mov ebx, 202   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_8_4
+            mov ebx, 712   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_8_4
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_8_4:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_8_4
+
+        .xend_draw_8_bit_8_4:
+            inc ecx
+            jmp .yloop_draw_8_bit_8_4
+
+    .yend_draw_8_bit_8_4:
+
+    ; frame loop - draw_8_bit_8_5
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_8_5:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_8_5
+
+        xor edx, edx
+        .xloop_draw_8_bit_8_5:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_8_5
+
+            mov ebx, 112   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_8_5
+            mov ebx, 677   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_8_5
+
+            mov ebx, 117   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_8_5
+            mov ebx, 707   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_8_5
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_8_5:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_8_5
+
+        .xend_draw_8_bit_8_5:
+            inc ecx
+            jmp .yloop_draw_8_bit_8_5
+
+    .yend_draw_8_bit_8_5:
+
+    ; frame loop - draw_8_bit_8_6
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_8_6:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_8_6
+
+        xor edx, edx
+        .xloop_draw_8_bit__6:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_8_6
+
+            mov ebx, 157   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_8_6
+            mov ebx, 677   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_8_6
+
+            mov ebx, 162   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_8_6
+            mov ebx, 707   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_8_6
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_8_6:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_8_6
+
+        .xend_draw_8_bit_8_6:
+            inc ecx
+            jmp .yloop_draw_8_bit_8_6
+
+    .yend_draw_8_bit_8_6:
+
+    ; frame loop - draw_8_bit__7
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_8_7:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_8_7
+
+        xor edx, edx
+        .xloop_draw_8_bit_8_7:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_8_7
+
+            mov ebx, 202   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_8_7
+            mov ebx, 677   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_8_7
+
+            mov ebx, 207   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_8_7
+            mov ebx, 707   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_8_7
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_8_7:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_8_7
+
+        .xend_draw_8_bit_8_7:
+            inc ecx
+            jmp .yloop_draw_8_bit_8_7
+
+    .yend_draw_8_bit_8_7:
     ret
 
 draw_8_bit_9:
+    ; frame loop - draw_8_bit_9_1
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_9_1:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_9_1
+
+        xor edx, edx
+        .xloop_draw_8_bit_9_1:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_9_1
+
+            mov ebx, 117   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_9_1
+            mov ebx, 672   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_9_1
+
+            mov ebx, 157   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_9_1
+            mov ebx, 677   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_9_1
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_9_1:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_9_1
+
+        .xend_draw_8_bit_9_1:
+            inc ecx
+            jmp .yloop_draw_8_bit_9_1
+
+    .yend_draw_8_bit_9_1:
+
+    ; frame loop - draw_8_bit_9_2
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_9_2:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_9_2
+
+        xor edx, edx
+        .xloop_draw_8_bit_9_2:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_9_2
+
+            mov ebx, 162   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_9_2
+            mov ebx, 672   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_9_2
+
+            mov ebx, 202   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_9_2
+            mov ebx, 677   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_9_2
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_9_2:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_9_2
+
+        .xend_draw_8_bit_9_2:
+            inc ecx
+            jmp .yloop_draw_8_bit_9_2
+
+    .yend_draw_8_bit_9_2:
+
+    ; frame loop - draw_8_bit_9_3
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_9_3:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_9_3
+
+        xor edx, edx
+        .xloop_draw_8_bit_9_3:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_9_3
+
+            mov ebx, 117   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_9_3
+            mov ebx, 707   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_9_3
+
+            mov ebx, 157   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_9_3
+            mov ebx, 712   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_9_3
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_9_3:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_9_3
+
+        .xend_draw_8_bit_9_3:
+            inc ecx
+            jmp .yloop_draw_8_bit_9_3
+
+    .yend_draw_8_bit_9_3:
+
+    ; frame loop - draw_8_bit_9_4
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit_9_4:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit_9_4
+
+        xor edx, edx
+        .xloop_draw_8_bit_9_4:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit_9_4
+
+            mov ebx, 162   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit_9_4
+            mov ebx, 707   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit_9_4
+
+            mov ebx, 202   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit_9_4
+            mov ebx, 712   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit_9_4
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit_9_4:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit_9_4
+
+        .xend_draw_8_bit_9_4:
+            inc ecx
+            jmp .yloop_draw_8_bit_9_4
+
+    .yend_draw_8_bit_9_4:
+
+    ; frame loop - draw_8_bit__5
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit__5:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit__5
+
+        xor edx, edx
+        .xloop_draw_8_bit__5:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit__5
+
+            mov ebx, 112   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit__5
+            mov ebx, 677   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit__5
+
+            mov ebx, 117   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit__5
+            mov ebx, 707   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit__5
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit__5:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit__5
+
+        .xend_draw_8_bit__5:
+            inc ecx
+            jmp .yloop_draw_8_bit__5
+
+    .yend_draw_8_bit__5:
+
+    ; frame loop - draw_8_bit__6
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit__6:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit__6
+
+        xor edx, edx
+        .xloop_draw_8_bit__6:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit__6
+
+            mov ebx, 157   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit__6
+            mov ebx, 677   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit__6
+
+            mov ebx, 162   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit__6
+            mov ebx, 707   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit__6
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit__6:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit__6
+
+        .xend_draw_8_bit__6:
+            inc ecx
+            jmp .yloop_draw_8_bit__6
+
+    .yend_draw_8_bit__6:
+
+    ; frame loop - draw_8_bit__7
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_8_bit__7:
+        cmp ecx, HEIGHT
+        jge .yend_draw_8_bit__7
+
+        xor edx, edx
+        .xloop_draw_8_bit__7:
+            cmp edx, WIDTH
+            jge .xend_draw_8_bit__7
+
+            mov ebx, 202   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_8_bit__7
+            mov ebx, 677   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_8_bit__7
+
+            mov ebx, 207   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_8_bit__7
+            mov ebx, 707   ; x2
+            cmp edx, ebx
+            jge .skip_draw_8_bit__7
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 255
+            mov	[eax], bl
+            ; green
+            mov ebx, 255
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 255
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_8_bit__7:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_8_bit__7
+
+        .xend_draw_8_bit__7:
+            inc ecx
+            jmp .yloop_draw_8_bit__7
+
+    .yend_draw_8_bit__7:
     ret
 
 canvas_init:
@@ -2823,212 +6504,620 @@ draw_8_bit:
     call draw_8_bit_BG
 
     ; switch
-    ;cmp esi, 30
-    ;je .draw_8_bit_case_0
-    ;cmp esi, 31
-    ;je .draw_8_bit_case_1
-    ;cmp esi, 32
-    ;je .draw_8_bit_case_2
-    ;cmp esi, 33
-    ;je .draw_8_bit_case_3
-    ;cmp esi, 34
-    ;je .draw_8_bit_case_4
-    ;cmp esi, 35
-    ;je .draw_8_bit_case_5
-    ;cmp esi, 36
-    ;je .draw_8_bit_case_6
-    ;cmp esi, 37
-    ;je .draw_8_bit_case_7
-    ;cmp esi, 38
-    ;je .draw_8_bit_case_8
-    ;cmp esi, 39
-    ;je .draw_8_bit_case_9
+    cmp esi, 30
+    je .draw_8_bit_case_0
+    cmp esi, 31
+    je .draw_8_bit_case_1
+    cmp esi, 32
+    je .draw_8_bit_case_2
+    cmp esi, 33
+    je .draw_8_bit_case_3
+    cmp esi, 34
+    je .draw_8_bit_case_4
+    cmp esi, 35
+    je .draw_8_bit_case_5
+    cmp esi, 36
+    je .draw_8_bit_case_6
+    cmp esi, 37
+    je .draw_8_bit_case_7
+    cmp esi, 38
+    je .draw_8_bit_case_8
+    cmp esi, 39
+    je .draw_8_bit_case_9
     jmp .draw_8_bit_skip
 
     ; switch cases 0-9
         ; case 0
             .draw_8_bit_case_0:
-                push eax    ; save (0,0)
-                mov ebx, 255
-                push ebx    ; push BLUE
-                mov ebx, 255
-                push ebx    ; push GREEN
-                mov ebx, 255
-                push ebx    ; push RED
 
                 call draw_8_bit_0
 
-                pop ebx    ; pop RED
-                pop ebx    ; pop GREEN
-                pop ebx    ; pop BLUE
-                pop eax    ; get (0,0)
             jmp .draw_8_bit_skip
 
         ; case 1
             .draw_8_bit_case_1:
-                push eax    ; save (0,0)
-                mov ebx, 255
-                push ebx    ; push BLUE
-                mov ebx, 255
-                push ebx    ; push GREEN
-                mov ebx, 255
-                push ebx    ; push RED
 
                 call draw_8_bit_1
 
-                pop ebx    ; pop RED
-                pop ebx    ; pop GREEN
-                pop ebx    ; pop BLUE
-                pop eax    ; get (0,0)
             jmp .draw_8_bit_skip
 
         ; case 2
             .draw_8_bit_case_2:
-                push eax    ; save (0,0)
-                mov ebx, 255
-                push ebx    ; push BLUE
-                mov ebx, 255
-                push ebx    ; push GREEN
-                mov ebx, 255
-                push ebx    ; push RED
 
                 call draw_8_bit_2
 
-                pop ebx    ; pop RED
-                pop ebx    ; pop GREEN
-                pop ebx    ; pop BLUE
-                pop eax    ; get (0,0)
             jmp .draw_8_bit_skip
 
         ; case 3
             .draw_8_bit_case_3:
-                push eax    ; save (0,0)
-                mov ebx, 255
-                push ebx    ; push BLUE
-                mov ebx, 255
-                push ebx    ; push GREEN
-                mov ebx, 255
-                push ebx    ; push RED
 
                 call draw_8_bit_3
 
-                pop ebx    ; pop RED
-                pop ebx    ; pop GREEN
-                pop ebx    ; pop BLUE
-                pop eax    ; get (0,0)
             jmp .draw_8_bit_skip
 
         ; case 4
             .draw_8_bit_case_4:
-                push eax    ; save (0,0)
-                mov ebx, 255
-                push ebx    ; push BLUE
-                mov ebx, 255
-                push ebx    ; push GREEN
-                mov ebx, 255
-                push ebx    ; push RED
 
                 call draw_8_bit_4
 
-                pop ebx    ; pop RED
-                pop ebx    ; pop GREEN
-                pop ebx    ; pop BLUE
-                pop eax    ; get (0,0)
             jmp .draw_8_bit_skip
 
         ; case 5
             .draw_8_bit_case_5:
-                push eax    ; save (0,0)
-                mov ebx, 255
-                push ebx    ; push BLUE
-                mov ebx, 255
-                push ebx    ; push GREEN
-                mov ebx, 255
-                push ebx    ; push RED
 
                 call draw_8_bit_5
 
-                pop ebx    ; pop RED
-                pop ebx    ; pop GREEN
-                pop ebx    ; pop BLUE
-                pop eax    ; get (0,0)
             jmp .draw_8_bit_skip
 
         ; case 6
             .draw_8_bit_case_6:
-                push eax    ; save (0,0)
-                mov ebx, 255
-                push ebx    ; push BLUE
-                mov ebx, 255
-                push ebx    ; push GREEN
-                mov ebx, 255
-                push ebx    ; push RED
 
                 call draw_8_bit_6
 
-                pop ebx    ; pop RED
-                pop ebx    ; pop GREEN
-                pop ebx    ; pop BLUE
-                pop eax    ; get (0,0)
             jmp .draw_8_bit_skip
 
         ; case 7
             .draw_8_bit_case_7:
-                push eax    ; save (0,0)
-                mov ebx, 255
-                push ebx    ; push BLUE
-                mov ebx, 255
-                push ebx    ; push GREEN
-                mov ebx, 255
-                push ebx    ; push RED
 
                 call draw_8_bit_7
 
-                pop ebx    ; pop RED
-                pop ebx    ; pop GREEN
-                pop ebx    ; pop BLUE
-                pop eax    ; get (0,0)
             jmp .draw_8_bit_skip
 
         ; case 8
             .draw_8_bit_case_8:
-                push eax    ; save (0,0)
-                mov ebx, 255
-                push ebx    ; push BLUE
-                mov ebx, 255
-                push ebx    ; push GREEN
-                mov ebx, 255
-                push ebx    ; push RED
 
                 call draw_8_bit_8
 
-                pop ebx    ; pop RED
-                pop ebx    ; pop GREEN
-                pop ebx    ; pop BLUE
-                pop eax    ; get (0,0)
             jmp .draw_8_bit_skip
 
         ; case 9
             .draw_8_bit_case_9:
-                push eax    ; save (0,0)
-                mov ebx, 255
-                push ebx    ; push BLUE
-                mov ebx, 255
-                push ebx    ; push GREEN
-                mov ebx, 255
-                push ebx    ; push RED
 
                 call draw_8_bit_9
 
-                pop ebx    ; pop RED
-                pop ebx    ; pop GREEN
-                pop ebx    ; pop BLUE
-                pop eax    ; get (0,0)
     .draw_8_bit_skip:
     ret
 
 draw_debug:
-;TODO
+    ; frame loop - draw_debug0
+    xor ecx, ecx
+    mov eax, [esp+4]     ; get (0,0)
+
+    .yloop_draw_debug0:
+        cmp ecx, HEIGHT
+        jge .yend_draw_debug0
+
+        xor edx, edx
+        .xloop_draw_debug0:
+            cmp edx, WIDTH
+            jge .xend_draw_debug0
+
+            mov ebx, DEBUG_0_Y1   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_debug0
+            mov ebx, DEBUG_0_X1   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_debug0
+
+            mov ebx, DEBUG_0_Y2   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_debug0
+            mov ebx, DEBUG_0_X2   ; x2
+            cmp edx, ebx
+            jge .skip_draw_debug0
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 59
+            mov	[eax], bl
+            ; green
+            mov ebx, 54
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 53
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_debug0:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_debug0
+
+        .xend_draw_debug0:
+            inc ecx
+            jmp .yloop_draw_debug0
+
+    .yend_draw_debug0:
+
+    ; frame loop - draw_debug1
+    xor ecx, ecx
+    mov eax, [esp+4]     ; get (0,0)
+
+    .yloop_draw_debug1:
+        cmp ecx, HEIGHT
+        jge .yend_draw_debug1
+
+        xor edx, edx
+        .xloop_draw_debug1:
+            cmp edx, WIDTH
+            jge .xend_draw_debug1
+
+            mov ebx, DEBUG_1_Y1   ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_debug1
+            mov ebx, DEBUG_1_X1   ; x1
+            cmp edx, ebx
+            jnge .skip_draw_debug1
+
+            mov ebx, DEBUG_1_Y2   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_debug1
+            mov ebx, DEBUG_1_X2   ; x2
+            cmp edx, ebx
+            jge .skip_draw_debug1
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 59
+            mov	[eax], bl
+            ; green
+            mov ebx, 54
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 53
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_debug1:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_debug1
+
+        .xend_draw_debug1:
+            inc ecx
+            jmp .yloop_draw_debug1
+
+    .yend_draw_debug1:
+
+    ; frame loop - draw_debug2
+    xor ecx, ecx
+    mov eax, [esp+4]     ; get (0,0)
+
+    .yloop_draw_debug2:
+        cmp ecx, HEIGHT
+        jge .yend_draw_debug2
+
+        xor edx, edx
+        .xloop_draw_debug2:
+            cmp edx, WIDTH
+            jge .xend_draw_debug2
+
+            mov ebx, DEBUG_2_Y1    ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_debug2
+            mov ebx, DEBUG_2_X1    ; x1
+            cmp edx, ebx
+            jnge .skip_draw_debug2
+
+            mov ebx, DEBUG_2_Y2   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_debug2
+            mov ebx, DEBUG_2_X2   ; x2
+            cmp edx, ebx
+            jge .skip_draw_debug2
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 59
+            mov	[eax], bl
+            ; green
+            mov ebx, 54
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 53
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_debug2:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_debug2
+
+        .xend_draw_debug2:
+            inc ecx
+            jmp .yloop_draw_debug2
+
+    .yend_draw_debug2:
+
+    ; frame loop - draw_debug3
+    xor ecx, ecx
+    mov eax, [esp+4]     ; get (0,0)
+
+    .yloop_draw_debug3:
+        cmp ecx, HEIGHT
+        jge .yend_draw_debug3
+
+        xor edx, edx
+        .xloop_draw_debug3:
+            cmp edx, WIDTH
+            jge .xend_draw_debug3
+
+            mov ebx, DEBUG_3_Y1    ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_debug3
+            mov ebx, DEBUG_3_X1    ; x1
+            cmp edx, ebx
+            jnge .skip_draw_debug3
+
+            mov ebx, DEBUG_3_Y2   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_debug3
+            mov ebx, DEBUG_3_X2   ; x2
+            cmp edx, ebx
+            jge .skip_draw_debug3
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 59
+            mov	[eax], bl
+            ; green
+            mov ebx, 54
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 53
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_debug3:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_debug3
+
+        .xend_draw_debug3:
+            inc ecx
+            jmp .yloop_draw_debug3
+
+    .yend_draw_debug3:
+
+    ; frame loop - draw_debug4
+    xor ecx, ecx
+    mov eax, [esp+4]     ; get (0,0)
+
+    .yloop_draw_debug4:
+        cmp ecx, HEIGHT
+        jge .yend_draw_debug4
+
+        xor edx, edx
+        .xloop_draw_debug4:
+            cmp edx, WIDTH
+            jge .xend_draw_debug4
+
+            mov ebx, DEBUG_4_Y1    ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_debug4
+            mov ebx, DEBUG_4_X1    ; x1
+            cmp edx, ebx
+            jnge .skip_draw_debug4
+
+            mov ebx, DEBUG_4_Y2   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_debug4
+            mov ebx, DEBUG_4_X2   ; x2
+            cmp edx, ebx
+            jge .skip_draw_debug4
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 59
+            mov	[eax], bl
+            ; green
+            mov ebx, 54
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 53
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_debug4:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_debug4
+
+        .xend_draw_debug4:
+            inc ecx
+            jmp .yloop_draw_debug4
+
+    .yend_draw_debug4:
+
+    ; frame loop - draw_debug5
+    xor ecx, ecx
+    mov eax, [esp+4]     ; get (0,0)
+
+    .yloop_draw_debug5:
+        cmp ecx, HEIGHT
+        jge .yend_draw_debug5
+
+        xor edx, edx
+        .xloop_draw_debug5:
+            cmp edx, WIDTH
+            jge .xend_draw_debug5
+
+            mov ebx, DEBUG_5_Y1    ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_debug5
+            mov ebx, DEBUG_5_X1    ; x1
+            cmp edx, ebx
+            jnge .skip_draw_debug5
+
+            mov ebx, DEBUG_5_Y2   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_debug5
+            mov ebx, DEBUG_5_X2   ; x2
+            cmp edx, ebx
+            jge .skip_draw_debug5
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 59
+            mov	[eax], bl
+            ; green
+            mov ebx, 54
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 53
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_debug5:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_debug5
+
+        .xend_draw_debug5:
+            inc ecx
+            jmp .yloop_draw_debug5
+
+    .yend_draw_debug5:
+
+    ; frame loop - draw_debug6
+    xor ecx, ecx
+    mov eax, [esp+4]     ; get (0,0)
+
+    .yloop_draw_debug6:
+        cmp ecx, HEIGHT
+        jge .yend_draw_debug6
+
+        xor edx, edx
+        .xloop_draw_debug6:
+            cmp edx, WIDTH
+            jge .xend_draw_debug6
+
+            mov ebx, DEBUG_6_Y1    ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_debug6
+            mov ebx, DEBUG_6_X1    ; x1
+            cmp edx, ebx
+            jnge .skip_draw_debug6
+
+            mov ebx, DEBUG_6_Y2   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_debug6
+            mov ebx, DEBUG_6_X2   ; x2
+            cmp edx, ebx
+            jge .skip_draw_debug6
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 59
+            mov	[eax], bl
+            ; green
+            mov ebx, 54
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 53
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_debug6:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_debug6
+
+        .xend_draw_debug6:
+            inc ecx
+            jmp .yloop_draw_debug6
+
+    .yend_draw_debug6:
+
+    ; frame loop - draw_debug7
+    xor ecx, ecx
+    mov eax, [esp+4]     ; get (0,0)
+
+    .yloop_draw_debug7:
+        cmp ecx, HEIGHT
+        jge .yend_draw_debug7
+
+        xor edx, edx
+        .xloop_draw_debug7:
+            cmp edx, WIDTH
+            jge .xend_draw_debug7
+
+            mov ebx, DEBUG_7_Y1    ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_debug7
+            mov ebx, DEBUG_7_X1    ; x1
+            cmp edx, ebx
+            jnge .skip_draw_debug7
+
+            mov ebx, DEBUG_7_Y2   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_debug7
+            mov ebx, DEBUG_7_X2   ; x2
+            cmp edx, ebx
+            jge .skip_draw_debug7
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 59
+            mov	[eax], bl
+            ; green
+            mov ebx, 54
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 53
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_debug7:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_debug7
+
+        .xend_draw_debug7:
+            inc ecx
+            jmp .yloop_draw_debug7
+
+    .yend_draw_debug7:
+
+    ; frame loop - draw_debug8
+    xor ecx, ecx
+    mov eax, [esp+4]     ; get (0,0)
+
+    .yloop_draw_debug8:
+        cmp ecx, HEIGHT
+        jge .yend_draw_debug8
+
+        xor edx, edx
+        .xloop_draw_debug8:
+            cmp edx, WIDTH
+            jge .xend_draw_debug8
+
+            mov ebx, DEBUG_8_Y1    ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_debug8
+            mov ebx, DEBUG_8_X1    ; x1
+            cmp edx, ebx
+            jnge .skip_draw_debug8
+
+            mov ebx, DEBUG_8_Y2   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_debug8
+            mov ebx, DEBUG_8_X2   ; x2
+            cmp edx, ebx
+            jge .skip_draw_debug8
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 59
+            mov	[eax], bl
+            ; green
+            mov ebx, 54
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 53
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_debug8:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_debug8
+
+        .xend_draw_debug8:
+            inc ecx
+            jmp .yloop_draw_debug8
+
+    .yend_draw_debug8:
+
+    ; frame loop - draw_debug9
+    xor ecx, ecx
+    mov eax, [esp+4]     ; get (0,0)
+
+    .yloop_draw_debug9:
+        cmp ecx, HEIGHT
+        jge .yend_draw_debug9
+
+        xor edx, edx
+        .xloop_draw_debug9:
+            cmp edx, WIDTH
+            jge .xend_draw_debug9
+
+            mov ebx, DEBUG_9_Y1    ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_debug9
+            mov ebx, DEBUG_9_X1    ; x1
+            cmp edx, ebx
+            jnge .skip_draw_debug9
+
+            mov ebx, DEBUG_9_Y2   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_debug9
+            mov ebx, DEBUG_9_X2   ; x2
+            cmp edx, ebx
+            jge .skip_draw_debug9
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 59
+            mov	[eax], bl
+            ; green
+            mov ebx, 54
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 53
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_debug9:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_debug9
+
+        .xend_draw_debug9:
+            inc ecx
+            jmp .yloop_draw_debug9
+
+    .yend_draw_debug9:
     ret
 
 handle_delete:
@@ -3614,10 +7703,10 @@ main:
 
                     .skip_mouse_released:
 
-                ; button 1 / button 2 / canvas
+                ; button 1 / button 2 / debug
                 call gfx_getmouse
                 cmp ebx, BUTTONS_WRAPPER_Y2
-                jg .miss_event
+                jg .debug_event
                     
                     ; button 1 / button 2
                     ; (y1,y2)
@@ -3655,7 +7744,126 @@ main:
                                 mov edi, 6
                                 call handle_run
                                 jmp .eventloop
-                
+
+                ; debug
+                .debug_event:
+                    ; 1,2,3
+                        cmp ebx, DEBUG_1_Y2     ; y
+                        jge .debug_event_456
+
+                            ; 1
+                            cmp eax, DEBUG_1_X2     ; x
+                            jge .debug_event_2
+
+                                ; press logic
+                                mov esi, 31
+                                mov edi, 6
+                                jmp .eventloop
+
+                            ; 2
+                            .debug_event_2:
+                            cmp eax, DEBUG_2_X2     ; x
+                            jge .debug_event_3
+
+                                ; press logic
+                                mov esi, 32
+                                mov edi, 6
+                                jmp .eventloop
+
+                            ; 3
+                            .debug_event_3:
+                            cmp eax, DEBUG_3_X2     ; x
+                            jge .miss_event
+
+                                ; press logic
+                                mov esi, 33
+                                mov edi, 6
+                                jmp .eventloop
+
+                        jmp .debug_event_skip
+                    ; 4,5,6
+                        .debug_event_456:
+                        cmp ebx, DEBUG_4_Y2     ; y
+                        jge .debug_event_789
+                            
+                            ; 4
+                            cmp eax, DEBUG_4_X2     ; x
+                            jge .debug_event_5
+
+                                ; press logic
+                                mov esi, 34
+                                mov edi, 6
+                                jmp .eventloop
+
+                            ; 5
+                            .debug_event_5:
+                            cmp eax, DEBUG_5_X2     ; x
+                            jge .debug_event_6
+
+                                ; press logic
+                                mov esi, 35
+                                mov edi, 6
+                                jmp .eventloop
+
+                            ; 6
+                            .debug_event_6:
+                            cmp eax, DEBUG_6_X2     ; x
+                            jge .miss_event
+
+                                ; press logic
+                                mov esi, 36
+                                mov edi, 6
+                                jmp .eventloop
+
+                        jmp .debug_event_skip
+                    ; 7,8,9
+                        .debug_event_789:
+                        cmp ebx, DEBUG_7_Y2     ; y
+                        jge .debug_event_0
+                        
+                            ; 7
+                            cmp eax, DEBUG_7_X2     ; x
+                            jge .debug_event_8
+
+                                ; press logic
+                                mov esi, 37
+                                mov edi, 6
+                                jmp .eventloop
+
+                            ; 8
+                            .debug_event_8:
+                            cmp eax, DEBUG_8_X2     ; x
+                            jge .debug_event_9
+
+                                ; press logic
+                                mov esi, 38
+                                mov edi, 6
+                                jmp .eventloop
+
+                            ; 9
+                            .debug_event_9:
+                            cmp eax, DEBUG_9_X2     ; x
+                            jge .miss_event
+
+                                ; press logic
+                                mov esi, 39
+                                mov edi, 6
+                                jmp .eventloop
+
+                        jmp .debug_event_skip
+                    ; 0
+                    .debug_event_0:
+
+                        cmp eax, DEBUG_0_X2     ; x
+                        jge .miss_event
+
+                            ; press logic
+                            mov esi, 30
+                            mov edi, 6
+                            jmp .eventloop
+
+                    .debug_event_skip:
+
                 ; left click on empty space
                 .miss_event:
 
