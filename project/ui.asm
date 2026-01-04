@@ -5931,6 +5931,9 @@ handle_delete:
 
 handle_run:
 ;TODO
+; debug only
+;call resize
+;call rescale
     ret
 
 handle_canvas:
@@ -6249,7 +6252,54 @@ resize:
     pop esi
     ret
 
-scale:
+rescale:
+    ; rescale loop
+    ; resized_canvas_data -> rescaled_canvas_data
+    ; int -> float
+
+    xor ecx, ecx
+    xorps xmm0, xmm0
+    mov eax, resized_canvas_data
+    mov edi, rescaled_canvas_data
+
+    .yloop_rescale:
+        cmp ecx, 28
+        jge .yend_rescale
+
+        xor edx, edx
+        .xloop_rescale:
+            cmp edx, 7
+            jge .xend_rescale
+
+                ; copy data (convert)
+                    cvtsi2ss xmm0, [eax]
+                    add eax, 4  ; next pixel
+                    ; shift xmm0 ??? left
+
+                    cvtsi2ss xmm0, [eax]
+                    add eax, 4  ; next pixel
+                    ; shift xmm0 ??? left
+
+                    cvtsi2ss xmm0, [eax]
+                    add eax, 4  ; next pixel
+                    ; shift xmm0 ??? left
+
+                    cvtsi2ss xmm0, [eax]
+                    add eax, 4  ; next pixel
+                    ; shift xmm0 ??? left
+
+                ; rescale data 
+                divps xmm0, [rescale_div]
+
+                ; store data
+                movaps [edx], xmm0
+
+            inc edx
+        .xend_rescale:
+            inc ecx
+            jmp .yloop_rescale
+
+    .yend_rescale:
     ret
 
 linear:
@@ -6995,11 +7045,23 @@ main:
         ret
 
 section .bss
+    align 16    ; memory eleres cucc orarol
+                ; oszthato 16-al a cim -> gyorsabb eleres
+
+    ; AI
     canvas_data resb 448 * 448 * 4
+
+    align 16
     resized_canvas_data resb 28 * 28 * 4
+
+    align 16
+    rescaled_canvas_data resb 28 * 28 * 4
+
+    ; UI/UX
     mouse_pressed resb 1
 
 section .data
     caption db "Get da numbs w/ CNN", 0
 	errormsg db "ERROR: could not initialize graphics!", 0
     dbg db "debug", 0
+    rescale_div dw 65280
