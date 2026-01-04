@@ -133,6 +133,7 @@ global main
 
 section .text
 
+; UI/UX
 draw_rectangle:
     ; frame loop - rectangle
     xor ecx, ecx
@@ -6182,6 +6183,87 @@ handle_canvas:
 
     ret
 
+; AI
+resize:
+    ; resize loop
+    ; canvas_data -> resized_canvas_data
+    ; (448 * 448) -> (28 * 28)
+
+    push esi
+    push edi
+    xor ecx, ecx
+    mov eax, canvas_data
+    mov edi, resized_canvas_data
+
+    .yloop_resize:
+        cmp ecx, 28
+        jge .yend_resize
+
+        xor edx, edx
+        .xloop_resize:
+            cmp edx, 28
+            jge .xend_resize
+
+                ; (16 * 16) -> (1 * 1)
+                push ecx
+                push edx
+
+                xor ebx, ebx
+                xor edx, edx
+                xor esi, esi
+
+                .canvas_yloop:
+                    cmp ebx, 16
+                    jg .canvas_yloop_end
+                
+                    xor ecx, ecx
+                    .canvas_xloop:
+                        cmp ecx, 16
+                        jg .canvas_xloop_end
+                        
+                            mov edx, [eax]          ; argb, where a = alpha channel
+                            and edx, 0x0000FF00     ; xor to get red channel
+                            add [esi], dh
+
+                        add eax, 4  ; next pixel
+                        inc ecx
+                    .canvas_xloop_end:
+                        add eax, 1728  ; next row
+                        inc ebx
+                        jmp .canvas_yloop
+
+                .canvas_yloop_end:
+                mov [edi], esi
+                add edi, 4
+
+                pop edx
+                pop ecx
+
+            inc edx
+        .xend_resize:
+            inc ecx
+            jmp .yloop_resize
+
+    .yend_resize:
+    pop edi
+    pop esi
+    ret
+
+scale:
+    ret
+
+linear:
+    ret
+
+conv:
+    ret
+
+reLU:
+    ret
+
+argMax:
+    ret
+
 main:
 	; Create the graphics window
     mov	eax, WIDTH		; window width (X)
@@ -6914,9 +6996,10 @@ main:
 
 section .bss
     canvas_data resb 448 * 448 * 4
+    resized_canvas_data resb 28 * 28 * 4
     mouse_pressed resb 1
 
 section .data
     caption db "Get da numbs w/ CNN", 0
 	errormsg db "ERROR: could not initialize graphics!", 0
-    dbg db "ERROR: could not initialize graphics!", 0
+    dbg db "debug", 0
