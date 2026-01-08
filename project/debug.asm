@@ -3,7 +3,6 @@
 %include 'io.inc'
 %include 'gfx.inc'
 %include 'util.inc'
-;%include 'debug.inc'
 
 ; window size
 %define WIDTH  768
@@ -130,54 +129,7 @@
     %define DEBUG_9_X2 719
     %define DEBUG_9_Y2 327
 
-    ; BRUSH SIZE
-        ; NODE
-        %define BRUSH_SIZE_NODE_Y1
-        %define BRUSH_SIZE_NODE_Y2
-
-        %define BRUSH_SIZE_NODE_1_X1
-        %define BRUSH_SIZE_NODE_1_X2
-
-        %define BRUSH_SIZE_NODE_2_X1
-        %define BRUSH_SIZE_NODE_2_X2
-
-        %define BRUSH_SIZE_NODE_3_X1
-        %define BRUSH_SIZE_NODE_3_X2
-
-        %define BRUSH_SIZE_NODE_4_X1
-        %define BRUSH_SIZE_NODE_4_X2
-
-        %define BRUSH_SIZE_NODE_5_X1
-        %define BRUSH_SIZE_NODE_5_X2
-
-        ; MINUS
-        %define BRUSH_SIZE_MINUS_X1
-        %define BRUSH_SIZE_MINUS_Y1
-        %define BRUSH_SIZE_MINUS_X2
-        %define BRUSH_SIZE_MINUS_Y2
-
-        ; PLUS
-        %define BRUSH_SIZE_PLUS_1_X1
-        %define BRUSH_SIZE_PLUS_1_Y1
-        %define BRUSH_SIZE_PLUS_1_X2
-        %define BRUSH_SIZE_PLUS_1_Y2
-
-        %define BRUSH_SIZE_PLUS_2_X1
-        %define BRUSH_SIZE_PLUS_2_Y1
-        %define BRUSH_SIZE_PLUS_2_X2
-        %define BRUSH_SIZE_PLUS_2_Y2
-
-        ; COLOR
-        %define BRUSH_SIZE_FG_COLOR_R 103
-        %define BRUSH_SIZE_FG_COLOR_G 105
-        %define BRUSH_SIZE_FG_COLOR_B 116
-
-        %define BRUSH_SIZE_ACTIVE_COLOR_R 113
-        %define BRUSH_SIZE_ACTIVE_COLOR_G 151
-        %define BRUSH_SIZE_ACTIVE_COLOR_B 132
-
-
-global main
+global debug
 
 section .text
 
@@ -5973,12 +5925,47 @@ draw_debug:
     .yend_draw_debug9:
     ret
 
-draw_brush:
-
+handle_delete:
+    call canvas_init
     ret
 
-brush_3x3star:
+handle_run:
+;TODO
+; debug only
+;call resize
+;call rescale
+    ret
 
+handle_canvas:
+    ; get local (x,y) from global (eax,ebx)
+    mov ecx, 108    ; x
+    sub eax, ecx
+
+    mov ecx, 193    ; y
+    sub ebx, ecx
+
+    mov ecx, 448    ; CANVAS_WIDTH
+    imul ecx, ebx
+    add ecx, eax
+    imul ecx, 4     ; get start poz in canvas_data
+
+    ; middle
+        mov eax, canvas_data
+        add eax, ecx    ; set start poz
+
+        ; Pixel color in RGBA
+        ; blue
+        mov ebx, 255
+        mov	[eax], bl
+        ; green
+        mov ebx, 255
+        mov	[eax+1], bl
+        ; red
+        mov ebx, 255
+        mov	[eax+2], bl
+        ; zero
+        xor	ebx, ebx
+        mov	[eax+3], bl
 
     ; inner circle
         ; right
@@ -6195,53 +6182,8 @@ brush_3x3star:
             ; zero
             xor	ebx, ebx
             mov	[eax+3], bl
-    ret
 
-handle_delete:
-    call canvas_init
-    ret
 
-handle_run:
-;TODO
-; debug only
-;call debug
-;call resize
-;call rescale
-    ret
-
-handle_canvas:
-    ; get local (x,y) from global (eax,ebx)
-    mov ecx, 108    ; x
-    sub eax, ecx
-
-    mov ecx, 193    ; y
-    sub ebx, ecx
-
-    mov ecx, 448    ; CANVAS_WIDTH
-    imul ecx, ebx
-    add ecx, eax
-    imul ecx, 4     ; get start poz in canvas_data
-
-    ; middle
-        mov eax, canvas_data
-        add eax, ecx    ; set start poz
-
-        ; Pixel color in RGBA
-        ; blue
-        mov ebx, 255
-        mov	[eax], bl
-        ; green
-        mov ebx, 255
-        mov	[eax+1], bl
-        ; red
-        mov ebx, 255
-        mov	[eax+2], bl
-        ; zero
-        xor	ebx, ebx
-        mov	[eax+3], bl
-
-    ; brush size
-    call brush_3x3star
     ret
 
 ; AI
@@ -6372,7 +6314,7 @@ reLU:
 argMax:
     ret
 
-main:
+debug:
 	; Create the graphics window
     mov	eax, WIDTH		; window width (X)
 	mov	ebx, HEIGHT		; window hieght (Y)
@@ -6795,7 +6737,6 @@ main:
 
             ; draw debug buttons
                 call draw_debug
-                call draw_brush
 
             ; draw canvas
                 ; go to canvast start poz
@@ -7118,7 +7059,6 @@ section .bss
 
     ; UI/UX
     mouse_pressed resb 1
-    brush_size resb 1
 
 section .data
     caption db "Get da numbs w/ CNN", 0
