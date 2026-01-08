@@ -132,40 +132,56 @@
 
     ; BRUSH SIZE
         ; NODE
-        %define BRUSH_SIZE_NODE_Y1
-        %define BRUSH_SIZE_NODE_Y2
+        %define BRUSH_SIZE_NODE_IN_Y1 
+        %define BRUSH_SIZE_NODE_IN_Y2 
 
-        %define BRUSH_SIZE_NODE_1_X1
-        %define BRUSH_SIZE_NODE_1_X2
+        %define BRUSH_SIZE_NODE_OUT_Y1 
+        %define BRUSH_SIZE_NODE_OUT_Y2 
 
-        %define BRUSH_SIZE_NODE_2_X1
-        %define BRUSH_SIZE_NODE_2_X2
+        %define BRUSH_SIZE_NODE_IN_1_X1 
+        %define BRUSH_SIZE_NODE_IN_1_X2 
 
-        %define BRUSH_SIZE_NODE_3_X1
-        %define BRUSH_SIZE_NODE_3_X2
+        %define BRUSH_SIZE_NODE_OUT_1_X1 
+        %define BRUSH_SIZE_NODE_OUT_1_X2 
 
-        %define BRUSH_SIZE_NODE_4_X1
-        %define BRUSH_SIZE_NODE_4_X2
+        %define BRUSH_SIZE_NODE_IN_2_X1 
+        %define BRUSH_SIZE_NODE_IN_2_X2 
 
-        %define BRUSH_SIZE_NODE_5_X1
-        %define BRUSH_SIZE_NODE_5_X2
+        %define BRUSH_SIZE_NODE_OUT_2_X1 
+        %define BRUSH_SIZE_NODE_OUT_2_X2 
+
+        %define BRUSH_SIZE_NODE_IN_3_X1 
+        %define BRUSH_SIZE_NODE_IN_3_X2 
+
+        %define BRUSH_SIZE_NODE_OUT_3_X1 
+        %define BRUSH_SIZE_NODE_OUT_3_X2 
 
         ; MINUS
-        %define BRUSH_SIZE_MINUS_X1
-        %define BRUSH_SIZE_MINUS_Y1
-        %define BRUSH_SIZE_MINUS_X2
-        %define BRUSH_SIZE_MINUS_Y2
+        %define BRUSH_SIZE_MINUS_1_X1 644
+        %define BRUSH_SIZE_MINUS_1_Y1 379
+        %define BRUSH_SIZE_MINUS_1_X2 659
+        %define BRUSH_SIZE_MINUS_1_Y2 394
+
+        %define BRUSH_SIZE_MINUS_2_X1 646
+        %define BRUSH_SIZE_MINUS_2_Y1 385
+        %define BRUSH_SIZE_MINUS_2_X2 657
+        %define BRUSH_SIZE_MINUS_2_Y2 388
 
         ; PLUS
-        %define BRUSH_SIZE_PLUS_1_X1
-        %define BRUSH_SIZE_PLUS_1_Y1
-        %define BRUSH_SIZE_PLUS_1_X2
-        %define BRUSH_SIZE_PLUS_1_Y2
+        %define BRUSH_SIZE_PLUS_1_X1 
+        %define BRUSH_SIZE_PLUS_1_Y1 
+        %define BRUSH_SIZE_PLUS_1_X2 
+        %define BRUSH_SIZE_PLUS_1_Y2 
 
-        %define BRUSH_SIZE_PLUS_2_X1
-        %define BRUSH_SIZE_PLUS_2_Y1
-        %define BRUSH_SIZE_PLUS_2_X2
-        %define BRUSH_SIZE_PLUS_2_Y2
+        %define BRUSH_SIZE_PLUS_2_X1 
+        %define BRUSH_SIZE_PLUS_2_Y1 
+        %define BRUSH_SIZE_PLUS_2_X2 
+        %define BRUSH_SIZE_PLUS_2_Y2 
+
+        %define BRUSH_SIZE_PLUS_3_X1 
+        %define BRUSH_SIZE_PLUS_3_Y1 
+        %define BRUSH_SIZE_PLUS_3_X2 
+        %define BRUSH_SIZE_PLUS_3_Y2 
 
         ; COLOR
         %define BRUSH_SIZE_FG_COLOR_R 103
@@ -5973,8 +5989,120 @@ draw_debug:
     .yend_draw_debug9:
     ret
 
-draw_brush:
+draw_brush_minus:
+    ; frame loop - draw_brush_minus1
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
 
+    .yloop_draw_brush_minus1:
+        cmp ecx, HEIGHT
+        jge .yend_draw_brush_minus1
+
+        xor edx, edx
+        .xloop_draw_brush_minus1:
+            cmp edx, WIDTH
+            jge .xend_draw_brush_minus1
+
+            mov ebx, BRUSH_SIZE_MINUS_1_Y1    ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_brush_minus1
+            mov ebx, BRUSH_SIZE_MINUS_1_X1    ; x1
+            cmp edx, ebx
+            jnge .skip_draw_brush_minus1
+
+            mov ebx, BRUSH_SIZE_MINUS_1_Y2   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_brush_minus1
+            mov ebx, BRUSH_SIZE_MINUS_1_X2   ; x2
+            cmp edx, ebx
+            jge .skip_draw_brush_minus1
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, 59
+            mov	[eax], bl
+            ; green
+            mov ebx, 54
+            mov	[eax+1], bl
+            ; red
+            mov ebx, 53
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_brush_minus1:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_brush_minus1
+
+        .xend_draw_brush_minus1:
+            inc ecx
+            jmp .yloop_draw_brush_minus1
+
+    .yend_draw_brush_minus1:
+
+    ; frame loop - draw_brush_minus2
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_brush_minus2:
+        cmp ecx, HEIGHT
+        jge .yend_draw_brush_minus2
+
+        xor edx, edx
+        .xloop_draw_brush_minus2:
+            cmp edx, WIDTH
+            jge .xend_draw_brush_minus2
+
+            mov ebx, BRUSH_SIZE_MINUS_2_Y1    ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_brush_minus2
+            mov ebx, BRUSH_SIZE_MINUS_2_X1    ; x1
+            cmp edx, ebx
+            jnge .skip_draw_brush_minus2
+
+            mov ebx, BRUSH_SIZE_MINUS_2_Y2   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_brush_minus2
+            mov ebx, BRUSH_SIZE_MINUS_2_X2   ; x2
+            cmp edx, ebx
+            jge .skip_draw_brush_minus2
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, BRUSH_SIZE_FG_COLOR_B
+            mov	[eax], bl
+            ; green
+            mov ebx, BRUSH_SIZE_FG_COLOR_G
+            mov	[eax+1], bl
+            ; red
+            mov ebx, BRUSH_SIZE_FG_COLOR_R
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_brush_minus2:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_brush_minus2
+
+        .xend_draw_brush_minus2:
+            inc ecx
+            jmp .yloop_draw_brush_minus2
+
+    .yend_draw_brush_minus2:
+    ret
+
+draw_brush_plus:
+    ret
+
+draw_brush_node:
+    ret
+
+draw_brush:
+    call draw_brush_minus
     ret
 
 brush_3x3star:
