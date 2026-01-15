@@ -1,0 +1,9 @@
+prob hard:
+
+    linear:
+    conv:
+
+prob not so hard idk tho:
+
+    reLU:
+    argMax:

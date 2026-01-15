@@ -7571,49 +7571,46 @@ rescale:
     ; resized_canvas_data -> rescaled_canvas_data
     ; int -> float
 
+    push edi
+    push esi
+
     xor ecx, ecx
     xorps xmm0, xmm0
-    mov eax, resized_canvas_data
+    mov esi, resized_canvas_data
     mov edi, rescaled_canvas_data
 
-    .yloop_rescale:
-        cmp ecx, 28
-        jge .yend_rescale
+    .loop_rescale:
+        cmp ecx, 196    ; 28 * 28 / 4 cuz egyszerre negyen dolgozunk
+        jge .end_rescale
 
-        xor edx, edx
-        .xloop_rescale:
-            cmp edx, 7
-            jge .xend_rescale
+        ; conv2float + temp store
+            cvtsi2ss xmm0, [esi]
+            movd [edi], xmm0
 
-                ; copy data (convert)
-                    cvtsi2ss xmm0, [eax]
-                    add eax, 4  ; next pixel
-                    ; shift xmm0 ??? left
+            cvtsi2ss xmm0, [esi+4]
+            movd [edi+4], xmm0
 
-                    cvtsi2ss xmm0, [eax]
-                    add eax, 4  ; next pixel
-                    ; shift xmm0 ??? left
+            cvtsi2ss xmm0, [esi+8]
+            movd [edi+8], xmm0
 
-                    cvtsi2ss xmm0, [eax]
-                    add eax, 4  ; next pixel
-                    ; shift xmm0 ??? left
+            cvtsi2ss xmm0, [esi+12]
+            movd [edi+12], xmm0
 
-                    cvtsi2ss xmm0, [eax]
-                    add eax, 4  ; next pixel
-                    ; shift xmm0 ??? left
+        ; maga a rescale part
+            movaps xmm0, [edi]
+            divps xmm0, [rescale_div]
+            movaps [edi], xmm0
 
-                ; rescale data 
-                divps xmm0, [rescale_div]
+        add esi, 16
+        add edi, 16
+        inc ecx
+        jmp .loop_rescale
 
-                ; store data
-                movaps [edx], xmm0
+    .end_rescale:
 
-            inc edx
-        .xend_rescale:
-            inc ecx
-            jmp .yloop_rescale
+    pop esi
+    pop edi
 
-    .yend_rescale:
     ret
 
 linear:
@@ -8468,4 +8465,7 @@ section .data
     caption db "Get da numbs w/ CNN", 0
 	errormsg db "ERROR: could not initialize graphics!", 0
     dbg db "debug", 0
-    rescale_div dw 65280
+
+    ; AI
+        align 16
+        rescale_div dd 255.0, 255.0, 255.0, 255.0
