@@ -132,10 +132,10 @@
 
     ; BRUSH SIZE
         ; NODE
-        %define BRUSH_SIZE_NODE_IN_Y1 381
-        %define BRUSH_SIZE_NODE_IN_Y2 392
-        %define BRUSH_SIZE_NODE_IN_X1 667
-        %define BRUSH_SIZE_NODE_IN_X2 678
+        %define BRUSH_SIZE_NODE_IN_Y1 382
+        %define BRUSH_SIZE_NODE_IN_Y2 391
+        %define BRUSH_SIZE_NODE_IN_X1 668
+        %define BRUSH_SIZE_NODE_IN_X2 677
 
         %define BRUSH_SIZE_NODE_OUT_Y1 379
         %define BRUSH_SIZE_NODE_OUT_Y2 394
@@ -6359,16 +6359,16 @@ draw_brush:
 
     mov eax, [esp+4]    ; get (0,0)
 
-        mov ebx, [brush_size]
-        cmp ebx, 1
+        xor ebx, ebx
+        mov BYTE bl, [brush_size]
+
+        cmp bl, 1
         jnge .draw_brush_size_0
 
-        mov ebx, [brush_size]
-        cmp ebx, 2
+        cmp bl, 2
         jnge .draw_brush_size_1
 
-        mov ebx, [brush_size]
-        cmp ebx, 3
+        cmp bl, 3
         jnge .draw_brush_size_2
 
     ; size 3
@@ -6582,7 +6582,7 @@ draw_brush:
 
         mov eax, [esp+4]    ; get (0,0)
         push eax                            ; save (0,0)
-        mov ebx, 0                          ; eltolas
+        mov ebx, 19                          ; eltolas
         push ebx
         mov ebx, BRUSH_SIZE_ACTIVE_COLOR_R  ; R
         push ebx
@@ -6601,7 +6601,7 @@ draw_brush:
 
         mov eax, [esp+4]    ; get (0,0)
         push eax                            ; save (0,0)
-        mov ebx, 0                          ; eltolas
+        mov ebx, 38                          ; eltolas
         push ebx
         mov ebx, BRUSH_SIZE_FG_COLOR_R  ; R
         push ebx
@@ -6622,16 +6622,15 @@ draw_brush:
     ret
 
 brush_size_logic:
-    mov ebx, [brush_size]
-    cmp ebx, 1
+    xor ebx, ebx
+    mov BYTE bl, [brush_size]
+    cmp bl, 1
     jnge .brush_size_logic_0
 
-    mov ebx, [brush_size]
-    cmp ebx, 2
+    cmp bl, 2
     jnge .brush_size_logic_1
 
-    mov ebx, [brush_size]
-    cmp ebx, 3
+    cmp bl, 3
     jnge .brush_size_logic_2
 
     ; size 3 - 5x5star
@@ -6640,7 +6639,6 @@ brush_size_logic:
 
     ; size 0 - 1x1
     .brush_size_logic_0:
-        call brush_1x1
         jmp .brush_size_skip
 
     ; size 1 - 2x2
@@ -6653,9 +6651,6 @@ brush_size_logic:
         call brush_3x3star
 
     .brush_size_skip:
-    ret
-
-brush_1x1:
     ret
 
 brush_2x2:
@@ -7077,8 +7072,13 @@ main:
     .init:
         xor esi, esi    ; return eventloop info
         xor edi, edi    ; eventloop timeout
-        mov eax, 2
-        mov [brush_size], eax
+
+        xor eax, eax
+        mov al, 2
+        mov BYTE [brush_size], al
+
+        xor eax, eax
+        mov BYTE [brush_size_timeout], al
         xor eax, eax
 
         call canvas_init
@@ -7568,6 +7568,16 @@ main:
 
         ; event loop 
             ; handle timeout
+            xor eax, eax
+            mov BYTE al, [brush_size_timeout]
+            cmp al, 0
+            jng .skip_brush_timeout
+
+            sub al, 1
+            mov BYTE [brush_size_timeout], al
+            xor eax, eax
+            .skip_brush_timeout:
+
             cmp esi, 0
             je .eventloop
             cmp edi, 0
@@ -7799,10 +7809,18 @@ main:
                             mov eax, [brush_size]
                             cmp eax, 0
                             jng .eventloop
+                            mov ebx, [brush_size_timeout]
+                            cmp ebx, 0
+                            jg .eventloop
 
-                                mov eax, [brush_size]
-                                dec eax
-                                mov [brush_size], eax
+                                xor eax, eax
+                                xor ebx, ebx
+
+                                mov bl, 8
+                                mov BYTE [brush_size_timeout], bl
+                                mov BYTE al, [brush_size]
+                                sub eax, 1
+                                mov BYTE [brush_size], al
 
                             jmp .eventloop
 
@@ -7822,10 +7840,18 @@ main:
                             mov eax, [brush_size]
                             cmp eax, 3
                             jge .eventloop
+                            mov ebx, [brush_size_timeout]
+                            cmp ebx, 0
+                            jg .eventloop
 
-                                mov eax, [brush_size]
-                                inc eax
-                                mov [brush_size], eax
+                                xor eax, eax
+                                xor ebx, ebx
+
+                                mov bl, 8
+                                mov BYTE [brush_size_timeout], bl
+                                mov BYTE al, [brush_size]
+                                add al, 1
+                                mov BYTE [brush_size], al
 
                             jmp .eventloop
 
@@ -7860,6 +7886,7 @@ section .bss
     ; UI/UX
         mouse_pressed resb 1
         brush_size resb 1
+        brush_size_timeout resb 1
 
 section .data
     caption db "Get da numbs w/ CNN", 0
