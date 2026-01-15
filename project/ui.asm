@@ -7360,18 +7360,91 @@ handle_delete:
     call canvas_init
     ret
 
+run_copy:
+    push esi
+    push edi
+    push ebx
+    
+    mov esi, resized_canvas_data
+    mov edi, canvas_data
+
+    xor ecx, ecx
+
+    .y_loop_upscale:
+        cmp ecx, 28
+        jge .end_upscale
+
+        xor edx, edx
+        .x_loop_upscale:
+            cmp edx, 28
+            jge .next_row_upscale
+
+            mov eax, [esi]
+            add esi, 4
+            
+            mov ah, al
+            shl eax, 8
+            mov al, ah
+            
+            push ecx
+            push edx
+            push esi
+
+            mov ebx, ecx
+            imul ebx, 28672
+            
+            mov esi, edx
+            shl esi, 6
+            
+            add ebx, esi
+            add ebx, edi
+            
+            xor ecx, ecx
+            .draw_block_y:
+                cmp ecx, 16
+                jge .draw_block_end
+                
+                xor edx, edx
+                .draw_block_x:
+                    cmp edx, 16
+                    jge .draw_block_next_line
+                    
+                    mov [ebx], eax
+                    add ebx, 4
+                    inc edx
+                    jmp .draw_block_x
+                    
+                .draw_block_next_line:
+                add ebx, 1728
+                inc ecx
+                jmp .draw_block_y
+                
+            .draw_block_end:
+            pop esi
+            pop edx
+            pop ecx
+
+            inc edx
+            jmp .x_loop_upscale
+
+        .next_row_upscale:
+        inc ecx
+        jmp .y_loop_upscale
+
+    .end_upscale:
+    pop ebx
+    pop edi
+    pop esi
+    ret
+
 handle_run:
     ;TODO
     ; debug only
     call resize
 
-        ; egy kis debug cucc, hogy lassam is mit csinal a progi
-        xor ebx, ebx
-        mov BYTE bl, [debug_window]
-        xor bl, 1
-        mov BYTE [debug_window], bl
+    call run_copy
 
-    ;call rescale
+    call rescale
     ret
 
 handle_canvas:
@@ -7413,12 +7486,11 @@ handle_canvas:
 resize:
     ; resize loop
     ; canvas_data -> resized_canvas_data
-    ; (448 * 448) -> (28 * 28)
+    ; 448 * 448 -> 28 * 28
 
     push esi
     push edi
     xor ecx, ecx
-    mov eax, canvas_data
     mov edi, resized_canvas_data
 
     .yloop_resize:
@@ -7430,43 +7502,61 @@ resize:
             cmp edx, 28
             jge .xend_resize
 
-                ; (16 * 16) -> (1 * 1)
+                ; 16 * 16 -> 1 * 1
                 push ecx
                 push edx
 
                 xor ebx, ebx
-                xor edx, edx
                 xor esi, esi
 
+                ; calc start poz
+                    mov eax, ecx
+                    imul eax, 28672     ; skip y * 16 * 1792
+
+                    mov ebx, edx
+                    shl ebx, 6          ; skip x * 16 * 4
+
+                    add eax, ebx
+                    add eax, canvas_data
+
+                xor ebx, ebx
+                xor edx, edx
+                xor ecx, ecx
+
                 .canvas_yloop:
-                    cmp ebx, 16
+                    cmp ecx, 16
                     jge .canvas_yloop_end
                 
-                    xor ecx, ecx
+                    xor edx, edx
                     .canvas_xloop:
-                        cmp ecx, 16
+                        cmp edx, 16
                         jge .canvas_xloop_end
-                        
-                            mov edx, [eax]
-                            and edx, 0x0000FF00     ; xor to get red channel
-                            add [edi], dh
+
+                            mov ebx, [eax]
+                            and ebx, 0x0000FF00
+                            shr ebx, 8
+                            add esi, ebx
 
                         add eax, 4  ; next pixel
-                        inc ecx
+                        inc edx
+                        jmp .canvas_xloop
                     .canvas_xloop_end:
-                        add eax, 1728   ; next row
+                        add eax, 1792   ; next row
                         sub eax, 64     ; reset to the left side
-                        inc ebx
+                        inc ecx
                         jmp .canvas_yloop
 
                 .canvas_yloop_end:
+                shr esi, 8
                 mov [edi], esi
+
                 add edi, 4
 
                 pop edx
                 pop ecx
 
             inc edx
+            jmp .xloop_resize
         .xend_resize:
             inc ecx
             jmp .yloop_resize
@@ -7565,10 +7655,6 @@ main:
 
         xor eax, eax
         mov BYTE [brush_size_timeout], al
-        xor eax, eax
-
-        xor eax, eax
-        mov BYTE [debug_window], al
         xor eax, eax
 
         call canvas_init
@@ -8377,8 +8463,6 @@ section .bss
         mouse_pressed resb 1
         brush_size resb 1
         brush_size_timeout resb 1
-
-        debug_window resb 1
 
 section .data
     caption db "Get da numbs w/ CNN", 0
