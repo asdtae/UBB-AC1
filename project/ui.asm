@@ -132,29 +132,15 @@
 
     ; BRUSH SIZE
         ; NODE
-        %define BRUSH_SIZE_NODE_IN_Y1 
-        %define BRUSH_SIZE_NODE_IN_Y2 
+        %define BRUSH_SIZE_NODE_IN_Y1 381
+        %define BRUSH_SIZE_NODE_IN_Y2 392
+        %define BRUSH_SIZE_NODE_IN_X1 667
+        %define BRUSH_SIZE_NODE_IN_X2 678
 
-        %define BRUSH_SIZE_NODE_OUT_Y1 
-        %define BRUSH_SIZE_NODE_OUT_Y2 
-
-        %define BRUSH_SIZE_NODE_IN_1_X1 
-        %define BRUSH_SIZE_NODE_IN_1_X2 
-
-        %define BRUSH_SIZE_NODE_OUT_1_X1 
-        %define BRUSH_SIZE_NODE_OUT_1_X2 
-
-        %define BRUSH_SIZE_NODE_IN_2_X1 
-        %define BRUSH_SIZE_NODE_IN_2_X2 
-
-        %define BRUSH_SIZE_NODE_OUT_2_X1 
-        %define BRUSH_SIZE_NODE_OUT_2_X2 
-
-        %define BRUSH_SIZE_NODE_IN_3_X1 
-        %define BRUSH_SIZE_NODE_IN_3_X2 
-
-        %define BRUSH_SIZE_NODE_OUT_3_X1 
-        %define BRUSH_SIZE_NODE_OUT_3_X2 
+        %define BRUSH_SIZE_NODE_OUT_Y1 379
+        %define BRUSH_SIZE_NODE_OUT_Y2 394
+        %define BRUSH_SIZE_NODE_OUT_X1 665
+        %define BRUSH_SIZE_NODE_OUT_X2 680
 
         ; MINUS
         %define BRUSH_SIZE_MINUS_1_X1 644
@@ -168,25 +154,29 @@
         %define BRUSH_SIZE_MINUS_2_Y2 388
 
         ; PLUS
-        %define BRUSH_SIZE_PLUS_1_X1 
-        %define BRUSH_SIZE_PLUS_1_Y1 
-        %define BRUSH_SIZE_PLUS_1_X2 
-        %define BRUSH_SIZE_PLUS_1_Y2 
+        %define BRUSH_SIZE_PLUS_1_X1 724
+        %define BRUSH_SIZE_PLUS_1_Y1 379
+        %define BRUSH_SIZE_PLUS_1_X2 739
+        %define BRUSH_SIZE_PLUS_1_Y2 394
 
-        %define BRUSH_SIZE_PLUS_2_X1 
-        %define BRUSH_SIZE_PLUS_2_Y1 
-        %define BRUSH_SIZE_PLUS_2_X2 
-        %define BRUSH_SIZE_PLUS_2_Y2 
+        %define BRUSH_SIZE_PLUS_2_X1 726
+        %define BRUSH_SIZE_PLUS_2_Y1 385
+        %define BRUSH_SIZE_PLUS_2_X2 737
+        %define BRUSH_SIZE_PLUS_2_Y2 388
 
-        %define BRUSH_SIZE_PLUS_3_X1 
-        %define BRUSH_SIZE_PLUS_3_Y1 
-        %define BRUSH_SIZE_PLUS_3_X2 
-        %define BRUSH_SIZE_PLUS_3_Y2 
+        %define BRUSH_SIZE_PLUS_3_X1 730
+        %define BRUSH_SIZE_PLUS_3_Y1 381
+        %define BRUSH_SIZE_PLUS_3_X2 733
+        %define BRUSH_SIZE_PLUS_3_Y2 392
 
         ; COLOR
         %define BRUSH_SIZE_FG_COLOR_R 103
         %define BRUSH_SIZE_FG_COLOR_G 105
         %define BRUSH_SIZE_FG_COLOR_B 116
+
+        %define BRUSH_SIZE_BG_COLOR_R 53
+        %define BRUSH_SIZE_BG_COLOR_G 54
+        %define BRUSH_SIZE_BG_COLOR_B 59
 
         %define BRUSH_SIZE_ACTIVE_COLOR_R 113
         %define BRUSH_SIZE_ACTIVE_COLOR_G 151
@@ -6019,13 +6009,13 @@ draw_brush_minus:
 
             ; Pixel color in RGBA
             ; blue
-            mov ebx, 59
+            mov ebx, BRUSH_SIZE_BG_COLOR_B
             mov	[eax], bl
             ; green
-            mov ebx, 54
+            mov ebx, BRUSH_SIZE_BG_COLOR_G
             mov	[eax+1], bl
             ; red
-            mov ebx, 53
+            mov ebx, BRUSH_SIZE_BG_COLOR_R
             mov	[eax+2], bl
             ; zero
             xor	ebx, ebx
@@ -6096,18 +6086,582 @@ draw_brush_minus:
     ret
 
 draw_brush_plus:
+    ; frame loop - draw_brush_plus1
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_brush_plus1:
+        cmp ecx, HEIGHT
+        jge .yend_draw_brush_plus1
+
+        xor edx, edx
+        .xloop_draw_brush_plus1:
+            cmp edx, WIDTH
+            jge .xend_draw_brush_plus1
+
+            mov ebx, BRUSH_SIZE_PLUS_1_Y1    ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_brush_plus1
+            mov ebx, BRUSH_SIZE_PLUS_1_X1    ; x1
+            cmp edx, ebx
+            jnge .skip_draw_brush_plus1
+
+            mov ebx, BRUSH_SIZE_PLUS_1_Y2   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_brush_plus1
+            mov ebx, BRUSH_SIZE_PLUS_1_X2   ; x2
+            cmp edx, ebx
+            jge .skip_draw_brush_plus1
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, BRUSH_SIZE_BG_COLOR_B
+            mov	[eax], bl
+            ; green
+            mov ebx, BRUSH_SIZE_BG_COLOR_G
+            mov	[eax+1], bl
+            ; red
+            mov ebx, BRUSH_SIZE_BG_COLOR_R
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_brush_plus1:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_brush_plus1
+
+        .xend_draw_brush_plus1:
+            inc ecx
+            jmp .yloop_draw_brush_plus1
+
+    .yend_draw_brush_plus1:
+
+    ; frame loop - draw_brush_plus2
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_brush_plus2:
+        cmp ecx, HEIGHT
+        jge .yend_draw_brush_plus2
+
+        xor edx, edx
+        .xloop_draw_brush_plus2:
+            cmp edx, WIDTH
+            jge .xend_draw_brush_plus2
+
+            mov ebx, BRUSH_SIZE_PLUS_2_Y1    ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_brush_plus2
+            mov ebx, BRUSH_SIZE_PLUS_2_X1    ; x1
+            cmp edx, ebx
+            jnge .skip_draw_brush_plus2
+
+            mov ebx, BRUSH_SIZE_PLUS_2_Y2   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_brush_plus2
+            mov ebx, BRUSH_SIZE_PLUS_2_X2   ; x2
+            cmp edx, ebx
+            jge .skip_draw_brush_plus2
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, BRUSH_SIZE_FG_COLOR_B
+            mov	[eax], bl
+            ; green
+            mov ebx, BRUSH_SIZE_FG_COLOR_G
+            mov	[eax+1], bl
+            ; red
+            mov ebx, BRUSH_SIZE_FG_COLOR_R
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_brush_plus2:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_brush_plus2
+
+        .xend_draw_brush_plus2:
+            inc ecx
+            jmp .yloop_draw_brush_plus2
+
+    .yend_draw_brush_plus2:
+
+    ; frame loop - draw_brush_plus3
+    xor ecx, ecx
+    mov eax, [esp+8]     ; get (0,0)
+
+    .yloop_draw_brush_plus3:
+        cmp ecx, HEIGHT
+        jge .yend_draw_brush_plus3
+
+        xor edx, edx
+        .xloop_draw_brush_plus3:
+            cmp edx, WIDTH
+            jge .xend_draw_brush_plus3
+
+            mov ebx, BRUSH_SIZE_PLUS_3_Y1    ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_brush_plus3
+            mov ebx, BRUSH_SIZE_PLUS_3_X1    ; x1
+            cmp edx, ebx
+            jnge .skip_draw_brush_plus3
+
+            mov ebx, BRUSH_SIZE_PLUS_3_Y2   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_brush_plus3
+            mov ebx, BRUSH_SIZE_PLUS_3_X2   ; x2
+            cmp edx, ebx
+            jge .skip_draw_brush_plus3
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, BRUSH_SIZE_FG_COLOR_B
+            mov	[eax], bl
+            ; green
+            mov ebx, BRUSH_SIZE_FG_COLOR_G
+            mov	[eax+1], bl
+            ; red
+            mov ebx, BRUSH_SIZE_FG_COLOR_R
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_brush_plus3:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_brush_plus3
+
+        .xend_draw_brush_plus3:
+            inc ecx
+            jmp .yloop_draw_brush_plus3
+
+    .yend_draw_brush_plus3:
     ret
 
 draw_brush_node:
+    ; frame loop - draw_brush_node1
+    xor ecx, ecx
+    mov eax, [esp+20]     ; get (0,0)
+
+    .yloop_draw_brush_node1:
+        cmp ecx, HEIGHT
+        jge .yend_draw_brush_node1
+
+        xor edx, edx
+        .xloop_draw_brush_node1:
+            cmp edx, WIDTH
+            jge .xend_draw_brush_node1
+
+            mov ebx, BRUSH_SIZE_NODE_OUT_Y1    ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_brush_node1
+            mov ebx, BRUSH_SIZE_NODE_OUT_X1    ; x1
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jnge .skip_draw_brush_node1
+
+            mov ebx, BRUSH_SIZE_NODE_OUT_Y2   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_brush_node1
+            mov ebx, BRUSH_SIZE_NODE_OUT_X2   ; x2
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jge .skip_draw_brush_node1
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, BRUSH_SIZE_BG_COLOR_B
+            mov	[eax], bl
+            ; green
+            mov ebx, BRUSH_SIZE_BG_COLOR_G
+            mov	[eax+1], bl
+            ; red
+            mov ebx, BRUSH_SIZE_BG_COLOR_R
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_brush_node1:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_brush_node1
+
+        .xend_draw_brush_node1:
+            inc ecx
+            jmp .yloop_draw_brush_node1
+
+    .yend_draw_brush_node1:
+
+    ; frame loop - draw_brush_node2
+    xor ecx, ecx
+    mov eax, [esp+20]     ; get (0,0)
+
+    .yloop_draw_brush_node2:
+        cmp ecx, HEIGHT
+        jge .yend_draw_brush_node2
+
+        xor edx, edx
+        .xloop_draw_brush_node2:
+            cmp edx, WIDTH
+            jge .xend_draw_brush_node2
+
+            mov ebx, BRUSH_SIZE_NODE_IN_Y1    ; y1
+            cmp ecx, ebx
+            jnge .skip_draw_brush_node2
+            mov ebx, BRUSH_SIZE_NODE_IN_X1    ; x1
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jnge .skip_draw_brush_node2
+
+            mov ebx, BRUSH_SIZE_NODE_IN_Y2   ; y2
+            cmp ecx, ebx
+            jge .skip_draw_brush_node2
+            mov ebx, BRUSH_SIZE_NODE_IN_X2   ; x2
+            add ebx, [esp+16]
+            cmp edx, ebx
+            jge .skip_draw_brush_node2
+
+            ; Pixel color in RGBA
+            ; blue
+            mov ebx, [esp+4]
+            mov	[eax], bl
+            ; green
+            mov ebx, [esp+8]
+            mov	[eax+1], bl
+            ; red
+            mov ebx, [esp+12]
+            mov	[eax+2], bl
+            ; zero
+            xor	ebx, ebx
+            mov	[eax+3], bl
+
+            .skip_draw_brush_node2:
+            add	eax, 4  ; next pixel
+            inc edx
+            jmp .xloop_draw_brush_node2
+
+        .xend_draw_brush_node2:
+            inc ecx
+            jmp .yloop_draw_brush_node2
+
+    .yend_draw_brush_node2:
     ret
 
 draw_brush:
     call draw_brush_minus
+    call draw_brush_plus
+
+    mov eax, [esp+4]    ; get (0,0)
+
+        mov ebx, [brush_size]
+        cmp ebx, 1
+        jnge .draw_brush_size_0
+
+        mov ebx, [brush_size]
+        cmp ebx, 2
+        jnge .draw_brush_size_1
+
+        mov ebx, [brush_size]
+        cmp ebx, 3
+        jnge .draw_brush_size_2
+
+    ; size 3
+    
+        push eax                            ; save (0,0)
+        mov ebx, 0                          ; eltolas
+        push ebx
+        mov ebx, BRUSH_SIZE_ACTIVE_COLOR_R  ; R
+        push ebx
+        mov ebx, BRUSH_SIZE_ACTIVE_COLOR_G  ; G
+        push ebx
+        mov ebx, BRUSH_SIZE_ACTIVE_COLOR_B  ; B
+        push ebx
+
+        call draw_brush_node
+
+        pop ebx    ; B
+        pop ebx    ; G
+        pop ebx    ; R
+        pop ebx    ; eltolas
+        pop ebx    ; save (0,0)
+
+        mov eax, [esp+4]    ; get (0,0)
+        push eax                            ; save (0,0)
+        mov ebx, 19                         ; eltolas
+        push ebx
+        mov ebx, BRUSH_SIZE_ACTIVE_COLOR_R  ; R
+        push ebx
+        mov ebx, BRUSH_SIZE_ACTIVE_COLOR_G  ; G
+        push ebx
+        mov ebx, BRUSH_SIZE_ACTIVE_COLOR_B  ; B
+        push ebx
+
+        call draw_brush_node
+
+        pop ebx    ; B
+        pop ebx    ; G
+        pop ebx    ; R
+        pop ebx    ; eltolas
+        pop ebx    ; save (0,0)
+
+        mov eax, [esp+4]    ; get (0,0)
+        push eax                            ; save (0,0)
+        mov ebx, 38                         ; eltolas
+        push ebx
+        mov ebx, BRUSH_SIZE_ACTIVE_COLOR_R  ; R
+        push ebx
+        mov ebx, BRUSH_SIZE_ACTIVE_COLOR_G  ; G
+        push ebx
+        mov ebx, BRUSH_SIZE_ACTIVE_COLOR_B  ; B
+        push ebx
+
+        call draw_brush_node
+
+        pop ebx    ; B
+        pop ebx    ; G
+        pop ebx    ; R
+        pop ebx    ; eltolas
+        pop ebx    ; save (0,0)
+
+    jmp .draw_brush_end
+        
+    ; size 0
+
+    .draw_brush_size_0:
+
+        mov eax, [esp+4]    ; get (0,0)
+        push eax                            ; save (0,0)
+        mov ebx, 0                          ; eltolas
+        push ebx
+        mov ebx, BRUSH_SIZE_FG_COLOR_R  ; R
+        push ebx
+        mov ebx, BRUSH_SIZE_FG_COLOR_G  ; G
+        push ebx
+        mov ebx, BRUSH_SIZE_FG_COLOR_B  ; B
+        push ebx
+
+        call draw_brush_node
+
+        pop ebx    ; B
+        pop ebx    ; G
+        pop ebx    ; R
+        pop ebx    ; eltolas
+        pop ebx    ; save (0,0)
+
+        mov eax, [esp+4]    ; get (0,0)
+        push eax                            ; save (0,0)
+        mov ebx, 19                          ; eltolas
+        push ebx
+        mov ebx, BRUSH_SIZE_FG_COLOR_R  ; R
+        push ebx
+        mov ebx, BRUSH_SIZE_FG_COLOR_G  ; G
+        push ebx
+        mov ebx, BRUSH_SIZE_FG_COLOR_B  ; B
+        push ebx
+
+        call draw_brush_node
+
+        pop ebx    ; B
+        pop ebx    ; G
+        pop ebx    ; R
+        pop ebx    ; eltolas
+        pop ebx    ; save (0,0)
+
+        mov eax, [esp+4]    ; get (0,0)
+        push eax                            ; save (0,0)
+        mov ebx, 38                          ; eltolas
+        push ebx
+        mov ebx, BRUSH_SIZE_FG_COLOR_R  ; R
+        push ebx
+        mov ebx, BRUSH_SIZE_FG_COLOR_G  ; G
+        push ebx
+        mov ebx, BRUSH_SIZE_FG_COLOR_B  ; B
+        push ebx
+
+        call draw_brush_node
+
+        pop ebx    ; B
+        pop ebx    ; G
+        pop ebx    ; R
+        pop ebx    ; eltolas
+        pop ebx    ; save (0,0)
+
+    jmp .draw_brush_end
+
+    ; size 1
+
+    .draw_brush_size_1:
+
+        mov eax, [esp+4]    ; get (0,0)
+        push eax                            ; save (0,0)
+        mov ebx, 0                          ; eltolas
+        push ebx
+        mov ebx, BRUSH_SIZE_ACTIVE_COLOR_R  ; R
+        push ebx
+        mov ebx, BRUSH_SIZE_ACTIVE_COLOR_G  ; G
+        push ebx
+        mov ebx, BRUSH_SIZE_ACTIVE_COLOR_B  ; B
+        push ebx
+
+        call draw_brush_node
+
+        pop ebx    ; B
+        pop ebx    ; G
+        pop ebx    ; R
+        pop ebx    ; eltolas
+        pop ebx    ; save (0,0)
+
+        mov eax, [esp+4]    ; get (0,0)
+        push eax                            ; save (0,0)
+        mov ebx, 19                          ; eltolas
+        push ebx
+        mov ebx, BRUSH_SIZE_FG_COLOR_R  ; R
+        push ebx
+        mov ebx, BRUSH_SIZE_FG_COLOR_G  ; G
+        push ebx
+        mov ebx, BRUSH_SIZE_FG_COLOR_B  ; B
+        push ebx
+
+        call draw_brush_node
+
+        pop ebx    ; B
+        pop ebx    ; G
+        pop ebx    ; R
+        pop ebx    ; eltolas
+        pop ebx    ; save (0,0)
+
+        mov eax, [esp+4]    ; get (0,0)
+        push eax                            ; save (0,0)
+        mov ebx, 38                          ; eltolas
+        push ebx
+        mov ebx, BRUSH_SIZE_FG_COLOR_R  ; R
+        push ebx
+        mov ebx, BRUSH_SIZE_FG_COLOR_G  ; G
+        push ebx
+        mov ebx, BRUSH_SIZE_FG_COLOR_B  ; B
+        push ebx
+
+        call draw_brush_node
+
+        pop ebx    ; B
+        pop ebx    ; G
+        pop ebx    ; R
+        pop ebx    ; eltolas
+        pop ebx    ; save (0,0)
+
+    jmp .draw_brush_end
+
+    ; size 2
+
+    .draw_brush_size_2:
+
+        mov eax, [esp+4]    ; get (0,0)
+        push eax                            ; save (0,0)
+        mov ebx, 0                          ; eltolas
+        push ebx
+        mov ebx, BRUSH_SIZE_ACTIVE_COLOR_R  ; R
+        push ebx
+        mov ebx, BRUSH_SIZE_ACTIVE_COLOR_G  ; G
+        push ebx
+        mov ebx, BRUSH_SIZE_ACTIVE_COLOR_B  ; B
+        push ebx
+
+        call draw_brush_node
+
+        pop ebx    ; B
+        pop ebx    ; G
+        pop ebx    ; R
+        pop ebx    ; eltolas
+        pop ebx    ; save (0,0)
+
+        mov eax, [esp+4]    ; get (0,0)
+        push eax                            ; save (0,0)
+        mov ebx, 0                          ; eltolas
+        push ebx
+        mov ebx, BRUSH_SIZE_ACTIVE_COLOR_R  ; R
+        push ebx
+        mov ebx, BRUSH_SIZE_ACTIVE_COLOR_G  ; G
+        push ebx
+        mov ebx, BRUSH_SIZE_ACTIVE_COLOR_B  ; B
+        push ebx
+
+        call draw_brush_node
+
+        pop ebx    ; B
+        pop ebx    ; G
+        pop ebx    ; R
+        pop ebx    ; eltolas
+        pop ebx    ; save (0,0)
+
+        mov eax, [esp+4]    ; get (0,0)
+        push eax                            ; save (0,0)
+        mov ebx, 0                          ; eltolas
+        push ebx
+        mov ebx, BRUSH_SIZE_FG_COLOR_R  ; R
+        push ebx
+        mov ebx, BRUSH_SIZE_FG_COLOR_G  ; G
+        push ebx
+        mov ebx, BRUSH_SIZE_FG_COLOR_B  ; B
+        push ebx
+
+        call draw_brush_node
+
+        pop ebx    ; B
+        pop ebx    ; G
+        pop ebx    ; R
+        pop ebx    ; eltolas
+        pop ebx    ; save (0,0)
+
+    .draw_brush_end:
+    ret
+
+brush_size_logic:
+    mov ebx, [brush_size]
+    cmp ebx, 1
+    jnge .brush_size_logic_0
+
+    mov ebx, [brush_size]
+    cmp ebx, 2
+    jnge .brush_size_logic_1
+
+    mov ebx, [brush_size]
+    cmp ebx, 3
+    jnge .brush_size_logic_2
+
+    ; size 3 - 5x5star
+        call brush_5x5star
+        jmp .brush_size_skip
+
+    ; size 0 - 1x1
+    .brush_size_logic_0:
+        call brush_1x1
+        jmp .brush_size_skip
+
+    ; size 1 - 2x2
+    .brush_size_logic_1:
+        call brush_2x2
+        jmp .brush_size_skip
+
+    ; size 2 - 3x3star
+    .brush_size_logic_2:
+        call brush_3x3star
+
+    .brush_size_skip:
+    ret
+
+brush_1x1:
+    ret
+
+brush_2x2:
     ret
 
 brush_3x3star:
-
-
     ; inner circle
         ; right
             mov ecx, 4
@@ -6325,6 +6879,9 @@ brush_3x3star:
             mov	[eax+3], bl
     ret
 
+brush_5x5star:
+    ret
+
 handle_delete:
     call canvas_init
     ret
@@ -6369,7 +6926,7 @@ handle_canvas:
         mov	[eax+3], bl
 
     ; brush size
-    call brush_3x3star
+    call brush_size_logic
     ret
 
 ; AI
@@ -6520,6 +7077,10 @@ main:
     .init:
         xor esi, esi    ; return eventloop info
         xor edi, edi    ; eventloop timeout
+        mov eax, 2
+        mov [brush_size], eax
+        xor eax, eax
+
         call canvas_init
         jmp .mainloop
 
@@ -7046,6 +7607,8 @@ main:
 
                 ; button 1 / button 2 / debug
                 call gfx_getmouse
+                cmp ebx, BRUSH_SIZE_MINUS_1_Y1
+                jge .brush_size_event
                 cmp ebx, BUTTONS_WRAPPER_Y2
                 jg .debug_event
                     
@@ -7215,6 +7778,57 @@ main:
 
                     .debug_event_skip:
 
+                ; brush_size_event
+                .brush_size_event:
+                    cmp eax, BRUSH_SIZE_MINUS_1_X2
+                    jg .brush_size_plus
+
+
+                    ; brush size minus
+                        cmp eax, BRUSH_SIZE_MINUS_1_X1
+                        jnge .miss_event
+                        cmp ebx, BRUSH_SIZE_MINUS_1_Y1
+                        jnge .miss_event
+
+                        cmp eax, BRUSH_SIZE_MINUS_1_X2
+                        jge .miss_event
+                        cmp ebx, BRUSH_SIZE_MINUS_1_Y2
+                        jge .miss_event
+
+                            ; press logic
+                            mov eax, [brush_size]
+                            cmp eax, 0
+                            jng .eventloop
+
+                                mov eax, [brush_size]
+                                dec eax
+                                mov [brush_size], eax
+
+                            jmp .eventloop
+
+                    ; brush size plus
+                    .brush_size_plus:
+                        cmp eax, BRUSH_SIZE_PLUS_1_X1
+                        jnge .miss_event
+                        cmp ebx, BRUSH_SIZE_PLUS_1_Y1
+                        jnge .miss_event
+
+                        cmp eax, BRUSH_SIZE_PLUS_1_X2
+                        jge .miss_event
+                        cmp ebx, BRUSH_SIZE_PLUS_1_Y2
+                        jge .miss_event
+
+                            ; press logic
+                            mov eax, [brush_size]
+                            cmp eax, 3
+                            jge .eventloop
+
+                                mov eax, [brush_size]
+                                inc eax
+                                mov [brush_size], eax
+
+                            jmp .eventloop
+
                 ; left click on empty space
                 .miss_event:
 
@@ -7232,21 +7846,20 @@ main:
         ret
 
 section .bss
-    align 16    ; memory eleres cucc orarol
-                ; oszthato 16-al a cim -> gyorsabb eleres
-
     ; AI
-    canvas_data resb 448 * 448 * 4
+        align 16    ; memory eleres cucc orarol
+                    ; oszthato 16-al a cim -> gyorsabb eleres
+        canvas_data resb 448 * 448 * 4
 
-    align 16
-    resized_canvas_data resb 28 * 28 * 4
+        align 16
+        resized_canvas_data resb 28 * 28 * 4
 
-    align 16
-    rescaled_canvas_data resb 28 * 28 * 4
+        align 16
+        rescaled_canvas_data resb 28 * 28 * 4
 
     ; UI/UX
-    mouse_pressed resb 1
-    brush_size resb 1
+        mouse_pressed resb 1
+        brush_size resb 1
 
 section .data
     caption db "Get da numbs w/ CNN", 0
