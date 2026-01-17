@@ -1,9 +1,10 @@
 prob hard:
 
-    linear:
-    conv:
+    linear:     ...
+    conv:       ...
 
 prob not so hard idk tho:
 
-    reLU:
-    argMax:
+    reLU:       wip
+    argMax:     wip
+    MaxPool:    ...

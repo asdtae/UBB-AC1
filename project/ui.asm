@@ -7445,6 +7445,13 @@ handle_run:
     call run_copy
 
     call rescale
+
+    mov eax, 1
+    push eax
+    mov eax, rescaled_canvas_data
+    push eax
+    call reLU
+
     ret
 
 handle_canvas:
@@ -7620,9 +7627,125 @@ conv:
     ret
 
 reLU:
+    ; in:   bejovo adat pointer
+    ;       size: n
+    ;
+    ; out:  bejovo adat pointer
+    push ebp
+    mov ebp, esp
+    pushad
+
+        xor ecx, ecx
+        xorps xmm0, xmm0
+        xorps xmm1, xmm1
+
+        mov esi, [ebp+8]
+        mov edx, [ebp+12]
+
+        ; loop
+        .reLU_data_loop:
+            cmp ecx, edx
+            jge .endReLU_data_loop
+
+                movss xmm0, [esi]
+                maxss xmm0, xmm1
+                movss [esi], xmm0
+
+            add esi, 4
+            inc ecx
+            jmp .reLU_data_loop
+        .endReLU_data_loop:
+
+    popad
+    pop ebp
     ret
 
 argMax:
+    ; in:   bejovo adat pointer
+    ;       size: n
+    ;
+    ; out:  bejovo adat pointer
+    push ebp
+    mov ebp, esp
+    pushad
+
+        xor ecx, ecx
+        xor eax, eax        ; max poz
+        xorps xmm0, xmm0
+        xorps xmm1, xmm1    ; max val
+
+        mov esi, [ebp+8]
+        mov edx, [ebp+12]
+
+        movss xmm1, [esi]
+        add esi, 4
+        add ecx, 1
+
+        ; loop
+        .argMax_data_loop:
+            cmp ecx, edx
+            jge .endArgMax_data_loop
+
+                movss xmm0, [esi]
+                comiss xmm0, xmm1
+                jng .argMax_skip
+
+                    movss xmm1, xmm0
+                    mov eax, ecx
+
+                .argMax_skip:
+
+            add esi, 4
+            inc ecx
+            jmp .argMax_data_loop
+        .endArgMax_data_loop:
+
+    popad
+    pop ebp
+    ret
+
+MaxPool:
+    ; in:   bejovo adat pointer
+    ;       size: n
+    ;
+    ; out:  bejovo adat pointer
+    push ebp
+    mov ebp, esp
+    pushad
+
+        xor ecx, ecx
+        xor eax, eax        ; max poz
+        xorps xmm0, xmm0
+        xorps xmm1, xmm1    ; max val
+
+        mov esi, [ebp+8]
+        mov edx, [ebp+12]
+
+        movss xmm1, [esi]
+        add esi, 4
+        sub edx, 4
+
+        ; loop
+        .maxPool_data_loop:
+            cmp ecx, edx
+            jge .endMaxPool_data_loop
+
+                movss xmm0, [esi]
+                comiss xmm0, xmm1
+                jng .maxPool_skip
+
+                    movss xmm1, xmm0
+                    mov eax, ecx
+
+                .maxPool_skip:
+
+            add esi, 4
+            inc ecx
+            jmp .maxPool_data_loop
+        .endMaxPool_data_loop:
+
+    popad
+    pop ebp
     ret
 
 main:
