@@ -1,7 +1,7 @@
 prob hard:
 
     linear:     wip
-    conv:       ...
+    conv:       wip
 
 prob not so hard idk tho:
 
@@ -10,7 +10,7 @@ prob not so hard idk tho:
     MaxPool:    wip
 
 
-    todo: check if stride / padding implementalva van-e         ...
+    todo: check if stride / padding implementalva van-e         wip
     todo: layerek kozt dinamikus memoriafoglalas                ...
     todo: bin file beolvasasa -> ai elso futtatasa              ...
     todo: txt file beolvasasa -> done                           ...

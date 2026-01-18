@@ -1,5 +1,6 @@
 ; https://www.figma.com/design/nAlyAsvY7q2KFvtq9jw8ie/Untitled?node-id=0-1&p=f&t=Dr4KgAMCyWt4Bn8K-0
-
+; https://www.gamedev.net/blog/615/entry-2250281-demystifying-sse-move-instructions/
+; https://docs.oracle.com/cd/E37838_01/html/E61064/eojde.html
 %include 'io.inc'
 %include 'gfx.inc'
 %include 'util.inc'
@@ -7642,30 +7643,46 @@ linear:
             jge .endlinear_out_loop
 
             ; init neuron
-            movss xmm0, [ebx]
-            add ebx, 4
             push esi
 
             ; sum inputok * sajat weight-kel -> xmm0 = adott neron
             xor edx, edx
+            mov edx, [ebp+20]
+            shr edx, 2          ; cuz egyszerre 4
             .linear_in_loop:
-                cmp edx, [ebp+20]
-                jge .endlinear_in_loop
+                test edx, edx
+                jz .endlinear_in_loop
 
-                    movss xmm1, [esi]
-                    movss xmm2, [eax]
+                    movups xmm1, [esi]
+                    movups xmm2, [eax]
 
-                    mulss xmm1, xmm2
-                    addss xmm0, xmm1
+                    mulps xmm1, xmm2
+                    addps xmm0, xmm1
 
-                add eax, 4
-                add esi, 4
-                inc edx
+                add eax, 16
+                add esi, 16
+                dec edx
                 jmp .linear_in_loop
             .endlinear_in_loop:
 
             pop esi
+
+            xorps xmm1, xmm1
+            movhlps xmm1, xmm0
+            addps xmm0, xmm1
+
+            ; https://www.songho.ca/misc/sse/files/sse06.jpg
+            ; 00 00 00 01 -> 0x01
+            ; cuz akarjuk a 1. pozicion levot a 0.-ra, de a tobbi nem erdekel scalar add miatt
+            movaps xmm1, xmm0
+            shufps xmm1, xmm1, 0x01
+            addps xmm0, xmm1
+            
+            movss xmm1, [ebx]
+            addss xmm0, xmm1
+
             movss [edi], xmm0
+            add ebx, 4
             add edi, 4
 
             inc ecx
@@ -7678,14 +7695,118 @@ linear:
     ret
 
 conv:
-    ; in:   ??
+    ; in:   bejovo adat pointer
+    ;       kimeno adat pointer
+    ;       size: n <- out
+    ;       size: m <- in
+    ;       size: k <- kernel nr / out tensor / filter size
+    ;       weight pointer
+    ;       bias pointer
+    ;
+    ; var:  i <- filternek
+    ;       i <- kimeno y
+    ;       j <- kimeno x
+    ;       i <- kernel y
+    ;       j <- kernel x
+    ;       k <- weight pointer
     push ebp
     mov ebp, esp
     push esi
     push edi
 
+        mov esi, [ebp+8]
+        mov edi, [ebp+12]
 
+        mov eax, [ebp+28]
+        mov [ebp-24], eax
+        mov ebx, [ebp+32]
 
+        ; init filter
+        sub esp, 24             ; hely local valtozoknak
+
+        mov dword [ebp-4], 0    ; mintha xor ecx, ecx
+        .conv_filter_loop:
+            mov ecx, [ebp-4]
+            cmp ecx, [ebp+24]
+            jge .endconv_filter_loop
+
+            mov dword [ebp-8], 0
+            .conv_y_out_loop:
+                mov ecx, [ebp-8]
+                cmp ecx, [ebp+16]
+                jge .endconv_y_out_loop
+
+                mov dword [ebp-12], 0
+                .conv_x_out_loop:
+                    mov ecx, [ebp-12]
+                    cmp ecx, [ebp+16]
+                    jge .endconv_x_out_loop
+
+                        ; init neuron
+                        movss xmm0, [ebx]
+
+                        mov dword [ebp-16], 0
+                        .conv_y_kernel_loop:
+                            mov ecx, [ebp-16]
+                            cmp ecx, [ebp+20]
+                            jge .endconv_y_kernel_loop
+
+                            mov dword [ebp-20], 0
+                            .conv_x_kernel_loop:
+                                mov ecx, [ebp-20]
+                                cmp ecx, [ebp+20]
+                                jge .endconv_x_kernel_loop
+
+                                ; actcsual comp
+                                ; calc poz
+                                    mov eax, [ebp-8]
+                                    add eax, [ebp-16]
+                                    imul eax, [ebp+20]  ; (Oy + Ky) * Isize
+
+                                    add eax, [ebp-12]
+                                    add eax, [ebp-20]   ; + Ox + Kx
+                                    imul eax, 4         ; * 4 - 2 conv 2 byte scale
+
+                                    add eax, esi
+
+                                ; mathoa
+                                    mov ecx, [ebp-24]
+
+                                    movss xmm1, [eax]
+                                    movss xmm2, [ecx]
+
+                                    mulss xmm1, xmm2
+                                    addss xmm0, xmm1
+
+                                add ecx, 4
+                                inc dword [ebp-20]
+                                jmp .conv_x_kernel_loop
+                            .endconv_x_kernel_loop:
+
+                            inc dword [ebp-16]
+                            jmp .conv_y_kernel_loop
+                        .endconv_y_kernel_loop:
+
+                    movss [edi], xmm0
+                    add edi, 4
+
+                    inc dword [ebp-12]
+                    jmp .conv_x_out_loop
+                .endconv_x_out_loop:
+
+                inc dword [ebp-8]
+                jmp .conv_y_out_loop
+            .endconv_y_out_loop:
+
+            add ebx, 4
+            add eax, 36
+            add [ebp-24], eax
+
+            inc dword [ebp-4]
+            jmp .conv_filter_loop
+        .endconv_filter_loop:
+
+    add esp, 24
     pop edi
     pop esi
     pop ebp
