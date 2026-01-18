@@ -5241,7 +5241,25 @@ draw_RUN:
 
     ; Pixel color in RGBA
     ; handle eventloop return
-    cmp esi, 20
+    cmp esi, 30
+    je .RUN_press_color
+    cmp esi, 31
+    je .RUN_press_color
+    cmp esi, 32
+    je .RUN_press_color
+    cmp esi, 33
+    je .RUN_press_color
+    cmp esi, 34
+    je .RUN_press_color
+    cmp esi, 35
+    je .RUN_press_color
+    cmp esi, 36
+    je .RUN_press_color
+    cmp esi, 37
+    je .RUN_press_color
+    cmp esi, 38
+    je .RUN_press_color
+    cmp esi, 39
     je .RUN_press_color
         ; draw R
             push eax    ; save (0,0)
@@ -7441,12 +7459,22 @@ run_copy:
 handle_run:
     ;TODO
     ; debug only
-    call resize
+    cmp edi, 0
+    jg .run_skip
 
-    call run_copy
+        call resize
+        call rescale
+        call run_copy
 
-    call rescale
+        call run_network
+        call io_writeint
+        call io_writeln
 
+        mov esi, 30
+        add esi, eax
+        mov edi, 16
+
+    .run_skip:
     ret
 
 handle_canvas:
@@ -7950,6 +7978,13 @@ MaxPool:
     pop edi
     pop esi
     pop ebp
+    ret
+
+run_network:
+    mov eax, 1
+    ret
+
+load_model:
     ret
 
 main:
@@ -8554,8 +8589,6 @@ main:
                             jg .miss_event
 
                                 ; press logic
-                                mov esi, 20
-                                mov edi, 6
                                 call handle_run
                                 jmp .eventloop
 

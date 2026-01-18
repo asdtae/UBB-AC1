@@ -1,13 +1,13 @@
 prob hard:
 
-    linear:     wip
-    conv:       wip
+    linear:     done
+    conv:       done
 
 prob not so hard idk tho:
 
-    reLU:       wip
-    argMax:     wip
-    MaxPool:    wip
+    reLU:       done
+    argMax:     done
+    MaxPool:    done
 
 
     todo: check if stride / padding implementalva van-e         wip
