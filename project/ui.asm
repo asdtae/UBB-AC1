@@ -7629,14 +7629,11 @@ conv:
 reLU:
     ; in:   bejovo adat pointer
     ;       size: n
-    ;
-    ; out:  bejovo adat pointer
     push ebp
     mov ebp, esp
-    pushad
+    push esi
 
         xor ecx, ecx
-        xorps xmm0, xmm0
         xorps xmm1, xmm1
 
         mov esi, [ebp+8]
@@ -7656,7 +7653,7 @@ reLU:
             jmp .reLU_data_loop
         .endReLU_data_loop:
 
-    popad
+    pop esi
     pop ebp
     ret
 
@@ -7664,10 +7661,10 @@ argMax:
     ; in:   bejovo adat pointer
     ;       size: n
     ;
-    ; out:  bejovo adat pointer
+    ; out:  maxi -> eax
     push ebp
     mov ebp, esp
-    pushad
+    push esi
 
         xor ecx, ecx
         xor eax, eax        ; max poz
@@ -7700,52 +7697,15 @@ argMax:
             jmp .argMax_data_loop
         .endArgMax_data_loop:
 
-    popad
+    pop esi
     pop ebp
     ret
 
 MaxPool:
-    ; in:   bejovo adat pointer
-    ;       size: n
+    ; in:   ???
     ;
-    ; out:  bejovo adat pointer
-    push ebp
-    mov ebp, esp
-    pushad
+    ; out:  ???
 
-        xor ecx, ecx
-        xor eax, eax        ; max poz
-        xorps xmm0, xmm0
-        xorps xmm1, xmm1    ; max val
-
-        mov esi, [ebp+8]
-        mov edx, [ebp+12]
-
-        movss xmm1, [esi]
-        add esi, 4
-        sub edx, 4
-
-        ; loop
-        .maxPool_data_loop:
-            cmp ecx, edx
-            jge .endMaxPool_data_loop
-
-                movss xmm0, [esi]
-                comiss xmm0, xmm1
-                jng .maxPool_skip
-
-                    movss xmm1, xmm0
-                    mov eax, ecx
-
-                .maxPool_skip:
-
-            add esi, 4
-            inc ecx
-            jmp .maxPool_data_loop
-        .endMaxPool_data_loop:
-
-    popad
-    pop ebp
     ret
 
 main:
