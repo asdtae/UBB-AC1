@@ -7446,12 +7446,6 @@ handle_run:
 
     call rescale
 
-    mov eax, 1
-    push eax
-    mov eax, rescaled_canvas_data
-    push eax
-    call reLU
-
     ret
 
 handle_canvas:
@@ -7621,9 +7615,80 @@ rescale:
     ret
 
 linear:
+    ; in:   bejovo adat pointer
+    ;       kimeno adat pointer
+    ;       size: n <- out
+    ;       size: m <- in
+    ;       weight pointer
+    ;       bias pointer
+    push ebp
+    mov ebp, esp
+    push esi
+    push edi
+
+        mov esi, [ebp+8]
+        mov edi, [ebp+12]
+
+        mov eax, [ebp+24]
+        mov ebx, [ebp+28]
+
+        xorps xmm0, xmm0
+        xorps xmm1, xmm1
+        xorps xmm2, xmm2
+
+        xor ecx, ecx
+        .linear_out_loop:
+            cmp ecx, [ebp+16]
+            jge .endlinear_out_loop
+
+            ; init neuron
+            movss xmm0, [ebx]
+            add ebx, 4
+            push esi
+
+            ; sum inputok * sajat weight-kel -> xmm0 = adott neron
+            xor edx, edx
+            .linear_in_loop:
+                cmp edx, [ebp+20]
+                jge .endlinear_in_loop
+
+                    movss xmm1, [esi]
+                    movss xmm2, [eax]
+
+                    mulss xmm1, xmm2
+                    addss xmm0, xmm1
+
+                add eax, 4
+                add esi, 4
+                inc edx
+                jmp .linear_in_loop
+            .endlinear_in_loop:
+
+            pop esi
+            movss [edi], xmm0
+            add edi, 4
+
+            inc ecx
+            jmp .linear_out_loop
+        .endlinear_out_loop:
+
+    pop edi
+    pop esi
+    pop ebp
     ret
 
 conv:
+    ; in:   ??
+    push ebp
+    mov ebp, esp
+    push esi
+    push edi
+
+
+
+    pop edi
+    pop esi
+    pop ebp
     ret
 
 reLU:
@@ -7659,20 +7724,18 @@ reLU:
 
 argMax:
     ; in:   bejovo adat pointer
-    ;       size: n
     ;
-    ; out:  maxi -> eax
+    ; out:  maxi poz -> eax
     push ebp
     mov ebp, esp
     push esi
 
         xor ecx, ecx
-        xor eax, eax        ; max poz
+        xor eax, eax        ; maxi poz
         xorps xmm0, xmm0
-        xorps xmm1, xmm1    ; max val
+        xorps xmm1, xmm1    ; maxi val
 
         mov esi, [ebp+8]
-        mov edx, [ebp+12]
 
         movss xmm1, [esi]
         add esi, 4
@@ -7680,7 +7743,7 @@ argMax:
 
         ; loop
         .argMax_data_loop:
-            cmp ecx, edx
+            cmp ecx, 10
             jge .endArgMax_data_loop
 
                 movss xmm0, [esi]
@@ -7702,10 +7765,57 @@ argMax:
     ret
 
 MaxPool:
-    ; in:   ???
+    ; in:   bejovo adat pointer
+    ;       kimeno adat pointer
     ;
-    ; out:  ???
+    push ebp
+    mov ebp, esp
+    push esi
+    push edi
 
+        mov esi, [ebp+8]
+        mov edi, [ebp+12]
+
+        xor ecx, ecx
+        .yMaxPool_outLoop:
+            cmp ecx, 14
+            jge .endyMaxPool_outLoop
+
+            xor edx, edx
+            .xMaxPool_outLoop:
+                cmp edx, 14
+                jge .endxMaxPool_outLoop
+
+                    ; calc start poz
+                    mov eax, ecx
+                    imul eax, 224       ; skip y * 28 * 4 * 2 <- egyszerre 4-et nezunk
+
+                    mov  ebx, edx
+                    imul ebx, 8         ; skip x * 4 * 2 <- same ok
+
+                    add eax, ebx
+                    add eax, esi
+
+                    ; maxi kereses
+                    movss xmm0, [eax]       ; felt, hogy top-left a maxi
+                    maxss xmm0, [eax+4]     ; osszehasonlit a tobbivel
+                    maxss xmm0, [eax+112]
+                    maxss xmm0, [eax+116]
+
+                    movss [edi], xmm0
+
+                add edi, 4
+                inc edx
+                jmp .xMaxPool_outLoop
+            .endxMaxPool_outLoop:
+
+            inc ecx
+            jmp .yMaxPool_outLoop
+        .endyMaxPool_outLoop:
+
+    pop edi
+    pop esi
+    pop ebp
     ret
 
 main:
@@ -8552,3 +8662,6 @@ section .data
     ; AI
         align 16
         rescale_div dd 255.0, 255.0, 255.0, 255.0
+
+        model_params_file_name db "conv_model.bin", 0
+        model_design_file_name db "conv_model.txt", 0
