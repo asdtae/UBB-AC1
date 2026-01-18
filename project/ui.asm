@@ -7748,13 +7748,13 @@ conv:
                         mov dword [ebp-16], 0
                         .conv_y_kernel_loop:
                             mov ecx, [ebp-16]
-                            cmp ecx, [ebp+20]
+                            cmp ecx, [ebp+24]
                             jge .endconv_y_kernel_loop
 
                             mov dword [ebp-20], 0
                             .conv_x_kernel_loop:
                                 mov ecx, [ebp-20]
-                                cmp ecx, [ebp+20]
+                                cmp ecx, [ebp+24]
                                 jge .endconv_x_kernel_loop
 
                                 ; actcsual comp
@@ -7888,6 +7888,7 @@ argMax:
 MaxPool:
     ; in:   bejovo adat pointer
     ;       kimeno adat pointer
+    ;       size: n /2
     ;
     push ebp
     mov ebp, esp
@@ -7897,31 +7898,42 @@ MaxPool:
         mov esi, [ebp+8]
         mov edi, [ebp+12]
 
+        mov eax, [ebp+16]
+        shl eax, 3
+        push eax
+
+        shl eax, 1
+        push eax
+
         xor ecx, ecx
         .yMaxPool_outLoop:
-            cmp ecx, 14
+            cmp ecx, [ebp+16]
             jge .endyMaxPool_outLoop
 
             xor edx, edx
             .xMaxPool_outLoop:
-                cmp edx, 14
+                cmp edx, [ebp+16]
                 jge .endxMaxPool_outLoop
 
                     ; calc start poz
+                    ; skip y * size * 4 * 2 <- egyszerre 4-et nezunk
                     mov eax, ecx
-                    imul eax, 224       ; skip y * 28 * 4 * 2 <- egyszerre 4-et nezunk
+                    imul eax, [esp]
 
-                    mov  ebx, edx
-                    imul ebx, 8         ; skip x * 4 * 2 <- same ok
+                    ; skip x * 4 * 2 <- same ok
+                    mov ebx, edx
+                    shl ebx, 3 
 
                     add eax, ebx
                     add eax, esi
 
+                    mov ebx, [esp+4]
+
                     ; maxi kereses
                     movss xmm0, [eax]       ; felt, hogy top-left a maxi
                     maxss xmm0, [eax+4]     ; osszehasonlit a tobbivel
-                    maxss xmm0, [eax+112]
-                    maxss xmm0, [eax+116]
+                    maxss xmm0, [eax+ebx]
+                    maxss xmm0, [eax+ebx+4]
 
                     movss [edi], xmm0
 
@@ -7934,6 +7946,7 @@ MaxPool:
             jmp .yMaxPool_outLoop
         .endyMaxPool_outLoop:
 
+    add esp, 8
     pop edi
     pop esi
     pop ebp
