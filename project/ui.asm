@@ -3,6 +3,7 @@
 ; https://docs.oracle.com/cd/E37838_01/html/E61064/eojde.html
 ; https://wbd.ms/share/v2/aHR0cHM6Ly93aGl0ZWJvYXJkLm1pY3Jvc29mdC5jb20vYXBpL3YxLjAvd2hpdGVib2FyZHMvcmVkZWVtL2I1NWUxY2M0MTc3OTRmNWM4NjU2OWEyNWE2NWIzMWY2X0JCQTcxNzYyLTEyRTAtNDJFMS1CMzI0LTVCMTMxRjQyNEUzRF9lNGVlNmFjYS00MGJlLTQ3YWQtODIzOS1iZmIyZjgzZTlhNGM=
 %include 'io.inc'
+%include 'mio.inc'
 %include 'gfx.inc'
 %include 'util.inc'
 ;%include 'debug.inc'
@@ -7982,10 +7983,218 @@ MaxPool:
     ret
 
 run_network:
+
+    call load_model
+
     mov eax, 1
     ret
 
 load_model:
+    ; save ebp
+    push ebp
+    push esi
+    push edi
+
+    mov ebp, esp
+    sub esp, 20
+
+    mov esi, 0
+    
+    mov ebx, 1
+    mov [ebp-8], ebx     ;   1 nl / 3
+    mov [ebp-12], ebx    ;   1 nl / 9
+
+    mov [ebp-16], ebx    ;   end of parti / parti len
+    mov [ebp-20], ebx    ;   curr part ID: conv1w | conv1b | conv2w | conv2b | fc1w   | fc1b   | fc2w   | fc2b
+                         ;   ID:           1      | 2      | 3      | 4      | 5      | 6      | 7      | 8
+                         ;   len:          16     | ?      | ?      | ?      | ?      | ?      | ?      | ?
+    mov [ebp-20], ebx    ;   curr mode:    convw  | convb  | fcw    | fcb  
+                         ;                 1      | 2      | 3      | 4
+
+    ; open .bin
+    mov eax, model_params_file_name
+    mov ebx, 0
+    call fio_open
+
+    .while_load_model:
+        ; read 4 bytes
+        mov ebx, model_params_file_buffer   ; data pointer
+        mov ecx, 4                          ; 4 bytes
+        call fio_read
+        
+        ; stop cond
+        cmp edx, 4
+        jne .endwhile_load_model    ; end if read less than 4 bytes
+        cmp esi, 1000
+        jge .endwhile_load_model    ; end if read 100 bytes
+
+        add esi, edx
+        mov [ebp-4], eax            ; save file pointer
+
+        ; process 4 bytes
+            ; get curr mode
+            mov edi, [ebp-20]
+            cmp edi, 1
+            je .load_moadel_convw_mode
+            cmp edi, 2
+            je .load_moadel_convb_mode
+            jmp .skip_load_moade_mode
+
+            ; conv weight mode
+            .load_moadel_convw_mode:
+
+                movss xmm0, [ebx]
+                mov eax, 100
+                cvtsi2ss xmm1, eax
+                mulss xmm1, xmm0
+                cvtss2si eax, xmm1
+                call io_writeint
+        
+                xor eax, eax
+                mov al, ' '
+                call mio_writechar
+
+                ; write nl after 1 kernel segment - only works for 3x3 conv 
+                mov edi, [ebp-8]
+                cmp edi, 3
+                jnge .skip_kernel_newLine1_convw
+
+                    mov edi, 0
+                    mov [ebp-8], edi
+                    call io_writeln
+
+                .skip_kernel_newLine1_convw:
+
+                mov edi, [ebp-12]
+                cmp edi, 9
+                jnge .skip_kernel_newLine2_convw
+
+                    mov edi, 0
+                    mov [ebp-12], edi
+                    call io_writeln
+
+                    mov edi, 1
+                    add [ebp-16], edi
+
+                .skip_kernel_newLine2_convw:
+
+            jmp .skip_load_moade_mode
+
+            ; conv bias mode
+            .load_moadel_convb_mode:
+
+                movss xmm0, [ebx]
+                mov eax, 100
+                cvtsi2ss xmm1, eax
+                mulss xmm1, xmm0
+                cvtss2si eax, xmm1
+                call io_writeint
+        
+                xor eax, eax
+                mov al, ' '
+                call mio_writechar
+
+                ; write nl after 1 kernel segment - 8 
+                mov edi, [ebp-8]
+                cmp edi, 8
+                jnge .skip_kernel_newLine1_convb
+
+                    mov edi, 0
+                    mov [ebp-8], edi
+                    call io_writeln
+
+                .skip_kernel_newLine1_convb:
+
+                mov edi, [ebp-12]
+                cmp edi, 16
+                jnge .skip_kernel_newLine2_convb
+
+                    mov edi, 0
+                    mov [ebp-12], edi
+                    call io_writeln
+
+                    mov edi, 1
+                    add [ebp-16], edi
+
+                .skip_kernel_newLine2_convb:
+
+            jmp .skip_load_moade_mode
+
+            .skip_load_moade_mode:
+            ; parti check        
+            mov edi, [ebp-20]
+            cmp edi, 1
+            je .load_moadel_conv1w_end
+            cmp edi, 2
+            je .load_moadel_conv1b_end
+            jmp .skip_load_moade_parti
+
+                .load_moadel_conv1w_end:
+                    mov edi, [ebp-16]
+                    cmp edi, 16
+                    jng .skip_load_moade_parti
+
+                        mov edi, 1
+                        mov [ebp-12], edi
+
+                        mov edi, 1
+                        mov [ebp-16], edi
+
+                        mov edi, 1
+                        add [ebp-20], edi
+
+                        call io_writeln
+                        call io_writeln
+
+                        mov eax, seg_conv1w
+                        call io_writestr
+
+                        call io_writeln
+                        call io_writeln
+
+                jmp .skip_load_moade_parti
+
+                .load_moadel_conv1b_end:
+                    mov edi, [ebp-16]
+                    cmp edi, 16
+                    jng .skip_load_moade_parti
+
+                        mov edi, 1
+                        mov [ebp-16], edi
+
+                        mov edi, 1
+                        add [ebp-20], edi
+
+                        call io_writeln
+                        call io_writeln
+
+                        mov eax, seg_conv1b
+                        call io_writestr
+
+                        call io_writeln
+                        call io_writeln
+
+                jmp .skip_load_moade_parti
+
+            .skip_load_moade_parti:
+
+        ; reset file pointer
+        mov eax, [ebp-4]
+        mov ebx, 1
+        add [ebp-8], ebx
+        add [ebp-12], ebx
+
+        jmp .while_load_model
+    .endwhile_load_model:
+
+    call fio_close
+
+    add esp, 20
+
+    pop edi
+    pop esi
+    pop ebp
+
     ret
 
 main:
@@ -8817,6 +9026,9 @@ section .bss
         align 16
         rescaled_canvas_data resb 28 * 28 * 4
 
+        align 16
+        model_params_file_buffer resb 4
+
     ; UI/UX
         mouse_pressed resb 1
         brush_size resb 1
@@ -8833,3 +9045,6 @@ section .data
 
         model_params_file_name db "conv_model.bin", 0
         model_design_file_name db "conv_model.txt", 0
+
+        seg_conv1w db "--- end of conv1w ---", 0
+        seg_conv1b db "--- end of conv1b ---", 0
