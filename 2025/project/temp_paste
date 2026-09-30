@@ -14,3 +14,153 @@ prob not so hard idk tho:
     todo: layerek kozt dinamikus memoriafoglalas                wip
     todo: bin file beolvasasa -> ai elso futtatasa              ...
     todo: txt file beolvasasa -> done                           ...
+
+
+    run_network:
+    ; This function manages the full forward pass with dynamic memory.
+    ; Assumptions:
+    ; - Input is at 'rescaled_canvas_data' (28x28 float)
+    ; - Weights/Biases are pointers loaded in registers/memory (Placeholders used below)
+    
+    push ebp
+    mov ebp, esp
+    sub esp, 16     ; Local variables for pointers
+    ; [ebp-4]:  Pointer to Previous Input Buffer
+    ; [ebp-8]:  Pointer to Current Output Buffer
+    ; [ebp-12]: Pointer to Weights (Placeholder)
+    ; [ebp-16]: Pointer to Biases (Placeholder)
+
+    ; ==========================================================
+    ; STEP 0: INITIALIZE
+    ; ==========================================================
+    ; The first input is our static rescaled image.
+    ; We flag it (e.g., by comparing addresses later) so we don't free it.
+    mov eax, rescaled_canvas_data
+    mov [ebp-4], eax
+
+    ; ==========================================================
+    ; STEP 1: CONVOLUTION LAYER
+    ; Input: 28x28x1 -> Output: 26x26x32 (Valid Padding, 3x3 kernel)
+    ; Size: 26 * 26 * 32 * 4 bytes = 86,528 bytes
+    ; ==========================================================
+    
+    ; 1. Allocate Output Memory
+    mov eax, 86528
+    call mem_alloc      ; [cite_start]Returns pointer in EAX [cite: 43]
+    mov [ebp-8], eax    ; Save Output Buffer
+
+    ; 2. Call Conv
+    ; Stack Args: Bias, Weights, Filters, KernSize, InSize, OutSize, Output, Input
+    ; (Based on your conv signature)
+    
+    ; NOTE: Replace these placeholder addresses with your actual loaded weight pointers
+    push conv1_bias     ; Bias Pointer
+    push conv1_weight   ; Weight Pointer
+    push 32             ; Num Filters
+    push 3              ; Kernel Size
+    push 28             ; Input Size (Width)
+    push 26             ; Output Size (Width)
+    push [ebp-8]        ; Output Buffer (Dynamic)
+    push [ebp-4]        ; Input Buffer (Static)
+    call conv
+    add esp, 32         ; Clean up stack (8 args * 4)
+
+    ; 3. Transition
+    ; Previous Input was Static (rescaled_canvas_data), so DO NOT FREE it.
+    ; Update Input for next layer:
+    mov eax, [ebp-8]
+    mov [ebp-4], eax    ; Current Output becomes Next Input
+
+    ; ==========================================================
+    ; STEP 2: RELU (In-Place)
+    ; ==========================================================
+    ; Size: 26*26*32 = 21632 floats
+    
+    push 21632          ; Size
+    push [ebp-4]        ; Input/Output Buffer
+    call reLU
+    add esp, 8
+
+    ; ==========================================================
+    ; STEP 3: MAX POOLING
+    ; Input: 26x26x32 -> Output: 13x13x32
+    ; Size: 13 * 13 * 32 * 4 bytes = 21,632 bytes
+    ; ==========================================================
+
+    ; 1. Allocate Output Memory
+    mov eax, 21632
+    call mem_alloc
+    mov [ebp-8], eax
+
+    ; 2. Call MaxPool
+    ; Note: Your MaxPool currently takes one 'size' param. 
+    ; It needs to run per channel (32 times) or be modified to handle depth.
+    ; Assuming we loop it or MaxPool handles 3D (your code looked 2D, you might need a loop here).
+    ; For now, passing the pointers:
+    
+    push 26             ; Input Dimension (26) -> Output will be 13
+    push [ebp-8]        ; Output
+    push [ebp-4]        ; Input
+    call MaxPool
+    add esp, 12
+
+    ; 3. Transition & FREE
+    ; The Input [ebp-4] was the Conv Output (Dynamic). We are done with it.
+    push [ebp-4]
+    call mem_free       ; [cite_start]Free the Conv buffer [cite: 44]
+    add esp, 4
+
+    mov eax, [ebp-8]
+    mov [ebp-4], eax    ; New Input is MaxPool Output
+
+    ; ==========================================================
+    ; STEP 4: LINEAR LAYER
+    ; Input: 13*13*32 (5408) -> Output: 10
+    ; Size: 10 * 4 bytes = 40 bytes
+    ; ==========================================================
+
+    ; 1. Allocate Output Memory
+    mov eax, 40
+    call mem_alloc
+    mov [ebp-8], eax
+
+    ; 2. Call Linear
+    push fc1_bias       ; Bias
+    push fc1_weight     ; Weights
+    push 5408           ; Input Size (13*13*32)
+    push 10             ; Output Size
+    push [ebp-8]        ; Output
+    push [ebp-4]        ; Input
+    call linear
+    add esp, 24
+
+    ; 3. Transition & FREE
+    push [ebp-4]
+    call mem_free       ; Free the MaxPool buffer
+    add esp, 4
+
+    mov eax, [ebp-8]
+    mov [ebp-4], eax    ; New Input is Linear Output
+
+    ; ==========================================================
+    ; STEP 5: PREDICTION & CLEANUP
+    ; ==========================================================
+    
+    ; 1. ArgMax
+    push 10             ; Size
+    push [ebp-4]        ; Input (Linear Output)
+    call argMax         ; Result in EAX
+    add esp, 8
+    
+    ; Save result (e.g., print or store in variable)
+    ; mov [predicted_digit], eax 
+
+    ; 2. Final Free
+    push [ebp-4]        ; Free the Linear buffer
+    call mem_free
+    add esp, 4
+
+    ; Restore stack
+    mov esp, ebp
+    pop ebp
+    ret
