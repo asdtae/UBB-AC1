@@ -18,6 +18,15 @@ section .text
 
 main:
     ; jelenjen meg a képernyőn a feladat
+        mov rax, str_felhivoLab
+        call io_writestr
+        call io_writeln
+        mov rax, str_felhivoFel
+        call io_writestr
+        call io_writeln
+
+
+    ; jelenjen meg a képernyőn a feladat
         ; read A
         mov rax, str_felhivoA
         call io_writestr
@@ -141,6 +150,8 @@ main:
     ret
 
 section .data
+    str_felhivoLab db 'Lab 1 / 09', 0
+    str_felhivoFel db 'B. feladat', 0
     str_felhivoA db 'A = ', 0
     str_felhivoB db 'B = ', 0
     str_felhivoC db 'C = ', 0
