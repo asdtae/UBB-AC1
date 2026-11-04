@@ -817,6 +817,7 @@ writeHEX:
         mov rax, rbx
         ret
 
+;   -- WIP --
 INT2HEX:
 ;   IN
 ;   RBX - numbA / numbB
@@ -924,6 +925,7 @@ INT2HEX:
     pop rdx
     ret
 
+;   -- WIP --
 HEX2INT:
 ;   IN
 ;   RBX - numbA / numbB
@@ -1031,14 +1033,21 @@ HEX2INT:
     pop rdx
     ret
 
+;   -- WIP --
 COPY:
 ;   IN
 ;   RAX - copy_to / copy_from numbT
 ;   RBX - numbA / numbB
-;   RCX - str_len
-;   RDX - switch mode
+;   RCX - numbA / numbB str_len
+;   RDX - switch mode: if true <-> RAX = 0
+
+;   OUT
+;   RCX - numbT str_len
+;   R8  - numbA / numbB str_len
 
     ; safety
+    push rcx
+    push r8
     push rsi
     push rdi
 
@@ -1046,6 +1055,8 @@ COPY:
         ; copy_to / copy_from
         cmp rax, 1
         je .cpyOp2_COPY
+        cmp edx, 1
+        je .cpyOp3_COPY
 
     ; op1
         ; setup params
@@ -1071,20 +1082,22 @@ COPY:
             add rcx, rsi
 
         ; copy to numbT
-            mov BYTE rax, [rbx]     ; copy sign
-            mov BYTE [rdx], rax
+            mov BYTE al, [rbx]     ; copy sign
+            mov BYTE [rdx], al
             
             .loop_COPY:
             cmp rsi, rcx
             je .loopEND_COPY
 
-                mov BYTE rax, [rsi]
-                mov BYTE [rdi], rax
+                mov BYTE al, [rsi]
+                mov BYTE [rdi], al
 
             inc rsi
             inc rdi
             jmp .loop_COPY
             .loopEND_COPY:
+
+            jmp .exit_COPY
 
     ; op2
     .cpyOp2_COPY:
@@ -1111,14 +1124,121 @@ COPY:
             add rcx, rsi
 
         ; copy from numbT
-            mov BYTE rax, [rdx]     ; copy sign
-            mov BYTE [rbx], rax
+            mov BYTE al, [rdx]     ; copy sign
+            mov BYTE [rbx], al
+
+            .loop_Op2_COPY:
+            cmp rsi, rcx
+            je .loopEND_Op2_COPY
+
+                mov BYTE al, [rsi]
+                mov BYTE [rdi], al
+
+            inc rsi
+            inc rdi
+            jmp .loop_Op2_COPY
+            .loopEND_Op2_COPY:
+
+            jmp .exit_COPY
+
+    ; op3
+    .cpyOp3_COPY:
+        ; setup params
+            ; numbA or numbB ?
+            cmp rbx, 1
+            je .numbB_Op3_COPY
+
+            ; numbA
+            mov rsi, numbA          ; addr
+            mov rbx, numbA_sign     ; sign
+            jmp .numbSkip_Op3_COPY
+        
+            ; numbB
+            .numbB_Op3_COPY:
+            mov rsi, numbB          ; addr
+            mov rbx, numbB_sign     ; sign
+
+            .numbSkip_Op3_COPY:
+            mov rdi, numbT          ; addr
+            mov rdx, numbT_sign     ; sign
+
+            xor rax, rax
+            add rcx, rsi
+
+        ; switch with numbT
+            mov BYTE al, [rbx]      ; switch sign
+            push rax
+            mov BYTE al, [rdx]
+            mov BYTE [rbx], al
+            pop rax
+            mov BYTE [rdx], al
+
+            ; pack numb 1 in rax
+            push rsi                ; save og addr
+            xor rax, rax
+            xor rdx, rdx
+            .loop_pack_Op3_COPY:
+            cmp rsi, rcx
+            je .loopEND_pack_Op3_COPY
+
+                shl rax, 4
+                mov BYTE dl, [rsi]
+                or al, dl
+
+            inc rsi
+            jmp .loop_pack_Op3_COPY
+            .loopEND_pack_Op3_COPY:
+            pop rsi                 ; get og addr
+
+            push r9                 ; safety
+            mov r9, rcx             ; save end addr
+
+            ; pack numb 2 in rbx
+            push rdi                ; save og addr
+            xor rbx, rbx
+            xor rdx, rdx
+
+            mov rcx, r8             ; setup T str_len
+            add rcx, rdi
+
+            .loop_pack2_Op3_COPY:
+            cmp rdi, rcx
+            je .loopEND_pack2_Op3_COPY
+
+                shl rbx, 4
+                mov BYTE dl, [rdi]
+                or bl, dl
+
+            inc rdi
+            jmp .loop_pack2_Op3_COPY
+            .loopEND_pack2_Op3_COPY:
+            pop rdi                 ; get og addr
+            
+            ; unpack numb 2 to A / B
+            xor rdx, rdx
+
+            .loop_pack2_Op3_COPY:
+            cmp rdi, rcx
+            je .loopEND_pack2_Op3_COPY
+
+                shl rbx, 4
+                mov BYTE dl, [rdi]
+                or bl, dl
+
+            inc rdi
+            jmp .loop_pack2_Op3_COPY
+            .loopEND_pack2_Op3_COPY:
+
 
     ; reset & exit
     .exit_COPY:
     xor rax, rax
     pop rdi
     pop rsi
+    pop r8
+    pop rcx
+
+    ; TODO: switch r8 & rcx
     ret
 
 main:
@@ -1139,15 +1259,21 @@ main:
         mov rbx, 0
         call writeHEX
 
-        call mio_writeln
         mov rbx, 0
         call HEX2INT
 
+        mov rax, rcx
+        call io_writeint
+        call io_writeln
+
+        mov rax, 1
+        mov rbx, 0
+        mov rdx, 0
+        call COPY
 
         mov rbx, 0
         call writeINT
 
-        call mio_writeln
         mov rbx, 0
         call writeHEX
 
