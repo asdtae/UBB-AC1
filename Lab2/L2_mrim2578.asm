@@ -860,6 +860,8 @@ INT2HEX:
     ; RDX - temp util
     ; RSI - source addr
     ; RDI - dest addr
+        xor rdx, rdx
+
         .loop_INT2HEX:
         cmp rsi, rcx
         je .loopEnd_INT2HEX
@@ -880,7 +882,8 @@ INT2HEX:
     ; poz / neg
         cmp BYTE bl, 1
         jne .poz_INT2HEX
-        neg rax
+        neg eax
+        mov eax, eax            ; zx felso 32
 
         .poz_INT2HEX:
         mov rdx, numbT_sign
@@ -913,7 +916,6 @@ INT2HEX:
     pop rdx
     ret
 
-;   -- WIP --
 HEX2INT:
 ;   IN
 ;   RBX - numbA / numbB
@@ -981,12 +983,13 @@ HEX2INT:
         neg rax
 
         .testTC_HEX2INT:
-        test rax, rax
+        test eax, eax
         jns .poz_HEX2INT
 
         mov rdx, numbT_sign
         mov BYTE [rdx], 1
-        neg rax
+        neg eax
+        mov eax, eax
         jmp .trans2_HEX2INT
 
         .poz_HEX2INT:
@@ -1250,7 +1253,7 @@ ADD_HEX:
         .loopEND_B_ADD_HEX:
 
     ; A + B
-    add rax, r9
+    add eax, r9d
 
     ; unpack into numbT
         mov rdi, numbT
@@ -1306,6 +1309,8 @@ main:
         jne .error
 
         ; kiíratja decimális (előjeles egész) alakban,
+        mov rax, str_out_int
+        call mio_writestr
         mov rbx, 0
         call writeINT
 
@@ -1316,9 +1321,11 @@ main:
         mov rbx, 0
         mov rdx, 0
         call COPY
+        mov rax, str_out_hex
+        call mio_writestr
         mov rbx, 0
         call writeHEX
-        mov r8, rcx
+        mov r8, rcx                 ; lementjuk numb 1 hex form str_len-t
 
         ; beolvas egy másik számot hexadecimális egészként (ezt egy egész komplementerkódbeli ábrázolásának tekintjük),
         mov rbx, 1
@@ -1333,6 +1340,8 @@ main:
         mov rbx, 1
         mov rdx, 0
         call COPY
+        mov rax, str_out_int
+        call mio_writestr
         mov rbx, 1
         call writeINT
 
@@ -1343,6 +1352,8 @@ main:
         mov rbx, 1
         mov rdx, 0
         call COPY
+        mov rax, str_out_hex
+        call mio_writestr
         mov rbx, 1
         call writeHEX
 
@@ -1360,6 +1371,8 @@ main:
         mov rbx, 0
         mov rdx, 0
         call COPY
+        mov rax, str_add_int
+        call mio_writestr
         mov rbx, 0
         call writeINT
 
@@ -1370,6 +1383,8 @@ main:
         mov rbx, 0
         mov rdx, 0
         call COPY
+        mov rax, str_add_hex
+        call mio_writestr
         mov rbx, 0
         call writeHEX
 
@@ -1384,15 +1399,18 @@ main:
 section .data
     str_hiba db 'Hiba: ', 0
 
-    str_hibaType100 db 'Nem volt megadva egy szam', 0
+    str_hibaType100 db 'Nem volt megadva egy szám', 0
     str_hibaType1 db 'Tobbszor is volt a sign valtoztatva.', 0
     str_hibaType2 db 'A sign nem az elejen volt valtoztatva.', 0
-    str_hibaType3 db 'Nem csak szamok voltak megadva', 0
+    str_hibaType3 db 'Nem csak számok voltak megadva', 0
     str_hibaType4 db 'Nem csak 0-9/a-f/A-F volt megadva', 0
 
-    str_int db 'Adj meg egy decimális egész szamot: ', 0
-    str_hex db 'Adj meg egy hexadecimális egész szamot: ', 0
-
+    str_int db 'Adj meg egy decimális egész számot: ', 0
+    str_hex db 'Adj meg egy hexadecimális egész számot: ', 0
+    str_out_int db 'A szám decimális alakban: ', 0
+    str_out_hex db 'A szám hexadecimális alakban: ', 0
+    str_add_int db 'A két szám összeg decimális alakban: ', 0
+    str_add_hex db 'A két szám összeg hexadecimális alakban: ', 0
 
     str_DEBUG db 'crash here', 0
     str_DEBUG_WRITEHEX db 'WRITEHEX', 0
