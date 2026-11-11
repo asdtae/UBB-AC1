@@ -216,8 +216,7 @@ writeSTR:
     mov rbx, [rbp+16]   ; addr
     mov rdx, [rbp+16]   ; addr for later use: vissza transformnak
     mov rcx, [rbp+32]   ; str_len
-    add rcx, rbx        ;
-    xor rax, rax        ; reset rax
+    add rcx, rbx        ; end addr
 
     ; write sign
     mov rax, [rbp+24]
@@ -1303,10 +1302,11 @@ main:
     ; run da cucc
 
         ; beolvas egy számot decimális egészként,
+        .tryAgainINT:
         mov rbx, 0
         call readINT
         cmp rax, 0
-        jne .error
+        jne .tryAgainINT
 
         ; kiíratja decimális (előjeles egész) alakban,
         mov rax, str_out_int
@@ -1328,10 +1328,11 @@ main:
         mov r8, rcx                 ; lementjuk numb 1 hex form str_len-t
 
         ; beolvas egy másik számot hexadecimális egészként (ezt egy egész komplementerkódbeli ábrázolásának tekintjük),
+        .tryAgainHEX:
         mov rbx, 1
         call readHEX
         cmp rax, 0
-        jne .error
+        jne .tryAgainHEX
 
         ; kiíratja decimális (előjeles egész) alakban,
         mov rbx, 1
@@ -1393,6 +1394,7 @@ main:
         ret
 
     ; return error to the C runtime
+    ; nwm ig
     .error:
         ret
 
@@ -1409,8 +1411,8 @@ section .data
     str_hex db 'Adj meg egy hexadecimális egész számot: ', 0
     str_out_int db 'A szám decimális alakban: ', 0
     str_out_hex db 'A szám hexadecimális alakban: ', 0
-    str_add_int db 'A két szám összeg decimális alakban: ', 0
-    str_add_hex db 'A két szám összeg hexadecimális alakban: ', 0
+    str_add_int db 'A két szám összege decimális alakban: ', 0
+    str_add_hex db 'A két szám összege hexadecimális alakban: ', 0
 
     str_DEBUG db 'crash here', 0
     str_DEBUG_WRITEHEX db 'WRITEHEX', 0
