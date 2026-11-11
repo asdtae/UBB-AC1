@@ -817,7 +817,6 @@ writeHEX:
         mov rax, rbx
         ret
 
-;   -- WIP --
 INT2HEX:
 ;   IN
 ;   RBX - numbA / numbB
@@ -869,9 +868,8 @@ INT2HEX:
             cmp dl, 26
             je .loopSkip_INT2HEX
 
-                shl rax, 4
-                mov BYTE dl, [rsi]
-                or al, dl
+                imul rax, 10
+                add rax, rdx
 
             .loopSkip_INT2HEX:
 
@@ -881,26 +879,16 @@ INT2HEX:
 
     ; poz / neg
         cmp BYTE bl, 1
-        jne .testTC_INT2HEX
+        jne .poz_INT2HEX
         neg rax
-
-        .testTC_INT2HEX:
-        test rax, rax
-        jns .poz_INT2HEX
-
-        mov rdx, numbT_sign
-        mov BYTE [rdx], 1
-        neg rax
-        jmp .trans2_INT2HEX
 
         .poz_INT2HEX:
         mov rdx, numbT_sign
         mov BYTE [rdx], 0
 
     ; transform 2
-        .trans2_INT2HEX:
         xor rcx, rcx            ; new len
-        mov rbx, 10             ; cuz x/10
+        mov rbx, 16             ; cuz x/10
         
         .loopTrans2_INT2HEX:
             xor rdx, rdx
@@ -1033,7 +1021,6 @@ HEX2INT:
     pop rdx
     ret
 
-;   -- WIP --
 COPY:
 ;   IN
 ;   RAX - copy_to / copy_from numbT
@@ -1162,9 +1149,6 @@ COPY:
             mov rdi, numbT          ; addr
             mov rdx, numbT_sign     ; sign
 
-            xor rax, rax
-            add rcx, rsi
-
         ; switch with numbT
             mov BYTE al, [rbx]      ; switch sign
             push rax
@@ -1173,62 +1157,29 @@ COPY:
             pop rax
             mov BYTE [rdx], al
 
-            ; pack numb 1 in rax
-            push rsi                ; save og addr
-            xor rax, rax
-            xor rdx, rdx
-            .loop_pack_Op3_COPY:
-            cmp rsi, rcx
-            je .loopEND_pack_Op3_COPY
+            mov rcx, 32
+            .loop_Op3_COPY:
+                cmp rcx, 0
+                jz .loopEND_Op3_COPY
 
-                shl rax, 4
-                mov BYTE dl, [rsi]
-                or al, dl
+                    mov BYTE al, [rsi]
+                    mov BYTE dl, [rdi]
+                    mov BYTE [rsi], dl
+                    mov BYTE [rdi], al
 
-            inc rsi
-            jmp .loop_pack_Op3_COPY
-            .loopEND_pack_Op3_COPY:
-            pop rsi                 ; get og addr
+                inc rsi
+                inc rdi
+                dec rcx
+                jmp .loop_Op3_COPY
+            .loopEND_Op3_COPY:
 
-            push r9                 ; safety
-            mov r9, rcx             ; save end addr
-
-            ; pack numb 2 in rbx
-            push rdi                ; save og addr
-            xor rbx, rbx
-            xor rdx, rdx
-
-            mov rcx, r8             ; setup T str_len
-            add rcx, rdi
-
-            .loop_pack2_Op3_COPY:
-            cmp rdi, rcx
-            je .loopEND_pack2_Op3_COPY
-
-                shl rbx, 4
-                mov BYTE dl, [rdi]
-                or bl, dl
-
-            inc rdi
-            jmp .loop_pack2_Op3_COPY
-            .loopEND_pack2_Op3_COPY:
-            pop rdi                 ; get og addr
-            
-            ; unpack numb 2 to A / B
-            xor rdx, rdx
-
-            .loop_pack2_Op3_COPY:
-            cmp rdi, rcx
-            je .loopEND_pack2_Op3_COPY
-
-                shl rbx, 4
-                mov BYTE dl, [rdi]
-                or bl, dl
-
-            inc rdi
-            jmp .loop_pack2_Op3_COPY
-            .loopEND_pack2_Op3_COPY:
-
+        ; switch r8 & rcx
+        xor rax, rax
+        pop rdi
+        pop rsi
+        pop rcx
+        pop r8
+        ret
 
     ; reset & exit
     .exit_COPY:
@@ -1237,43 +1188,188 @@ COPY:
     pop rsi
     pop r8
     pop rcx
+    ret
 
-    ; TODO: switch r8 & rcx
+ADD_HEX:
+;   IN
+;   R8  - numbA str_len
+;   RCX - numbB str_len
+;
+;   OUT
+;   RCX - numbT str_len
+
+    ; safety
+    push rbx
+    push rdx
+    push rsi
+    push rdi
+    push r9
+
+    ; pack numbA
+        mov rsi, numbA
+        add r8, rsi
+        xor r9, r9
+
+        .loop_A_ADD_HEX:
+        cmp rsi, r8
+        je .loopEND_A_ADD_HEX
+
+            mov BYTE dl, [rsi]
+            cmp dl, 26
+            je .skipA_ADD_HEX
+
+                shl r9, 4
+                or r9b, dl
+
+            .skipA_ADD_HEX:
+
+        inc rsi
+        jmp .loop_A_ADD_HEX
+        .loopEND_A_ADD_HEX:
+
+    ; pack numbB
+        mov rsi, numbB
+        add rcx, rsi
+        xor rax, rax
+
+        .loop_B_ADD_HEX:
+        cmp rsi, rcx
+        je .loopEND_B_ADD_HEX
+
+            mov BYTE dl, [rsi]
+            cmp dl, 26
+            je .skipB_ADD_HEX
+
+                shl rax, 4
+                or al, dl
+
+            .skipB_ADD_HEX:
+
+        inc rsi
+        jmp .loop_B_ADD_HEX
+        .loopEND_B_ADD_HEX:
+
+    ; A + B
+    add rax, r9
+
+    ; unpack into numbT
+        mov rdi, numbT
+        mov rdx, numbT_sign
+        mov BYTE [rdx], 0
+
+        xor rcx, rcx
+        mov rbx, 16
+
+        .loop3_ADD_HEX:
+        xor rdx, rdx
+        div rbx
+
+            push rdx
+            inc rcx
+
+        test rax, rax
+        jnz .loop3_ADD_HEX
+
+        mov rdx, rcx
+        .loop4_ADD_HEX:
+
+            pop rax
+            mov BYTE [rdi], al
+
+        inc rdi
+        dec rdx
+        jnz .loop4_ADD_HEX
+
+    ; reset & exit
+    pop r9
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rbx
+    xor rax, rax
     ret
 
 main:
     ; setup
         xor rax, rax
-        mov al, 0
         mov BYTE [numbA_sign], al
         mov BYTE [numbB_sign], al
         mov BYTE [not1thcharA], al
         mov BYTE [not1thcharB], al
 
-    ; tests
-        mov rbx, 0      ; numbA
-        call readHEX
-        cmp al, 0
+    ; run da cucc
+
+        ; beolvas egy számot decimális egészként,
+        mov rbx, 0
+        call readINT
+        cmp rax, 0
         jne .error
 
+        ; kiíratja decimális (előjeles egész) alakban,
+        mov rbx, 0
+        call writeINT
+
+        ; kiíratja hexadecimális (a szám komplementerkódbeli ábrázolása) alakban,
+        mov rbx, 0
+        call INT2HEX
+        mov rax, 1
+        mov rbx, 0
+        mov rdx, 0
+        call COPY
         mov rbx, 0
         call writeHEX
+        mov r8, rcx
 
-        mov rbx, 0
+        ; beolvas egy másik számot hexadecimális egészként (ezt egy egész komplementerkódbeli ábrázolásának tekintjük),
+        mov rbx, 1
+        call readHEX
+        cmp rax, 0
+        jne .error
+
+        ; kiíratja decimális (előjeles egész) alakban,
+        mov rbx, 1
         call HEX2INT
+        mov rax, 1
+        mov rbx, 1
+        mov rdx, 0
+        call COPY
+        mov rbx, 1
+        call writeINT
 
-        mov rax, rcx
-        call io_writeint
-        call io_writeln
+        ; kiíratja hexadecimális alakban,
+        mov rbx, 1
+        call INT2HEX
+        mov rax, 1
+        mov rbx, 1
+        mov rdx, 0
+        call COPY
+        mov rbx, 1
+        call writeHEX
 
+        ; a két számot összeadja,
+        call ADD_HEX
         mov rax, 1
         mov rbx, 0
         mov rdx, 0
         call COPY
 
+        ; az eredményt kiíratja decimális (előjeles egész) alakban,
+        mov rbx, 0
+        call HEX2INT
+        mov rax, 1
+        mov rbx, 0
+        mov rdx, 0
+        call COPY
         mov rbx, 0
         call writeINT
 
+        ; az eredményt kiíratja hexadecimális alakban.
+        mov rbx, 0
+        call INT2HEX
+        mov rax, 1
+        mov rbx, 0
+        mov rdx, 0
+        call COPY
         mov rbx, 0
         call writeHEX
 
